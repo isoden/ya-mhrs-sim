@@ -1,0 +1,16 @@
+<svg
+  role="img"
+  viewBox="0 0 20 20"
+  class="inline-block h-4 w-4"
+  [ngClass]="className"
+  [ngSwitch]="shape"
+>
+  <path
+    *ngSwitchCase="'diamond'"
+    d="M10 2 L18 10 L10 18 L2 10 Z"
+    stroke-linejoin="round"
+    class="fill-current"
+  />
+
+  <circle *ngSwitchCase="'circle'" cx="10" cy="10" r="8" class="fill-current" />
+</svg>

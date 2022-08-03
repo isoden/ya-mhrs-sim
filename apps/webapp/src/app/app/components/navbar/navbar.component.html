@@ -1,0 +1,51 @@
+<ng-container *ngrxLet="collapsed$ as collapsed">
+  <nav
+    class="top-header fixed bottom-0 left-0 z-20 flex flex-col overflow-y-auto bg-white py-6 shadow dark:bg-zinc-800 md:overflow-auto"
+    [ngClass]="collapsed ? 'w-0 md:w-14 md:px-2' : 'w-64 px-4'"
+  >
+    <div class="space-y-4">
+      <a
+        class="flex items-center rounded-lg text-gray-700 hover:bg-slate-200 dark:text-white dark:hover:bg-zinc-900"
+        [ngClass]="collapsed ? 'h-10 w-10' : 'px-4 py-2'"
+        [class.justify-center]="collapsed"
+        routerLink="/"
+        routerLinkActive="bg-slate-200 dark:bg-zinc-900"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <uic-icon name="list-search" class="h-6 w-6"></uic-icon>
+        <span class="ml-2 font-semibold" [class.sr-only]="collapsed">スキルシミュレーター</span>
+      </a>
+
+      <a
+        class="flex items-center rounded-lg text-gray-700 hover:bg-slate-200 dark:text-white dark:hover:bg-zinc-900"
+        [ngClass]="collapsed ? 'h-10 w-10' : 'px-4 py-2'"
+        [class.justify-center]="collapsed"
+        routerLink="/my-talismans"
+        routerLinkActive="bg-slate-200 dark:bg-zinc-900"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <uic-icon name="diamond" class="h-6 w-6"></uic-icon>
+        <span class="ml-2 font-semibold" [class.sr-only]="collapsed">護石管理</span>
+      </a>
+
+      <a
+        class="flex items-center rounded-lg text-gray-700 hover:bg-slate-200 dark:text-white dark:hover:bg-zinc-900"
+        [ngClass]="collapsed ? 'h-10 w-10' : 'px-4 py-2'"
+        [class.justify-center]="collapsed"
+        routerLink="/my-armors"
+        routerLinkActive="bg-slate-200 dark:bg-zinc-900"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <uic-icon name="shield" class="h-6 w-6"></uic-icon>
+        <span class="ml-2 font-semibold" [class.sr-only]="collapsed">傀異錬成防具管理</span>
+      </a>
+    </div>
+
+    <ul [class.hidden]="collapsed" class="mt-auto flex gap-3 text-sm">
+      <li><a routerLink="/software-licenses" class="break-all">ソフトウェアライセンス</a></li>
+      <li>
+        <a href="https://github.com/isoden/ya-mhrs-sim" target="_blank" class="break-all">開発</a>
+      </li>
+    </ul>
+  </nav>
+</ng-container>

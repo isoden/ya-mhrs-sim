@@ -1,0 +1,92 @@
+<h2 class="text-2xl font-black">傀異錬成防具管理</h2>
+
+<form class="mt-6" [formGroup]="form" (ngSubmit)="onSubmit()">
+  <!-- TODO: CSV のヘルプを表示する -->
+  <textarea
+    class="block min-h-[220px] w-full rounded border border-gray-300 py-1 px-1.5 dark:border-zinc-700 dark:bg-zinc-800"
+    formControlName="csv"
+  ></textarea>
+
+  <div class="mt-4 flex gap-x-3">
+    <button uic-button type="submit">CSVをインポート</button>
+    <button uic-button type="button" (click)="exportAsCsv()">エクスポート</button>
+  </div>
+
+  <div
+    class="mt-4 w-max max-w-full overflow-hidden rounded border border-gray-100 dark:border-zinc-700"
+  >
+    <div class="max-h-[90vh] max-w-full overflow-auto">
+      <table class="whitespace-pre">
+        <thead class="sticky top-0 bg-slate-100 dark:bg-zinc-900">
+          <tr>
+            <th class="py-2 px-4 text-left text-sm font-semibold">防具</th>
+            <th class="py-2 px-4 text-right text-sm font-semibold">防御</th>
+            <th class="py-2 px-4 text-right text-sm font-semibold">
+              <abbr class="no-underline" title="火耐性">火</abbr>
+            </th>
+            <th class="py-2 px-4 text-right text-sm font-semibold">
+              <abbr class="no-underline" title="水耐性">水</abbr>
+            </th>
+            <th class="py-2 px-4 text-right text-sm font-semibold">
+              <abbr class="no-underline" title="雷耐性">雷</abbr>
+            </th>
+            <th class="py-2 px-4 text-right text-sm font-semibold">
+              <abbr class="no-underline" title="氷耐性">氷</abbr>
+            </th>
+            <th class="py-2 px-4 text-right text-sm font-semibold">
+              <abbr class="no-underline" title="龍耐性">龍</abbr>
+            </th>
+            <th class="py-2 px-4 text-left text-sm font-semibold">スロット</th>
+            <th class="py-2 px-4 text-left text-sm font-semibold">スキル</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-100 bg-white dark:divide-zinc-700 dark:bg-zinc-800">
+          <ng-container *ngIf="augmentations.length > 0; else otherwise">
+            <tr *ngFor="let augmentation of augmentations">
+              <td class="py-2 px-4">{{ augmentation.name }}</td>
+              <td class="py-2 px-4 text-right font-mono">
+                <uic-pretty-number [value]="augmentation.defense"></uic-pretty-number>
+              </td>
+              <td class="py-2 px-4 text-right font-mono">
+                <uic-pretty-number [value]="augmentation.fireResistance"></uic-pretty-number>
+              </td>
+              <td class="py-2 px-4 text-right font-mono">
+                <uic-pretty-number [value]="augmentation.waterResistance"></uic-pretty-number>
+              </td>
+              <td class="py-2 px-4 text-right font-mono">
+                <uic-pretty-number [value]="augmentation.thunderResistance"></uic-pretty-number>
+              </td>
+              <td class="py-2 px-4 text-right font-mono">
+                <uic-pretty-number [value]="augmentation.iceResistance"></uic-pretty-number>
+              </td>
+              <td class="py-2 px-4 text-right font-mono">
+                <uic-pretty-number [value]="augmentation.dragonResistance"></uic-pretty-number>
+              </td>
+              <td class="py-2 px-4 text-right font-mono">
+                <ng-container *ngFor="let slot of augmentation.slots"
+                  >【<uic-pretty-number
+                    class="whitespace-pre"
+                    [value]="slot"
+                    fallback="  "
+                  ></uic-pretty-number
+                  >】</ng-container
+                >
+              </td>
+              <td class="py-2 px-4">
+                <ng-container *ngFor="let skill of augmentation.skills; let last = last">
+                  {{ skill[0] }}<uic-pretty-number [value]="skill[1]"></uic-pretty-number>
+                  <ng-container *ngIf="!last">, </ng-container>
+                </ng-container>
+              </td>
+            </tr>
+          </ng-container>
+          <ng-template #otherwise>
+            <tr>
+              <td colspan="9" class="py-2 px-4 text-sm font-semibold">データが未登録です</td>
+            </tr>
+          </ng-template>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</form>

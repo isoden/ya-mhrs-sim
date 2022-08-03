@@ -1,0 +1,62 @@
+<form class="mb-11 md:mb-0 md:pr-80 lg:pr-96" [formGroup]="form">
+  <h2 class="text-2xl font-black">スキルシミュレーター</h2>
+
+  <div class="mt-6">
+    <div class="flex items-end">
+      <label for="skill-filter" class="text-sm font-semibold text-gray-500 dark:text-gray-300">
+        スキル選択
+      </label>
+      <button type="button" uic-button size="sm" class="ml-auto" (click)="resetForm()">
+        リセット
+      </button>
+    </div>
+
+    <app-skill-picker
+      class="mt-2 block"
+      [formGroup]="form.controls.includedSkills"
+    ></app-skill-picker>
+  </div>
+
+  <div class="mt-4 flex flex-wrap gap-4">
+    <label class="flex flex-col gap-y-2">
+      <span class="block text-sm font-semibold text-gray-500 dark:text-gray-300">ハンター設定</span>
+
+      <select
+        formControlName="hunterType"
+        class="rounded-md border border-gray-300 px-1.5 py-1 dark:border-zinc-700 dark:bg-zinc-800"
+      >
+        <option ngValue="type01">タイプ01</option>
+        <option ngValue="type02">タイプ02</option>
+      </select>
+    </label>
+
+    <label class="flex flex-col gap-y-2">
+      <span class="block text-sm font-semibold text-gray-500 dark:text-gray-300">武器スロット</span>
+
+      <select
+        formControlName="weaponSlots"
+        class="rounded-md border border-gray-300 px-1.5 py-1 text-right dark:border-zinc-700 dark:bg-zinc-800"
+      >
+        <option *ngFor="let slots of weaponSlots" [ngValue]="slots">
+          <ng-container *ngIf="slots.length > 0; else none">
+            <ng-container *ngFor="let slot of slots">【{{ slot }}】</ng-container>
+          </ng-container>
+          <ng-template #none>なし</ng-template>
+        </option>
+      </select>
+    </label>
+
+    <span class="flex flex-col gap-y-2">
+      <span class="text-sm font-semibold text-gray-500 dark:text-gray-300">除外スキル選択</span>
+
+      <div formGroupName="excludedSkills">
+        <label class="mr-4 inline-flex items-center" *ngFor="let skill of excludedSkills">
+          <input class="accent-pink-600" type="checkbox" [formControlName]="skill.name" />
+          <span class="ml-1">{{ skill.name }}</span>
+        </label>
+      </div>
+    </span>
+  </div>
+</form>
+
+<app-simulator-widget [result]="simulationResult$ | async"></app-simulator-widget>

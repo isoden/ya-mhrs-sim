@@ -1,0 +1,31 @@
+<header
+  class="h-header fixed top-0 left-0 z-30 flex w-full items-center bg-white py-2 shadow dark:bg-zinc-800"
+>
+  <button
+    type="button"
+    class="mx-4 h-6 w-6 shrink-0"
+    (click)="toggleCollapse()"
+    aria-label="メニューを開閉する"
+  >
+    <uic-icon name="menu-2"></uic-icon>
+  </button>
+
+  <div class="mx-6 flex w-full">
+    <div class="flex">
+      <h1 class="text-3xl font-black">
+        <img
+          class="h-10 w-10"
+          src="/assets/pugee.svg"
+          alt="モンスターハンターライズ：サンブレイク スキルシミュレーター"
+        />
+      </h1>
+      <code class="ml-1 self-end text-xs text-gray-500 dark:text-gray-300">v{{ appVersion }}</code>
+    </div>
+
+    <div class="ml-auto flex items-center gap-4">
+      <button class="h-4 w-4" (click)="toggleMode()" aria-label="テーマを切り替える">
+        <uic-icon name="brightness"></uic-icon>
+      </button>
+    </div>
+  </div>
+</header>
