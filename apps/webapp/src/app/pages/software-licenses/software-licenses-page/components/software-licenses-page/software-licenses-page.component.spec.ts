@@ -1,15 +1,20 @@
-import { render } from '~webapp/test-utils'
-import { HttpClientTestingModule } from '@angular/common/http/testing'
-
+import { render, screen } from '~webapp/test-utils'
+import { rest } from 'msw'
+import { setupServer } from 'msw/node'
 import { SoftwareLicensesPageComponent } from './software-licenses-page.component'
 
 describe('SoftwareLicensesPageComponent', () => {
-  it('should render', async () => {
-    await render(SoftwareLicensesPageComponent, {
-      imports: [HttpClientTestingModule],
-    })
+  beforeEach(() => {
+    setupServer(
+      rest.get('/3rdpartylicenses.txt', (req, res, ctx) =>
+        res(ctx.text('@angular/animations\nMIT')),
+      ),
+    ).listen()
+  })
 
-    // TODO: MSW 導入後ライセンスを表示しているかどうかのテストを書く。 HttpClientTestingModule は使わない。
-    expect(true).toBeTruthy()
+  it('should render', async () => {
+    await render(SoftwareLicensesPageComponent)
+
+    expect(await screen.findByText('@angular/animations MIT')).toBeInTheDocument()
   })
 })
