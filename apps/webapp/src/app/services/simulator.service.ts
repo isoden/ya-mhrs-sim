@@ -193,6 +193,13 @@ export class SimulatorService {
       equipments.set(WEAPON_KEY, this.createWeapon(formValue.weaponSlots))
     }
 
+    /**
+     * TODO: 最大化する項目を選べるようにする。 `defense` だけでなく空きスロットや火属性耐性値などを選択するイメージ。
+     * TODO: 指定する条件によって時間がかかるため、 処理を Worker に分ける。
+     *
+     * @see {@link https://angular.io/guide/web-worker}
+     * @see {@link https://www.npmjs.com/package/promise-worker}
+     */
     const solution = solve({
       direction: 'maximize',
       objective: 'defense',
