@@ -5,6 +5,12 @@ import { MatSnackBarModule } from '@angular/material/snack-bar'
 import { MyTalismansPageComponent } from './my-talismans-page.component'
 
 describe('MyTalismansPageComponent', () => {
+  beforeEach(() => {
+    jest
+      .spyOn(window, 'alert')
+      .mockImplementation(/* jsdom 上で実装されておらず `Error: Not implemented: window.alert` の警告が出るため空の実装を定義 */)
+  })
+
   it('should render', async () => {
     await render(MyTalismansPageComponent, {
       imports: [MatSnackBarModule],
@@ -36,6 +42,40 @@ describe('MyTalismansPageComponent', () => {
     expect(rows).toHaveLength(2)
     expect(rows[0]).toHaveTextContent('攻撃Lv1【1】【1】')
     expect(rows[1]).toHaveTextContent('壁面移動Lv1, 壁面移動【翔】Lv1')
+  })
+
+  it('テキストが空の場合は警告を表示する', async () => {
+    await render(MyTalismansPageComponent, {
+      imports: [MatSnackBarModule],
+    })
+    const user = UserEvent.setup()
+
+    const textarea = screen.getByRole('textbox')
+
+    await user.type(textarea, '  {enter}{enter}')
+    await user.click(screen.getByRole('button', { name: /CSVをインポート/ }))
+
+    expect(window.alert).toHaveBeenCalledWith('データを入力してください')
+  })
+
+  it('不備があるデータを除いてインポートする', async () => {
+    await render(MyTalismansPageComponent, {
+      imports: [MatSnackBarModule],
+    })
+    const user = UserEvent.setup()
+
+    const textarea = screen.getByRole('textbox')
+
+    await user.type(textarea, '攻撃,1,,,1,1,0{enter}翔虫使い,1,,,0,0,0')
+    await user.click(screen.getByRole('button', { name: /CSVをインポート/ }))
+
+    expect(window.alert).toHaveBeenCalledWith(['2行目: 読み込みエラー'])
+
+    const rows = within(screen.getAllByRole('rowgroup')[1]).getAllByRole('row')
+
+    // assert: データが 2 件表示されている
+    expect(rows).toHaveLength(1)
+    expect(rows[0]).toHaveTextContent('攻撃Lv1【1】【1】')
   })
 
   it('登録したデータを CSV でエクスポートできる', async () => {
