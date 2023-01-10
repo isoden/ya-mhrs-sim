@@ -1,4 +1,4 @@
-import { render } from '@testing-library/angular'
+import { render } from '~webapp/test-utils'
 import { skills } from '@ya-mhrs-sim/data'
 
 import { SkillInputComponent } from './skill-input.component'

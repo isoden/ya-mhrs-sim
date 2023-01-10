@@ -1,4 +1,4 @@
-import { render } from '@testing-library/angular'
+import { render } from '~webapp/test-utils'
 import { FormBuilder, FormControl } from '@angular/forms'
 import { Skill, skills } from '@ya-mhrs-sim/data'
 

@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/angular'
+import { render, screen } from '~webapp/test-utils'
 
 import { SimulatorPageComponent } from './simulator-page.component'
 

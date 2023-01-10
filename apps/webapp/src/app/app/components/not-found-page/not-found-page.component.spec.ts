@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/angular'
+import { render, screen } from '~webapp/test-utils'
 
 import { NotFoundPageComponent } from './not-found-page.component'
 

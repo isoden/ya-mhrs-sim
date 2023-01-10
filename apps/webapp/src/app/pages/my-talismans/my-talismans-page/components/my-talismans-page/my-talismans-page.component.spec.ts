@@ -1,5 +1,4 @@
-import { render, screen, within } from '@testing-library/angular'
-import UserEvent from '@testing-library/user-event'
+import { render, screen, within } from '~webapp/test-utils'
 import { MatSnackBarModule } from '@angular/material/snack-bar'
 
 import { MyTalismansPageComponent } from './my-talismans-page.component'
@@ -19,10 +18,9 @@ describe('MyTalismansPageComponent', () => {
   })
 
   it('CSVをインポートできる', async () => {
-    await render(MyTalismansPageComponent, {
+    const { user } = await render(MyTalismansPageComponent, {
       imports: [MatSnackBarModule],
     })
-    const user = UserEvent.setup()
 
     const textarea = screen.getByRole('textbox')
     const empty = screen.getByRole('cell', { name: /データが未登録です/ })
@@ -45,10 +43,9 @@ describe('MyTalismansPageComponent', () => {
   })
 
   it('テキストが空の場合は警告を表示する', async () => {
-    await render(MyTalismansPageComponent, {
+    const { user } = await render(MyTalismansPageComponent, {
       imports: [MatSnackBarModule],
     })
-    const user = UserEvent.setup()
 
     const textarea = screen.getByRole('textbox')
 
@@ -59,10 +56,9 @@ describe('MyTalismansPageComponent', () => {
   })
 
   it('不備があるデータを除いてインポートする', async () => {
-    await render(MyTalismansPageComponent, {
+    const { user } = await render(MyTalismansPageComponent, {
       imports: [MatSnackBarModule],
     })
-    const user = UserEvent.setup()
 
     const textarea = screen.getByRole('textbox')
 
@@ -95,11 +91,9 @@ describe('MyTalismansPageComponent', () => {
     )
     const writeText = jest.spyOn(navigator.clipboard, 'writeText')
 
-    await render(MyTalismansPageComponent, {
+    const { user } = await render(MyTalismansPageComponent, {
       imports: [MatSnackBarModule],
     })
-
-    const user = UserEvent.setup()
 
     await user.click(screen.getByRole('button', { name: /エクスポート/ }))
 

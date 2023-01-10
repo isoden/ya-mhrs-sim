@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/angular'
+import { render, screen } from '~webapp/test-utils'
 import { MatSnackBarModule } from '@angular/material/snack-bar'
 
 import { MyArmorsPageComponent } from './my-armors-page.component'

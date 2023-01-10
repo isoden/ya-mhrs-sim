@@ -1,5 +1,5 @@
+import { render } from '~webapp/test-utils'
 import { HttpClientTestingModule } from '@angular/common/http/testing'
-import { render } from '@testing-library/angular'
 
 import { SoftwareLicensesPageComponent } from './software-licenses-page.component'
 

@@ -1,4 +1,4 @@
-import { render } from '@testing-library/angular'
+import { render } from '~webapp/test-utils'
 import { MatSnackBarModule } from '@angular/material/snack-bar'
 import { ServiceWorkerModule } from '@angular/service-worker'
 import { APP_VERSION_PROVIDER } from '../../appVersion'

@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/angular'
+import { render, screen } from '~webapp/test-utils'
 import { SkillColor } from '@ya-mhrs-sim/data'
 
 import { SkillBadgeComponent } from './skill-badge.component'
