@@ -12,11 +12,11 @@ import {
 } from '@angular/core'
 import { UiComponentsModule } from '@ya-mhrs-sim/ui-components'
 import { Subject, takeUntil } from 'rxjs'
+import { useMatchMediaObservable } from '~webapp/functions/useMatchMedia'
+import { invariant } from '~webapp/functions/asserts'
+import { SimulationResult } from '~webapp/services/simulator.service'
+import { screens } from '~webapp/constants'
 import { BuildViewerComponent } from '../build-viewer/build-viewer.component'
-import { useMatchMediaObservable } from '../../../../../functions/useMatchMedia'
-import { invariant } from '../../../../../functions/asserts'
-import { SimulationResult } from '../../../../../services/simulator.service'
-import { screens } from '../../../../../constants'
 
 const defaultHeight = 56
 

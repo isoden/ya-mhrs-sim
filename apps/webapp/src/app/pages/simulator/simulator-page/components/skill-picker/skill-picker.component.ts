@@ -9,9 +9,9 @@ import {
 } from '@angular/forms'
 import { UiComponentsModule } from '@ya-mhrs-sim/ui-components'
 import { Skill, SkillColor, skills } from '@ya-mhrs-sim/data'
+import { SkillModel } from '~webapp/models'
 import { SkillBadgeComponent } from '../skill-badge/skill-badge.component'
 import { SkillInputComponent } from '../skill-input/skill-input.component'
-import { SkillModel } from '../../../../../models'
 
 @Component({
   standalone: true,

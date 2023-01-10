@@ -8,9 +8,9 @@ import {
 } from '@angular/core'
 import { NavigationEnd, Router, RouterModule } from '@angular/router'
 import { filter, skip } from 'rxjs'
-import { invariant } from '../../../functions/asserts'
-import { LogUpdateService } from '../../../services/log-update.service'
-import { StoreService } from '../../../services/store.service'
+import { invariant } from '~webapp/functions/asserts'
+import { LogUpdateService } from '~webapp/services/log-update.service'
+import { StoreService } from '~webapp/services/store.service'
 import { AppHeaderComponent } from '../header/header.component'
 import { AppNavbarComponent } from '../navbar/navbar.component'
 

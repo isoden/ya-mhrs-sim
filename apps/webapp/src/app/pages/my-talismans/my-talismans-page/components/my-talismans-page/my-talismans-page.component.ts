@@ -4,9 +4,9 @@ import { FormBuilder, ReactiveFormsModule } from '@angular/forms'
 import { MatSnackBar } from '@angular/material/snack-bar'
 import { UiComponentsModule } from '@ya-mhrs-sim/ui-components'
 import { Talisman } from '@ya-mhrs-sim/data'
-import { LocalStorageService } from '../../../../../services/local-storage.service'
-import { TalismansPortingService } from '../../../../../services/talismans-porting.service'
-import { SkillModel } from '../../../../../models'
+import { LocalStorageService } from '~webapp/services/local-storage.service'
+import { TalismansPortingService } from '~webapp/services/talismans-porting.service'
+import { SkillModel } from '~webapp/models'
 
 const useForm = () => {
   const fb = inject(FormBuilder)

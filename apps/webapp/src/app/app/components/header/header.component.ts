@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common'
 import { ChangeDetectionStrategy, Component, Inject, ViewEncapsulation } from '@angular/core'
 import { UiComponentsModule } from '@ya-mhrs-sim/ui-components'
-import { StoreService } from '../../../services/store.service'
+import { StoreService } from '~webapp/services/store.service'
 import { APP_VERSION } from '../../appVersion'
 
 @Component({

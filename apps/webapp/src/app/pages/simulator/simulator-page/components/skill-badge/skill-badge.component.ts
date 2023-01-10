@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common'
 import { ChangeDetectionStrategy, Component, Input, ViewEncapsulation } from '@angular/core'
 import { SkillColor } from '@ya-mhrs-sim/data'
-import { invariant } from '../../../../../functions/asserts'
+import { invariant } from '~webapp/functions/asserts'
 
 type Shape = 'diamond' | 'circle'
 

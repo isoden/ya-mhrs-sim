@@ -3,8 +3,8 @@ import { FormBuilder, ReactiveFormsModule } from '@angular/forms'
 import { CommonModule } from '@angular/common'
 import { MatSnackBar } from '@angular/material/snack-bar'
 import { UiComponentsModule } from '@ya-mhrs-sim/ui-components'
-import { AugmentationsPortingService } from '../../../../../services/augmentations-porting.service'
-import { LocalStorageService } from '../../../../../services/local-storage.service'
+import { AugmentationsPortingService } from '~webapp/services/augmentations-porting.service'
+import { LocalStorageService } from '~webapp/services/local-storage.service'
 
 const useForm = () => {
   const fb = inject(FormBuilder)

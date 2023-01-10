@@ -1,5 +1,5 @@
 import { Skill, skills } from '@ya-mhrs-sim/data'
-import { invariant } from '../functions/asserts'
+import { invariant } from '~webapp/functions/asserts'
 
 export class SkillModel {
   /**

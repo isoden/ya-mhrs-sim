@@ -12,11 +12,11 @@ import { UiComponentsModule } from '@ya-mhrs-sim/ui-components'
 import { Skill, skills } from '@ya-mhrs-sim/data'
 import { mergeMap, Observable, of, Subject, takeUntil } from 'rxjs'
 import { every } from 'lodash-es'
+import { LocalStorageService } from '~webapp/services/local-storage.service'
+import { SimulationResult, SimulatorService } from '~webapp/services/simulator.service'
+import { HunterType, WeaponSlots } from '~webapp/models'
 import { SimulatorWidgetComponent } from '../simulator-widget/simulator-widget.component'
 import { SkillPickerComponent } from '../skill-picker/skill-picker.component'
-import { LocalStorageService } from '../../../../../services/local-storage.service'
-import { SimulationResult, SimulatorService } from '../../../../../services/simulator.service'
-import { HunterType, WeaponSlots } from '../../../../../models'
 
 type ExtractFormValue<T> = T extends FormGroup<infer U>
   ? { [K in keyof U]: ExtractFormValue<U[K]> }

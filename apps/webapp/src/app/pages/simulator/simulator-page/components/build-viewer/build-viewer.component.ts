@@ -3,9 +3,9 @@ import { ChangeDetectionStrategy, Component, Input, ViewEncapsulation } from '@a
 import { UiComponentsModule } from '@ya-mhrs-sim/ui-components'
 import { Skill, SkillNames } from '@ya-mhrs-sim/data'
 import { uniq } from 'lodash-es'
-import { SkillModel } from '../../../../../models'
-import { invariant } from '../../../../../functions/asserts'
-import { Build } from '../../../../../services/simulator.service'
+import { SkillModel } from '~webapp/models'
+import { invariant } from '~webapp/functions/asserts'
+import { Build } from '~webapp/services/simulator.service'
 
 @Component({
   standalone: true,

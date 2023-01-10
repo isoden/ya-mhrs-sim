@@ -17,6 +17,7 @@
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
     "paths": {
+      "~webapp/*": ["apps/webapp/src/app/*"],
       "@ya-mhrs-sim/data": ["libs/data/src/index.ts"],
       "@ya-mhrs-sim/ui-components": ["libs/ui-components/src/index.ts"]
     }

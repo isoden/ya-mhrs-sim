@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core'
 import { Skill, Talisman } from '@ya-mhrs-sim/data'
 import { z } from 'zod'
-import { SkillModel } from '../models'
+import { SkillModel } from '~webapp/models'
 
 const defaults = () => ['', '0', '', '0', '0', '0', '0']
 

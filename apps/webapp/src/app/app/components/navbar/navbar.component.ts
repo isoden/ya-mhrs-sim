@@ -10,7 +10,7 @@ import { NavigationEnd, Router, RouterModule } from '@angular/router'
 import { UiComponentsModule } from '@ya-mhrs-sim/ui-components'
 import { LetModule } from '@ngrx/component'
 import { filter, Observable, skip, Subject, takeUntil, withLatestFrom } from 'rxjs'
-import { StoreService } from '../../../services/store.service'
+import { StoreService } from '~webapp/services/store.service'
 
 @Component({
   standalone: true,

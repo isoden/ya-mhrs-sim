@@ -15,8 +15,8 @@ import { Constraint, solve, greaterEq, lessEq, SolutionStatus } from 'yalps'
 import { times, constant, groupBy, fromPairs } from 'lodash-es'
 import { Simplify } from 'type-fest'
 
-import { SkillModel } from '../models'
-import { invariant } from '../functions/asserts'
+import { SkillModel } from '~webapp/models'
+import { invariant } from '~webapp/functions/asserts'
 import { LocalStorageService } from './local-storage.service'
 
 // TODO: コンポーネントからの依存をやめる
