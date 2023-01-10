@@ -10,12 +10,12 @@ module.exports = {
   theme: {
     extend: {
       spacing: {
-        header: '3.5rem' // h-14
+        header: '3.5rem', // h-14
       },
       height: {
-        header: '3.5rem' // h-14
+        header: '3.5rem', // h-14
       },
-    }
+    },
   },
   plugins: [],
 }
