@@ -20,7 +20,7 @@ import { invariant } from '~webapp/functions/asserts'
 import { LocalStorageService } from './local-storage.service'
 
 // TODO: コンポーネントからの依存をやめる
-import { FormValue } from '../pages/simulator/simulator-page/components/simulator-page/simulator-page.component'
+import { FormValue } from '../simulator/simulator-page/components/simulator-page/simulator-page.component'
 
 type Variable = Partial<
   Record<
