@@ -89,7 +89,7 @@ const Schema = z
     z.coerce.number().int().min(1),
 
     // スキル2: オプション
-    z.enum([...Skill.shape.name.options, '']),
+    Skill.shape.name.or(z.literal('')),
     z.coerce.number().int().min(0),
 
     // スロット

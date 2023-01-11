@@ -153,23 +153,23 @@ const Schema = z.tuple([
   z.coerce.number().int(),
 
   // スキル1: オプション
-  z.enum([...Skill.shape.name.options, '']),
+  Skill.shape.name.or(z.literal('')),
   z.coerce.number().int(),
 
   // スキル2: オプション
-  z.enum([...Skill.shape.name.options, '']),
+  Skill.shape.name.or(z.literal('')),
   z.coerce.number().int(),
 
   // スキル3: オプション
-  z.enum([...Skill.shape.name.options, '']),
+  Skill.shape.name.or(z.literal('')),
   z.coerce.number().int(),
 
   // スキル4: オプション
-  z.enum([...Skill.shape.name.options, '']),
+  Skill.shape.name.or(z.literal('')),
   z.coerce.number().int(),
 
   // スキル5: オプション
-  z.enum([...Skill.shape.name.options, '']),
+  Skill.shape.name.or(z.literal('')),
   z.coerce.number().int(),
 ])
 type Schema = z.infer<typeof Schema>
