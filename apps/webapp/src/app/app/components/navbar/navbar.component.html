@@ -1,6 +1,6 @@
 <ng-container *ngrxLet="collapsed$ as collapsed">
   <nav
-    class="top-header fixed bottom-0 left-0 z-20 flex flex-col overflow-y-auto bg-white py-6 shadow dark:bg-zinc-800 md:overflow-auto"
+    class="top-header fixed bottom-0 left-0 z-20 flex flex-col overflow-y-auto bg-white pt-6 pb-3 shadow dark:bg-zinc-800 md:overflow-auto"
     [ngClass]="collapsed ? 'w-0 md:w-14 md:px-2' : 'w-64 px-4'"
   >
     <div class="space-y-4">
@@ -41,11 +41,33 @@
       </a>
     </div>
 
-    <ul [class.hidden]="collapsed" class="mt-auto flex gap-3 text-sm">
-      <li><a routerLink="/software-licenses" class="break-all">ソフトウェアライセンス</a></li>
-      <li>
-        <a href="https://github.com/isoden/ya-mhrs-sim" target="_blank" class="break-all">開発</a>
-      </li>
-    </ul>
+    <div class="mt-auto text-sm" [class.hidden]="collapsed">
+      <ul class="flex flex-wrap gap-3">
+        <li>
+          <a routerLink="/software-licenses" class="underline hover:no-underline">
+            ソフトウェアライセンス
+          </a>
+        </li>
+        <li>
+          <a
+            href="https://github.com/isoden/ya-mhrs-sim"
+            target="_blank"
+            class="underline hover:no-underline"
+          >
+            ソースコード
+          </a>
+        </li>
+      </ul>
+      <div class="mt-3">
+        開発者
+        <address class="inline-block not-italic">
+          <img
+            src="/assets/me.png"
+            alt="Dedende"
+            class="inline-block h-6 w-6 rounded-sm align-text-bottom"
+          />
+        </address>
+      </div>
+    </div>
   </nav>
 </ng-container>
