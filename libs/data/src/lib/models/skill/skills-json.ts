@@ -820,7 +820,7 @@ export const skills: readonly Skill[] = [
   {
     name: '狂化',
     keywords: ['きょうか'],
-    max: 3,
+    max: 2,
     color: SkillColor.Red,
   },
   {
