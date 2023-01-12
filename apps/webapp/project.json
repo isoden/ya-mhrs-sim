@@ -25,7 +25,8 @@
         ],
         "scripts": [],
         "serviceWorker": true,
-        "ngswConfigPath": "apps/webapp/ngsw-config.json"
+        "ngswConfigPath": "apps/webapp/ngsw-config.json",
+        "webWorkerTsConfig": "apps/webapp/tsconfig.worker.json"
       },
       "configurations": {
         "production": {
@@ -89,7 +90,8 @@
       "outputs": ["{workspaceRoot}/coverage/apps/webapp"],
       "options": {
         "jestConfig": "apps/webapp/jest.config.ts",
-        "passWithNoTests": true
+        "passWithNoTests": true,
+        "webWorkerTsConfig": "apps/webapp/tsconfig.worker.json"
       }
     }
   },

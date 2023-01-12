@@ -11,16 +11,15 @@ import {
   Armor,
   Decoration,
 } from '@ya-mhrs-sim/data'
-import { Constraint, solve, greaterEq, lessEq, SolutionStatus } from 'yalps'
+import { Constraint, greaterEq, lessEq, SolutionStatus } from 'yalps'
 import { times, constant, groupBy, fromPairs } from 'lodash-es'
 import { Simplify } from 'type-fest'
 import { firstValueFrom, map, shareReplay } from 'rxjs'
+import { wrap } from 'comlink'
+import { HunterType } from '~webapp/models'
 import { invariant } from '~webapp/functions/asserts'
 import { StoreService } from './store.service'
 import { Distributor } from './simulator/distributor.class'
-
-// TODO: コンポーネントからの依存をやめる
-import { FormValue } from '../simulator/simulator-page/components/simulator-page/simulator-page.component'
 
 type Variable = Partial<
   Record<
@@ -126,6 +125,20 @@ const baseConstraints: [string, Constraint][] = [
 
 const WEAPON_KEY = '武器'
 
+export type SimulateParams = {
+  /** 必要なスキルとレベルのマップ */
+  includedSkills: Record<typeof Skill.shape.name.options[number], number>
+
+  /** 除外するスキルをbooleanで指定するマップ */
+  excludedSkills: Skill['name'][]
+
+  /** ハンタータイプ */
+  hunterType: HunterType
+
+  /** 武器の空きスロット */
+  weaponSlots: number[]
+}
+
 /**
  * 検索条件に一致するビルドを検索するクラス
  */
@@ -152,20 +165,22 @@ export class SimulatorService {
 
   constructor(private readonly store: StoreService) {}
 
-  async solve(formValue: FormValue): Promise<SimulationResult> {
-    const includedSkills = Object.entries(formValue.includedSkills).filter(([, level]) => level > 0)
-    const excludedSkills = Object.entries(formValue.excludedSkills).filter(
-      ([, excluded]) => excluded,
-    )
+  async simulate({
+    includedSkills: _includedSkills,
+    excludedSkills,
+    hunterType,
+    weaponSlots,
+  }: SimulateParams): Promise<SimulationResult> {
+    const includedSkills = Object.entries(_includedSkills).filter(([, level]) => level > 0)
 
     const constraints = new Map<string, Constraint>(
       baseConstraints.concat(
         // スキルの制約を追加
         includedSkills.map(([name, level]) => [name, greaterEq(level)]),
-        excludedSkills.map(([name]) => [name, lessEq(0)]),
+        excludedSkills.map((name) => [name, lessEq(0)]),
 
         // タイプ違いの防具を除外
-        [[formValue.hunterType === 'type01' ? 'onlyType02' : 'onlyType01', lessEq(0)]],
+        [[hunterType === 'type01' ? 'onlyType02' : 'onlyType01', lessEq(0)]],
       ),
     )
 
@@ -196,25 +211,12 @@ export class SimulatorService {
       ...augmentedArmors.map<[string, Armor]>((a, i) => [a.name + `[${i}]`, a]),
     ])
 
-    if (formValue.weaponSlots.length > 0) {
-      this.addWeaponVariable(variables, formValue.weaponSlots)
-      equipments.set(WEAPON_KEY, this.createWeapon(formValue.weaponSlots))
+    if (weaponSlots.length > 0) {
+      this.addWeaponVariable(variables, weaponSlots)
+      equipments.set(WEAPON_KEY, this.createWeapon(weaponSlots))
     }
 
-    /**
-     * TODO: 最大化する項目を選べるようにする。 `defense` だけでなく空きスロットや火属性耐性値などを選択するイメージ。
-     * TODO: 指定する条件によって時間がかかるため、 処理を Worker に分ける。
-     *
-     * @see {@link https://angular.io/guide/web-worker}
-     * @see {@link https://www.npmjs.com/package/promise-worker}
-     */
-    const solution = solve({
-      direction: 'maximize',
-      objective: 'defense',
-      constraints,
-      variables,
-      integers: true,
-    })
+    const solution = await this.#solve({ constraints, variables })
 
     // eslint-disable-next-line no-restricted-syntax
     console.timeEnd('solver')
@@ -336,17 +338,16 @@ export class SimulatorService {
   private addDecorationsVariable(
     variables: Map<string, Variable>,
     includedSkills: [string, number][],
-    excludedSkills: [string, boolean][],
+    excludedSkills: SimulateParams['excludedSkills'],
   ): ReadonlyMap<string, Decoration> {
     const decorationsMap = new Map<string, Decoration>()
     const includedSkillNames = includedSkills.map(([name]) => name)
-    const excludedSkillNames = excludedSkills.map(([name]) => name)
 
     decorations.forEach((decoration) => {
       const skillNames = decoration.skills.map(([name]) => name)
 
       if (
-        !skillNames.some((skillName) => excludedSkillNames.includes(skillName)) &&
+        !skillNames.some((skillName) => excludedSkills.includes(skillName)) &&
         skillNames.some((skillName) => includedSkillNames.includes(skillName))
       ) {
         const { skills, slotSize, type } = decoration
@@ -381,6 +382,18 @@ export class SimulatorService {
     })
 
     return talismansMap
+  }
+
+  async #solve(model: Parameters<typeof import('../workers/lp-solver.worker').api.solve>[0]) {
+    if (typeof globalThis.Worker !== 'undefined') {
+      const solver = wrap<typeof import('../workers/lp-solver.worker').api>(
+        new Worker(new URL('../workers/lp-solver.worker', import.meta.url)),
+      )
+      return await solver.solve(model)
+    } else {
+      const solver = await import('../workers/lp-solver.worker').then((m) => m.api)
+      return solver.solve(model)
+    }
   }
 }
 

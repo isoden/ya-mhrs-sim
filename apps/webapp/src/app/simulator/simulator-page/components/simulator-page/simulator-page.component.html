@@ -49,9 +49,17 @@
     <span class="flex flex-col gap-y-2">
       <span class="text-sm font-semibold text-gray-500 dark:text-gray-300">除外スキル選択</span>
 
-      <div formGroupName="excludedSkills">
-        <label class="mr-4 inline-flex items-center" *ngFor="let skill of excludedSkills">
-          <input class="accent-pink-600" type="checkbox" [formControlName]="skill.name" />
+      <div formArrayName="excludedSkills">
+        <label
+          class="mr-4 inline-flex items-center"
+          *ngFor="let skill of excludedSkills; let index = index"
+        >
+          <input
+            class="accent-pink-600"
+            type="checkbox"
+            [attr.checked]="form.controls.excludedSkills.at(index).value"
+            [formControlName]="index"
+          />
           <span class="ml-1">{{ skill.name }}</span>
         </label>
       </div>
