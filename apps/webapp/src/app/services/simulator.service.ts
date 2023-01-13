@@ -20,6 +20,7 @@ import { HunterType } from '~webapp/models'
 import { invariant } from '~webapp/functions/asserts'
 import { StoreService } from './store.service'
 import { Distributor } from './simulator/distributor.class'
+import { workerFactory } from './simulator/worker.factory'
 
 type Variable = Partial<
   Record<
@@ -386,9 +387,7 @@ export class SimulatorService {
 
   async #solve(model: Parameters<typeof import('../workers/lp-solver.worker').api.solve>[0]) {
     if (typeof globalThis.Worker !== 'undefined') {
-      const solver = wrap<typeof import('../workers/lp-solver.worker').api>(
-        new Worker(new URL('../workers/lp-solver.worker', import.meta.url)),
-      )
+      const solver = wrap<typeof import('../workers/lp-solver.worker').api>(workerFactory())
       return await solver.solve(model)
     } else {
       const solver = await import('../workers/lp-solver.worker').then((m) => m.api)
