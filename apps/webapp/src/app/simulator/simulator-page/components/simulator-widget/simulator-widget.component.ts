@@ -98,6 +98,7 @@ export class SimulatorWidgetComponent implements AfterViewInit, OnDestroy {
 
     switch (event.type) {
       case 'pointerdown': {
+        console.log('pointerdown', event)
         if (this.#dragging) {
           return
         }
@@ -109,6 +110,8 @@ export class SimulatorWidgetComponent implements AfterViewInit, OnDestroy {
       }
 
       case 'pointermove': {
+        console.log('pointermove', event)
+
         if (!this.#dragging) {
           return
         }
@@ -118,6 +121,7 @@ export class SimulatorWidgetComponent implements AfterViewInit, OnDestroy {
       }
 
       case 'pointerup': {
+        console.log('pointerup', event)
         if (!this.#dragging) {
           return
         }
@@ -128,7 +132,7 @@ export class SimulatorWidgetComponent implements AfterViewInit, OnDestroy {
       }
 
       default: {
-        console.log(event.type)
+        console.log(event.type, event)
       }
     }
   }
