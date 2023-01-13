@@ -57,7 +57,10 @@ export class MyArmorsPageComponent {
   async exportAsCsv(): Promise<void> {
     const csv = this.augmentationsPorting.exportAsCsv(await firstValueFrom(this.augmentations$))
 
-    await navigator.clipboard.writeText(csv)
+    // FIXME: `error TS2339: Property 'clipboard' does not exist on type 'WorkerNavigator'.` というエラーで CI でだけテストが落ちる。
+    // エラーメッセージ的に CI のテスト環境では navigator の型が Navigator ではなく WorkerNavigator として参照されている様子だが原因は不明。
+    // https://github.com/isoden/ya-mhrs-sim/actions/runs/3914904390/jobs/6692487969
+    await navigator['clipboard'].writeText(csv)
 
     this.snackBar.open('クリップボードにコピーしました', undefined, {
       duration: 5_000,
