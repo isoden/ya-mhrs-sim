@@ -75,7 +75,6 @@ export class AugmentationsPortingService {
               .map<[Skill['name'], number]>(([name, level]) => [name as Skill['name'], level]),
           })
         } catch (err) {
-          console.error(err)
           // TODO: 詳細なエラー情報を表示する
           result.errors.push(`${index + 1}行目: 読み込みエラー`)
         }

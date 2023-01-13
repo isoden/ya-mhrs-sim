@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, inject, ViewEncapsulation } from '@
 import { CommonModule } from '@angular/common'
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms'
 import { MatSnackBar } from '@angular/material/snack-bar'
+import { Clipboard } from '@angular/cdk/clipboard'
 import { UiComponentsModule } from '@ya-mhrs-sim/ui-components'
 import { firstValueFrom } from 'rxjs'
 import { StoreService } from '~webapp/services/store.service'
@@ -30,6 +31,7 @@ export class MyTalismansPageComponent {
 
   constructor(
     private readonly store: StoreService,
+    private readonly clipboard: Clipboard,
     private readonly snackBar: MatSnackBar,
     private readonly talismansPorting: TalismansPortingService,
   ) {}
@@ -57,8 +59,7 @@ export class MyTalismansPageComponent {
   async exportAsCsv(): Promise<void> {
     const csv = this.talismansPorting.exportAsCsv(await firstValueFrom(this.talismans$))
 
-    await navigator.clipboard.writeText(csv)
-
+    this.clipboard.copy(csv)
     this.snackBar.open('クリップボードにコピーしました', undefined, {
       duration: 5_000,
       horizontalPosition: 'right',

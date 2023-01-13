@@ -47,7 +47,6 @@ export class TalismansPortingService {
             }),
           )
         } catch (err) {
-          console.error(err)
           // TODO: 詳細なエラー情報を表示する
           result.errors.push(`${index + 1}行目: 読み込みエラー`)
         }

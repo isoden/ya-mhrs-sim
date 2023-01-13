@@ -7,24 +7,17 @@ import {
   ViewEncapsulation,
 } from '@angular/core'
 import { CommonModule } from '@angular/common'
-import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms'
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms'
 import { UiComponentsModule } from '@ya-mhrs-sim/ui-components'
 import { Skill, skills } from '@ya-mhrs-sim/data'
-import { mergeMap, Observable, of, Subject, takeUntil } from 'rxjs'
+import { Observable, of, Subject, switchMap, takeUntil } from 'rxjs'
 import { every } from 'lodash-es'
 import { LocalStorageService } from '~webapp/services/local-storage.service'
 import { SimulationResult, SimulatorService } from '~webapp/services/simulator.service'
 import { HunterType, WeaponSlots } from '~webapp/models'
+import { invariant } from '~webapp/functions/asserts'
 import { SimulatorWidgetComponent } from '../simulator-widget/simulator-widget.component'
 import { SkillPickerComponent } from '../skill-picker/skill-picker.component'
-
-type ExtractFormValue<T> = T extends FormGroup<infer U>
-  ? { [K in keyof U]: ExtractFormValue<U[K]> }
-  : T extends FormArray<infer U>
-  ? ExtractFormValue<U>[]
-  : T extends FormControl<infer U>
-  ? U
-  : never
 
 const DEFAULT_EXCLUEDED_SKILLS: Skill['name'][] = ['伏魔響命', '龍気活性', '狂竜症【蝕】']
 
@@ -38,18 +31,13 @@ export function useForm(defaultHunterType: HunterType) {
         {} as Record<Skill['name'], number>,
       ),
     ),
-    excludedSkills: fb.nonNullable.group(
-      skills.reduce(
-        (group, skill) => ({ ...group, [skill.name]: false }),
-        {} as Record<Skill['name'], boolean>,
-      ),
+    excludedSkills: fb.nonNullable.array(
+      DEFAULT_EXCLUEDED_SKILLS.map(() => fb.nonNullable.control(false)),
     ),
     hunterType: fb.nonNullable.control<HunterType>(defaultHunterType),
     weaponSlots: fb.nonNullable.control(WeaponSlots[0]),
   })
 }
-
-export type FormValue = ExtractFormValue<ReturnType<typeof useForm>>
 
 @Component({
   standalone: true,
@@ -84,15 +72,29 @@ export class SimulatorPageComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    // TODO: FormControl が disabled の場合はフィールドが入ってこないため Partial<FormValue> になるのは仕様通りらしい
-    this.simulationResult$ = (this.form.valueChanges as Observable<FormValue>).pipe(
+    this.simulationResult$ = this.form.valueChanges.pipe(
       takeUntil(this.#onDestroy),
-      mergeMap((value) =>
-        // スキルが選択されていない場合は検索せずに null を返す
-        every(value.includedSkills, (value) => value === 0)
-          ? of(null)
-          : this.simulator.solve(value),
-      ),
+      switchMap(({ includedSkills, excludedSkills, hunterType, weaponSlots }) => {
+        // FormControl が disabled の場合はフィールドが入ってこないため Partial<typeof value> 型になっている
+        invariant(includedSkills)
+        invariant(excludedSkills)
+        invariant(hunterType)
+        invariant(weaponSlots)
+
+        if (every(includedSkills, (value) => value === 0)) {
+          // スキルが選択されていない場合は検索しない
+          return of(null)
+        }
+
+        return this.simulator.simulate({
+          includedSkills: includedSkills as Required<typeof includedSkills>,
+          excludedSkills: excludedSkills.flatMap((checked, i) =>
+            checked ? DEFAULT_EXCLUEDED_SKILLS[i] : [],
+          ),
+          hunterType,
+          weaponSlots,
+        })
+      }),
     )
 
     // ハンタータイプはキャラクター作成時の情報に紐づくためほぼ変更されることはないので一度選択した値は永続化する

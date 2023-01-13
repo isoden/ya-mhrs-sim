@@ -2,6 +2,7 @@ import { render, screen, within } from '~webapp/test-utils'
 import { MatSnackBarModule } from '@angular/material/snack-bar'
 
 import { MyTalismansPageComponent } from './my-talismans-page.component'
+import { Clipboard, ClipboardModule } from '@angular/cdk/clipboard'
 
 describe('MyTalismansPageComponent', () => {
   beforeEach(() => {
@@ -89,16 +90,22 @@ describe('MyTalismansPageComponent', () => {
         },
       ]),
     )
-    const writeText = jest.spyOn(navigator.clipboard, 'writeText')
+    const copy = jest.fn()
 
     const { user } = await render(MyTalismansPageComponent, {
-      imports: [MatSnackBarModule],
+      imports: [MatSnackBarModule, ClipboardModule],
+      providers: [
+        {
+          provide: Clipboard,
+          useValue: { copy },
+        },
+      ],
     })
 
     await user.click(screen.getByRole('button', { name: /エクスポート/ }))
 
     // assert: クリップボードに CSV が書き込まれている
-    expect(writeText).toHaveBeenCalledWith(`攻撃,1,,0,1,1,0
+    expect(copy).toHaveBeenCalledWith(`攻撃,1,,0,1,1,0
 壁面移動,1,壁面移動【翔】,1,0,0,0`)
   })
 })

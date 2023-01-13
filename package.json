@@ -26,6 +26,7 @@
     "@ngrx/component": "^14.3.0",
     "@nrwl/angular": "15.5.0",
     "angular-tabler-icons": "^1.82.0",
+    "comlink": "^4.3.1",
     "immer": "^9.0.15",
     "lodash-es": "^4.17.21",
     "rxjs": "7.5.6",
