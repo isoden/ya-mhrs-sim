@@ -62,11 +62,15 @@
               >【<span [class.text-green-400]="slot > 0">{{ slot }}</span
               >】:</span
             >
-            <span>{{ build[row]?.decorations?.[index]?.name }}</span>
+            <span *ngIf="build[row]?.decorations?.[index] as decoration">
+              {{ decoration.name }}
+            </span>
           </ng-container>
           <ng-template #otherwise>
             <span class="mr-3">【{{ slot }}】:</span>
-            <span>{{ build[row]?.decorations?.[index]?.name }}</span>
+            <span *ngIf="build[row]?.decorations?.[index] as decoration">
+              {{ decoration.name }}
+            </span>
           </ng-template>
         </div>
       </td>
