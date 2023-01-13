@@ -55,6 +55,8 @@ export class SimulatorWidgetComponent implements AfterViewInit, OnDestroy {
 
   #onDestroy = new Subject<void>()
 
+  #prevScreenY = 0
+
   get draggable() {
     return this.expanded
   }
@@ -103,6 +105,7 @@ export class SimulatorWidgetComponent implements AfterViewInit, OnDestroy {
           return
         }
 
+        this.#prevScreenY = event.screenY
         this.#dragging = true
         this.height = this.expandableElement.nativeElement.getBoundingClientRect().height
         targetElement.setPointerCapture(event.pointerId)
@@ -116,7 +119,10 @@ export class SimulatorWidgetComponent implements AfterViewInit, OnDestroy {
           return
         }
 
-        this.height = Math.max(this.height - event.movementY, 0)
+        const movementY = event.movementY ?? event.screenY - this.#prevScreenY
+
+        this.height = Math.max(this.height - movementY, 0)
+        this.#prevScreenY = event.screenY
         return
       }
 
