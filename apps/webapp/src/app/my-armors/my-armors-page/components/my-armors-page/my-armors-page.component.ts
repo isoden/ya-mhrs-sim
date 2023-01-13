@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, inject, ViewEncapsulation } from '@
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms'
 import { CommonModule } from '@angular/common'
 import { MatSnackBar } from '@angular/material/snack-bar'
+import { Clipboard } from '@angular/cdk/clipboard'
 import { UiComponentsModule } from '@ya-mhrs-sim/ui-components'
 import { firstValueFrom } from 'rxjs'
 import { AugmentationsPortingService } from '~webapp/services/augmentations-porting.service'
@@ -31,6 +32,7 @@ export class MyArmorsPageComponent {
   constructor(
     private readonly store: StoreService,
     private readonly snackBar: MatSnackBar,
+    private readonly clipboard: Clipboard,
     private readonly augmentationsPorting: AugmentationsPortingService,
   ) {}
 
@@ -57,11 +59,7 @@ export class MyArmorsPageComponent {
   async exportAsCsv(): Promise<void> {
     const csv = this.augmentationsPorting.exportAsCsv(await firstValueFrom(this.augmentations$))
 
-    // FIXME: `error TS2339: Property 'clipboard' does not exist on type 'WorkerNavigator'.` というエラーで CI でだけテストが落ちる。
-    // エラーメッセージ的に CI のテスト環境では navigator の型が Navigator ではなく WorkerNavigator として参照されている様子だが原因は不明。
-    // https://github.com/isoden/ya-mhrs-sim/actions/runs/3914904390/jobs/6692487969
-    await navigator['clipboard'].writeText(csv)
-
+    this.clipboard.copy(csv)
     this.snackBar.open('クリップボードにコピーしました', undefined, {
       duration: 5_000,
       horizontalPosition: 'right',
