@@ -3,10 +3,9 @@ import { CommonModule } from '@angular/common'
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms'
 import { MatSnackBar } from '@angular/material/snack-bar'
 import { UiComponentsModule } from '@ya-mhrs-sim/ui-components'
-import { Talisman } from '@ya-mhrs-sim/data'
-import { LocalStorageService } from '~webapp/services/local-storage.service'
+import { firstValueFrom } from 'rxjs'
+import { StoreService } from '~webapp/services/store.service'
 import { TalismansPortingService } from '~webapp/services/talismans-porting.service'
-import { SkillModel } from '~webapp/models'
 
 const useForm = () => {
   const fb = inject(FormBuilder)
@@ -27,14 +26,10 @@ const useForm = () => {
 export class MyTalismansPageComponent {
   form = useForm()
 
-  talismans = this.localStorage
-    .get('talismans', [])
-    .map(({ skills, slots }) =>
-      Talisman.parse({ name: SkillModel.toString(skills), skills, slots }),
-    )
+  talismans$ = this.store.select((state) => state.talismans)
 
   constructor(
-    private readonly localStorage: LocalStorageService<Webapp.LocalStorageSchema>,
+    private readonly store: StoreService,
     private readonly snackBar: MatSnackBar,
     private readonly talismansPorting: TalismansPortingService,
   ) {}
@@ -53,13 +48,14 @@ export class MyTalismansPageComponent {
     }
 
     if (result.value.length > 0) {
-      this.localStorage.set('talismans', result.value)
-      this.talismans = result.value
+      this.store.update((state) => {
+        state.talismans = result.value
+      })
     }
   }
 
   async exportAsCsv(): Promise<void> {
-    const csv = this.talismansPorting.exportAsCsv(this.talismans)
+    const csv = this.talismansPorting.exportAsCsv(await firstValueFrom(this.talismans$))
 
     await navigator.clipboard.writeText(csv)
 

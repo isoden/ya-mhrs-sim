@@ -3,8 +3,9 @@ import { FormBuilder, ReactiveFormsModule } from '@angular/forms'
 import { CommonModule } from '@angular/common'
 import { MatSnackBar } from '@angular/material/snack-bar'
 import { UiComponentsModule } from '@ya-mhrs-sim/ui-components'
+import { firstValueFrom } from 'rxjs'
 import { AugmentationsPortingService } from '~webapp/services/augmentations-porting.service'
-import { LocalStorageService } from '~webapp/services/local-storage.service'
+import { StoreService } from '~webapp/services/store.service'
 
 const useForm = () => {
   const fb = inject(FormBuilder)
@@ -25,10 +26,10 @@ const useForm = () => {
 export class MyArmorsPageComponent {
   form = useForm()
 
-  augmentations = this.localStorage.get('augmentations', [])
+  augmentations$ = this.store.select((state) => state.augmentations)
 
   constructor(
-    private readonly localStorage: LocalStorageService<Webapp.LocalStorageSchema>,
+    private readonly store: StoreService,
     private readonly snackBar: MatSnackBar,
     private readonly augmentationsPorting: AugmentationsPortingService,
   ) {}
@@ -47,13 +48,14 @@ export class MyArmorsPageComponent {
     }
 
     if (result.value.length > 0) {
-      this.localStorage.set('augmentations', result.value)
-      this.augmentations = result.value
+      this.store.update((state) => {
+        state.augmentations = result.value
+      })
     }
   }
 
   async exportAsCsv(): Promise<void> {
-    const csv = this.augmentationsPorting.exportAsCsv(this.localStorage.get('augmentations', []))
+    const csv = this.augmentationsPorting.exportAsCsv(await firstValueFrom(this.augmentations$))
 
     await navigator.clipboard.writeText(csv)
 
