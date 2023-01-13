@@ -1,5 +1,12 @@
 import { CommonModule } from '@angular/common'
-import { ChangeDetectionStrategy, Component, Input, ViewEncapsulation } from '@angular/core'
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnDestroy,
+  OnInit,
+  ViewEncapsulation,
+} from '@angular/core'
 import {
   COMPOSITION_BUFFER_MODE,
   FormBuilder,
@@ -9,6 +16,7 @@ import {
 } from '@angular/forms'
 import { UiComponentsModule } from '@ya-mhrs-sim/ui-components'
 import { Skill, SkillColor, skills } from '@ya-mhrs-sim/data'
+import { Subject, takeUntil } from 'rxjs'
 import { SkillModel } from '~webapp/models'
 import { SkillBadgeComponent } from '../skill-badge/skill-badge.component'
 import { SkillInputComponent } from '../skill-input/skill-input.component'
@@ -29,7 +37,7 @@ import { SkillInputComponent } from '../skill-input/skill-input.component'
     SkillBadgeComponent,
   ],
 })
-export class SkillPickerComponent {
+export class SkillPickerComponent implements OnInit, OnDestroy {
   @Input()
   formGroup!: FormGroup<{
     [x in Skill['name']]: FormControl<number>
@@ -52,25 +60,22 @@ export class SkillPickerComponent {
     { label: '灰色系スキル', value: SkillColor.Gray },
   ]
 
-  query = this.fb.nonNullable.control('')
+  skills = skills
 
-  selectedColor: SkillColor | null = null
+  form = this.fb.group({
+    query: this.fb.nonNullable.control(''),
+    color: this.fb.control<SkillColor | null>(null),
+  })
 
-  get filteredSkills(): Skill[] {
-    const query = this.query.value.toLowerCase()
+  /**
+   * hidden の場合に true を返すマップ
+   */
+  skillsVisibility: { [x in Skill['name']]?: boolean } = {}
 
-    return skills.filter((skill) => {
-      const passThrough = true
+  #onDestroy = new Subject<void>()
 
-      const result1 =
-        query === ''
-          ? passThrough
-          : [skill.name, ...skill.keywords].some((keyword) => keyword.toLowerCase().includes(query))
-
-      const result2 = this.selectedColor ? skill.color === this.selectedColor : passThrough
-
-      return result1 && result2
-    })
+  get isEmpty() {
+    return Object.keys(this.skillsVisibility).length === skills.length
   }
 
   get selectedSkills(): { name: Skill['name']; level: number }[] {
@@ -88,17 +93,54 @@ export class SkillPickerComponent {
 
   constructor(private readonly fb: FormBuilder) {}
 
+  ngOnInit(): void {
+    this.form.valueChanges.pipe(takeUntil(this.#onDestroy)).subscribe(() => {
+      const query = this.form.controls.query.value.toLowerCase()
+      const color = this.form.controls.color.value
+
+      this.skillsVisibility = skills.reduce<typeof this.skillsVisibility>((visibility, skill) => {
+        const passThrough = true
+
+        const result1 =
+          query === ''
+            ? passThrough
+            : [skill.name, ...skill.keywords].some((keyword) =>
+                keyword.toLowerCase().includes(query),
+              )
+
+        const result2 = color ? skill.color === color : passThrough
+
+        if (!(result1 && result2)) {
+          visibility[skill.name] = true
+        }
+
+        return visibility
+      }, {})
+    })
+  }
+
+  ngOnDestroy(): void {
+    this.#onDestroy.next()
+    this.#onDestroy.complete()
+  }
+
   resetQuery(): void {
-    this.query.reset()
+    this.form.controls.query.reset()
   }
 
   deselect(name: Skill['name']): void {
-    const control = this.formGroup.controls[name]
-
-    control.reset()
+    this.formGroup.controls[name].reset()
   }
 
   onClickColor(color: SkillColor | null) {
-    this.selectedColor = this.selectedColor === color ? null : color
+    if (this.form.controls.color.value === color) {
+      this.form.controls.color.reset()
+    } else {
+      this.form.controls.color.setValue(color)
+    }
+  }
+
+  trackBy(index: number, item: Skill) {
+    return item.name
   }
 }
