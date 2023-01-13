@@ -1,6 +1,6 @@
 declare namespace Webapp {
-  import { Augmentation } from '@ya-mhrs-sim/data'
-  import { Talisman, HunterType } from './models'
+  import { Talisman, Augmentation } from '@ya-mhrs-sim/data'
+  import { HunterType } from './models'
 
   export type LocalStorageSchema = {
     // 選択しているカラースキーマ

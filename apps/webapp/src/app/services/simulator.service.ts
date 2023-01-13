@@ -14,10 +14,10 @@ import {
 import { Constraint, solve, greaterEq, lessEq, SolutionStatus } from 'yalps'
 import { times, constant, groupBy, fromPairs } from 'lodash-es'
 import { Simplify } from 'type-fest'
-
-import { SkillModel } from '~webapp/models'
+import { firstValueFrom, map, shareReplay } from 'rxjs'
 import { invariant } from '~webapp/functions/asserts'
-import { LocalStorageService } from './local-storage.service'
+import { StoreService } from './store.service'
+import { Distributor } from './simulator/distributor.class'
 
 // TODO: コンポーネントからの依存をやめる
 import { FormValue } from '../simulator/simulator-page/components/simulator-page/simulator-page.component'
@@ -133,7 +133,24 @@ const WEAPON_KEY = '武器'
   providedIn: 'root',
 })
 export class SimulatorService {
-  constructor(private localStorage: LocalStorageService<Webapp.LocalStorageSchema>) {}
+  #talismans$ = this.store.select((state) => state.talismans).pipe(shareReplay(1))
+
+  #augmentedArmors$ = this.store
+    .select((state) => state.augmentations)
+    .pipe(
+      map((augmentations) =>
+        augmentations.map((augmentation) => {
+          const baseArmor = baseArmors.get(augmentation.name)
+
+          invariant(baseArmor, `${augmentation.name}`)
+
+          return augmentArmor(baseArmor, augmentation)
+        }),
+      ),
+      shareReplay(1),
+    )
+
+  constructor(private readonly store: StoreService) {}
 
   async solve(formValue: FormValue): Promise<SimulationResult> {
     const includedSkills = Object.entries(formValue.includedSkills).filter(([, level]) => level > 0)
@@ -154,22 +171,13 @@ export class SimulatorService {
 
     const variables = new Map<string, Variable>(baseVariables)
 
-    const talismans = this.localStorage
-      .get('talismans', [])
-      .map(({ slots, skills }) =>
-        Talisman.parse({ name: SkillModel.toString(skills), skills, slots }),
-      )
+    const [talismans, augmentedArmors] = await Promise.all([
+      firstValueFrom(this.#talismans$),
+      firstValueFrom(this.#augmentedArmors$),
+    ])
 
     const talismansMap = this.addTalismansVariable(variables, talismans)
     const decorationsMap = this.addDecorationsVariable(variables, includedSkills, excludedSkills)
-
-    const augmentedArmors = this.localStorage.get('augmentations', []).map((augmentation) => {
-      const baseArmor = baseArmors.get(augmentation.name)
-
-      invariant(baseArmor, `${augmentation.name}`)
-
-      return augmentArmor(baseArmor, augmentation)
-    })
 
     augmentedArmors.forEach((armor, i) => {
       variables.set(armor.name + `[${i}]`, armorToVariable(armor))
@@ -373,36 +381,6 @@ export class SimulatorService {
     })
 
     return talismansMap
-  }
-}
-
-/**
- * 装飾品を残り空きスロットに効率的に分配するクラス
- */
-class Distributor {
-  #decorations: { [K: number]: Decoration[] }
-
-  constructor(decorations: Decoration[]) {
-    this.#decorations = groupBy(decorations, (decoration) => decoration.slotSize)
-  }
-
-  distribute(slotSizes: number[]): Decoration[] {
-    const distribute = (slotSize: number): Decoration | undefined => {
-      const items = this.#decorations[slotSize] ?? []
-
-      if (items.length > 0) {
-        return items.shift()
-      }
-
-      // 最小サイズで見つからなかった場合は終了
-      if (slotSize === 1) {
-        return
-      }
-
-      return distribute(slotSize - 1)
-    }
-
-    return slotSizes.map(distribute).filter((x): x is NonNullable<typeof x> => x != null)
   }
 }
 
