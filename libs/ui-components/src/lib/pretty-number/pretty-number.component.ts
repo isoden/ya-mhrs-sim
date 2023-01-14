@@ -5,6 +5,7 @@ import {
   Input,
   ViewEncapsulation,
 } from '@angular/core'
+import { match } from 'ts-pattern'
 
 @Component({
   selector: 'uic-pretty-number',
@@ -31,22 +32,16 @@ export class PrettyNumberComponent {
 
   @HostBinding('class')
   get className() {
-    return {
-      'font-semibold': ![1, -1].includes(this.#sign),
-      'text-green-400': this.#sign === 1,
-      'text-red-400': this.#sign === -1,
-    }
+    return match(this.#sign)
+      .with(1, () => ['text-green-500', 'dark:text-green-400'])
+      .with(-1, () => ['text-red-500', 'dark:text-red-400'])
+      .otherwise(() => [])
   }
 
   get textContent() {
-    switch (this.#sign) {
-      case 1:
-        return `+${this.value}`
-      case -1:
-        return `${this.value}`
-
-      default:
-        return this.fallback
-    }
+    return match(this.#sign)
+      .with(1, () => `+${this.value}`)
+      .with(-1, () => `${this.value}`)
+      .otherwise(() => this.fallback)
   }
 }

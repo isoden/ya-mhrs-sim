@@ -6,11 +6,7 @@ import { ButtonComponent } from './button/button.component'
 
 @NgModule({
   imports: [CommonModule],
-  exports: [
-    IconsModule, // TODO: UiComponentsModule からではなく IconsModule 単体でも export したい。
-    PrettyNumberComponent,
-    ButtonComponent,
-  ],
+  exports: [IconsModule, PrettyNumberComponent, ButtonComponent],
   declarations: [PrettyNumberComponent, ButtonComponent],
 })
 export class UiComponentsModule {}

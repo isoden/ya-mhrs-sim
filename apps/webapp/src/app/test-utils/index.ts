@@ -36,7 +36,7 @@ async function render<SutType, WrapperType = SutType>(
 ): Promise<RenderResult<SutType> & ReturnExtra> {
   const user = UserEvent.setup(userEvent)
 
-  // @ts-expect-error FIXME: 直せたら直す
+  // @ts-expect-error TODO
   const view = await atl.render(sut, renderOptions)
 
   return {
