@@ -1,4 +1,5 @@
 import { Armor } from '../armor'
+import { HunterTypes } from '../equipment'
 import { Skill } from '../skill'
 import { augmentArmor, Augmentation } from './augmentation'
 
@@ -53,7 +54,7 @@ function baseArmor(field: Partial<Armor> = {}): Armor {
     name: 'カムラノ装【頭巾】継',
     type: 'helm',
     defense: 130,
-    kind: 3,
+    hunterTypes: [HunterTypes.Type01, HunterTypes.Type02],
     slots: [2],
     fireResistance: 2,
     waterResistance: 0,

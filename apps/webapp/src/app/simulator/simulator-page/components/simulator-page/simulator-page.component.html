@@ -25,8 +25,8 @@
         class="rounded-md border border-gray-300 px-1.5 py-1 dark:border-zinc-700 dark:bg-zinc-800"
         formControlName="hunterType"
       >
-        <option ngValue="type01">タイプ01</option>
-        <option ngValue="type02">タイプ02</option>
+        <option [ngValue]="HunterTypes.Type01">タイプ01</option>
+        <option [ngValue]="HunterTypes.Type02">タイプ02</option>
       </select>
     </label>
 

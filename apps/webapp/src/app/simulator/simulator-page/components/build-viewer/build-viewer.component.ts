@@ -5,7 +5,7 @@ import { Skill, SkillNames } from '@ya-mhrs-sim/data'
 import { uniq } from 'lodash-es'
 import { SkillModel } from '~webapp/models'
 import { invariant } from '~webapp/functions/asserts'
-import { Build } from '~webapp/services/simulator.service'
+import { Build } from '~webapp/services/simulator/simulator.service'
 
 @Component({
   standalone: true,

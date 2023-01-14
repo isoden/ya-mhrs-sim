@@ -21,7 +21,7 @@
     </div>
   </header>
   <div
-    class="max-h-[80vh] overflow-y-auto overscroll-contain md:max-h-[none] md:flex-1"
+    class="md:max-h-none max-h-[80vh] overflow-y-auto overscroll-contain md:flex-1"
     #expandable
     [@expansion]="getExpandedState()"
     [style.height.px]="height"

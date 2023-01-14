@@ -20,7 +20,7 @@ export default {
     // 正攻法だと解決できそうになかったので Worker の呼び出しをモックに差し替えて対応。
     // https://github.com/nrwl/nx/issues/5697#issuecomment-1068899210
     // https://github.com/isoden/ya-mhrs-sim/issues/10
-    '\\/simulator\\/worker.factory$': '<rootDir>/src/app/services/simulator/worker.factory.mock.ts',
+    '\\/worker.factory$': '<rootDir>/src/app/services/simulator/worker.factory.mock.ts',
   },
   // https://github.com/nrwl/nx/issues/812
   // ['node_modules/(?!.*\\.mjs$)', `node_modules/(?!${esmPackages})`] だとダメだった
