@@ -3,6 +3,7 @@ import { SwUpdate } from '@angular/service-worker'
 import { DOCUMENT } from '@angular/common'
 import { MatSnackBar } from '@angular/material/snack-bar'
 import { firstValueFrom, Subject, takeUntil } from 'rxjs'
+import { LoggerService } from './logger.service'
 
 /**
  * Service Worker の更新有無を確認するクラス
@@ -19,6 +20,7 @@ export class LogUpdateService {
     private readonly doc: Document,
     private readonly swUpdate: SwUpdate,
     private readonly snackBar: MatSnackBar,
+    private readonly logger: LoggerService,
   ) {}
 
   watch() {
@@ -27,17 +29,17 @@ export class LogUpdateService {
         case 'NO_NEW_VERSION_DETECTED': {
           this.#stop()
 
-          return console.log('no update found')
+          return this.logger.log('no update found')
         }
 
         case 'VERSION_DETECTED': {
-          return console.log(`Downloading new app version: ${event.version.hash}`)
+          return this.logger.log(`Downloading new app version: ${event.version.hash}`)
         }
 
         case 'VERSION_READY': {
           this.#stop()
 
-          console.log(`Current app version: ${event.currentVersion.hash}`)
+          this.logger.log(`Current app version: ${event.currentVersion.hash}`)
 
           const ref = this.snackBar.open('最新のバージョンが利用できます', '再読み込み', {
             horizontalPosition: 'right',
@@ -47,13 +49,13 @@ export class LogUpdateService {
             .then(() => this.swUpdate.activateUpdate())
             .then(() => this.doc.location.reload())
 
-          return console.log(`New app version ready for use: ${event.latestVersion.hash}`)
+          return this.logger.log(`New app version ready for use: ${event.latestVersion.hash}`)
         }
 
         case 'VERSION_INSTALLATION_FAILED':
           this.#stop()
 
-          return console.log(
+          return this.logger.log(
             `Failed to install app version '${event.version.hash}': ${event.error}`,
           )
       }

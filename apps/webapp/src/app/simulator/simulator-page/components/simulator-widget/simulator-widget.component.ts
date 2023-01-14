@@ -126,10 +126,6 @@ export class SimulatorWidgetComponent implements AfterViewInit, OnDestroy {
         targetElement.releasePointerCapture(event.pointerId)
         return
       }
-
-      default: {
-        console.log(event.type)
-      }
     }
   }
 

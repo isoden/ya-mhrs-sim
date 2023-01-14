@@ -3,6 +3,9 @@ declare namespace Webapp {
   import { HunterType } from './models'
 
   export type LocalStorageSchema = {
+    // ログ出力フラグ
+    debug?: 'on' | 'off'
+
     // 選択しているカラースキーマ
     mode: 'dark' | 'light'
 

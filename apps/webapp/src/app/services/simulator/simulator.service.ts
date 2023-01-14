@@ -14,9 +14,9 @@ import {
   addDecorationsVariable,
   addWeaponVariable,
   createWeapon,
-  measure,
   createBuild,
 } from './functions'
+import { LoggerService } from '../logger.service'
 
 export { SimulateParams, SimulationResult, Build } from './types'
 
@@ -27,6 +27,8 @@ export { SimulateParams, SimulationResult, Build } from './types'
   providedIn: 'root',
 })
 export class SimulatorService {
+  #worker?: Worker
+
   #talismans$ = this.store.select((state) => state.talismans).pipe(shareReplay(1))
 
   #augmentedArmors$ = this.store
@@ -44,7 +46,7 @@ export class SimulatorService {
       shareReplay(1),
     )
 
-  constructor(private readonly store: StoreService) {}
+  constructor(private readonly store: StoreService, private readonly logger: LoggerService) {}
 
   async simulate({
     includedSkills: baseIncludedSkills,
@@ -86,8 +88,8 @@ export class SimulatorService {
       variables.set(armor.name + `[${i}]`, armorToVariable(armor)),
     )
 
-    console.log('[solver] variables', Array.from(variables))
-    console.log('[solver] constraints', Array.from(constraints))
+    this.logger.log('[solver] variables', Array.from(variables))
+    this.logger.log('[solver] constraints', Array.from(constraints))
 
     const equipments = new Map<string, Weapon | Armor | Decoration | Talisman>([
       ...BASE_ARMORS,
@@ -103,22 +105,20 @@ export class SimulatorService {
 
     const solve =
       typeof globalThis.Worker !== 'undefined'
-        ? wrap<typeof import('../../workers/lp-solver.worker').api>(workerFactory()).solve
+        ? wrap<typeof import('../../workers/lp-solver.worker').api>(this.#configureWorker()).solve
         : (await import('../../workers/lp-solver.worker').then((m) => m.api)).solve
 
-    const solution = await measure(
-      () =>
-        solve({
-          direction: 'maximize',
-          objective: 'defense',
-          constraints,
-          variables,
-          integers: true,
-        }),
-      { enabled: true, label: 'solver' },
+    const solution = await this.#measure(() =>
+      solve({
+        direction: 'maximize',
+        objective: 'defense',
+        constraints,
+        variables,
+        integers: true,
+      }),
     )
 
-    console.log('[solver] solution', solution)
+    this.logger.log('[solver] solution', solution)
 
     if (solution.status !== 'optimal') {
       return {
@@ -129,11 +129,29 @@ export class SimulatorService {
 
     const builds = [createBuild(equipments, solution.variables)]
 
-    console.log('[solver] builds', builds[0])
+    this.logger.log('[solver] builds', builds[0])
 
     return {
       type: 'succeeded',
       builds,
     }
+  }
+
+  #configureWorker(): Worker {
+    this.#worker?.terminate()
+
+    return (this.#worker = workerFactory())
+  }
+
+  async #measure<T>(func: () => T | PromiseLike<T>): Promise<T> {
+    const label = `[measurement] solver`
+
+    this.logger.time(label)
+
+    const value = await func()
+
+    this.logger.timeEnd(label)
+
+    return value
   }
 }

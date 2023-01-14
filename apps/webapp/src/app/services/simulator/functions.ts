@@ -171,18 +171,3 @@ export function addTalismansVariable(
 export function asVariable(skills: [string, number][]): Record<Skill['name'], number> {
   return fromPairs(skills) as Record<Skill['name'], number>
 }
-
-export function measure<T>(
-  func: () => T,
-  { enabled, label = 'func' }: { enabled?: boolean; label?: string } = {},
-): T {
-  // eslint-disable-next-line no-restricted-syntax
-  enabled && console.time(`[measure] ${label}`)
-
-  const value = func()
-
-  // eslint-disable-next-line no-restricted-syntax
-  enabled && console.timeEnd(`[measure] ${label}`)
-
-  return value
-}
