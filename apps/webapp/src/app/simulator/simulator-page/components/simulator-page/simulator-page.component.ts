@@ -9,19 +9,19 @@ import {
 import { CommonModule } from '@angular/common'
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms'
 import { UiComponentsModule } from '@ya-mhrs-sim/ui-components'
-import { Skill, skills } from '@ya-mhrs-sim/data'
+import { HunterTypes, Skill, skills } from '@ya-mhrs-sim/data'
 import { Observable, of, Subject, switchMap, takeUntil } from 'rxjs'
 import { every } from 'lodash-es'
 import { LocalStorageService } from '~webapp/services/local-storage.service'
-import { SimulationResult, SimulatorService } from '~webapp/services/simulator.service'
-import { HunterType, WeaponSlots } from '~webapp/models'
+import { SimulationResult, SimulatorService } from '~webapp/services/simulator/simulator.service'
+import { WeaponSlots } from '~webapp/models'
 import { invariant } from '~webapp/functions/asserts'
 import { SimulatorWidgetComponent } from '../simulator-widget/simulator-widget.component'
 import { SkillPickerComponent } from '../skill-picker/skill-picker.component'
 
 const DEFAULT_EXCLUEDED_SKILLS: Skill['name'][] = ['伏魔響命', '龍気活性', '狂竜症【蝕】']
 
-export function useForm(defaultHunterType: HunterType) {
+export function useForm(defaultHunterType: HunterTypes) {
   const fb = inject(FormBuilder)
 
   return fb.nonNullable.group({
@@ -34,7 +34,7 @@ export function useForm(defaultHunterType: HunterType) {
     excludedSkills: fb.nonNullable.array(
       DEFAULT_EXCLUEDED_SKILLS.map(() => fb.nonNullable.control(false)),
     ),
-    hunterType: fb.nonNullable.control<HunterType>(defaultHunterType),
+    hunterType: fb.nonNullable.control<HunterTypes>(defaultHunterType),
     weaponSlots: fb.nonNullable.control(WeaponSlots[0]),
   })
 }
@@ -54,6 +54,7 @@ export function useForm(defaultHunterType: HunterType) {
   ],
 })
 export class SimulatorPageComponent implements OnInit, OnDestroy {
+  HunterTypes = HunterTypes
   weaponSlots = WeaponSlots
   includedSkills = skills
   excludedSkills = this.includedSkills.filter((skill) =>
@@ -64,7 +65,7 @@ export class SimulatorPageComponent implements OnInit, OnDestroy {
 
   simulationResult$!: Observable<SimulationResult | null>
 
-  form = useForm(this.localStorage.get('hunterType', 'type01'))
+  form = useForm(this.localStorage.get('hunterType', HunterTypes.Type01))
 
   constructor(
     private readonly localStorage: LocalStorageService<Webapp.LocalStorageSchema>,

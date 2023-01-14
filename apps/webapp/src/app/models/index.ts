@@ -66,5 +66,3 @@ export const WeaponSlots = [
   [4, 4, 3],
   [4, 4, 4],
 ]
-
-export type HunterType = 'type01' | 'type02'

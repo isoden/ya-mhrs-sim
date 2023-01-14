@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { Equipment, EquipmentType } from '../equipment'
+import { Equipment, EquipmentType, HunterTypes } from '../equipment'
 
 export const Armor = Equipment.extend({
   /** 防具シリーズ名 */
@@ -17,7 +17,7 @@ export const Armor = Equipment.extend({
   /** 最終強化後の防御力 */
   defense: z.number().int(),
 
-  kind: z.union([z.literal(0), z.literal(1), z.literal(2), z.literal(3)]),
+  hunterTypes: z.array(z.nativeEnum(HunterTypes)),
 
   /** 火耐性 */
   fireResistance: z.number().int(),
