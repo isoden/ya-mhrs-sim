@@ -8,11 +8,11 @@
         class="flex items-center rounded-lg text-gray-700 hover:bg-slate-200 dark:text-white dark:hover:bg-zinc-900"
         [ngClass]="collapsed ? 'h-10 w-10' : 'px-4 py-2'"
         [class.justify-center]="collapsed"
+        [routerLinkActiveOptions]="{ exact: true }"
         routerLink="/"
         routerLinkActive="bg-slate-200 dark:bg-zinc-900"
-        [routerLinkActiveOptions]="{ exact: true }"
       >
-        <uic-icon name="list-search" class="h-6 w-6"></uic-icon>
+        <uic-icon class="h-6 w-6" name="list-search"></uic-icon>
         <span class="ml-2 font-semibold" [class.sr-only]="collapsed">スキルシミュレーター</span>
       </a>
 
@@ -20,11 +20,11 @@
         class="flex items-center rounded-lg text-gray-700 hover:bg-slate-200 dark:text-white dark:hover:bg-zinc-900"
         [ngClass]="collapsed ? 'h-10 w-10' : 'px-4 py-2'"
         [class.justify-center]="collapsed"
+        [routerLinkActiveOptions]="{ exact: true }"
         routerLink="/my-talismans"
         routerLinkActive="bg-slate-200 dark:bg-zinc-900"
-        [routerLinkActiveOptions]="{ exact: true }"
       >
-        <uic-icon name="diamond" class="h-6 w-6"></uic-icon>
+        <uic-icon class="h-6 w-6" name="diamond"></uic-icon>
         <span class="ml-2 font-semibold" [class.sr-only]="collapsed">護石管理</span>
       </a>
 
@@ -32,11 +32,11 @@
         class="flex items-center rounded-lg text-gray-700 hover:bg-slate-200 dark:text-white dark:hover:bg-zinc-900"
         [ngClass]="collapsed ? 'h-10 w-10' : 'px-4 py-2'"
         [class.justify-center]="collapsed"
+        [routerLinkActiveOptions]="{ exact: true }"
         routerLink="/my-armors"
         routerLinkActive="bg-slate-200 dark:bg-zinc-900"
-        [routerLinkActiveOptions]="{ exact: true }"
       >
-        <uic-icon name="shield" class="h-6 w-6"></uic-icon>
+        <uic-icon class="h-6 w-6" name="shield"></uic-icon>
         <span class="ml-2 font-semibold" [class.sr-only]="collapsed">傀異錬成防具管理</span>
       </a>
     </div>
@@ -44,15 +44,15 @@
     <div class="mt-auto text-sm" [class.hidden]="collapsed">
       <ul class="flex flex-wrap gap-3">
         <li>
-          <a routerLink="/software-licenses" class="underline hover:no-underline">
+          <a class="underline hover:no-underline" routerLink="/software-licenses">
             ソフトウェアライセンス
           </a>
         </li>
         <li>
           <a
+            class="underline hover:no-underline"
             href="https://github.com/isoden/ya-mhrs-sim"
             target="_blank"
-            class="underline hover:no-underline"
           >
             ソースコード
           </a>
@@ -62,9 +62,9 @@
         開発者
         <address class="inline-block not-italic">
           <img
+            class="inline-block h-6 w-6 rounded-sm align-text-bottom"
             src="/assets/me.png"
             alt="Dedende"
-            class="inline-block h-6 w-6 rounded-sm align-text-bottom"
           />
         </address>
       </div>

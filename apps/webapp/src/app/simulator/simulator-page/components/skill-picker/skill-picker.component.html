@@ -1,38 +1,38 @@
 <div
-  [formGroup]="form"
   class="items:items-start flex flex-col gap-3 rounded-t-md border-x border-t border-gray-300 bg-slate-100 p-3 dark:border-zinc-700 dark:bg-zinc-900 md:flex-row md:items-center"
+  [formGroup]="form"
 >
   <span class="relative">
     <input
+      class="block rounded-md py-1 pl-2.5 pr-6 dark:bg-zinc-800"
       id="skill-filter"
       type="text"
       formControlName="query"
       placeholder="スキルの絞り込み"
-      class="block rounded-md py-1 pl-2.5 pr-6 dark:bg-zinc-800"
       autocomplete="off"
     />
 
     <button
-      *ngIf="form.controls.query.value.length > 0"
-      type="button"
-      (click)="resetQuery()"
       class="absolute top-1/2 bottom-0 right-2 h-3 w-3 -translate-y-1/2"
+      *ngIf="form.controls.query.value.length > 0"
+      (click)="resetQuery()"
+      type="button"
     >
       <span class="sr-only">入力内容をクリアする</span>
-      <uic-icon name="x" class="text-slate-600"></uic-icon>
+      <uic-icon class="text-slate-600" name="x"></uic-icon>
     </button>
   </span>
 
   <div>
-    <div id="filter-skill-label" class="sr-only">スキルの絞り込み</div>
-    <label class="relative" [class.sr-only]="color.value === null" *ngFor="let color of colors">
+    <div class="sr-only" id="filter-skill-label">スキルの絞り込み</div>
+    <label class="relative" *ngFor="let color of colors" [class.sr-only]="color.value === null">
       <input
+        class="sr-only"
+        (click)="onClickColor(color.value)"
         formControlName="color"
         aria-labelledby="filter-skill-label"
         type="radio"
         name="color"
-        (click)="onClickColor(color.value)"
-        class="sr-only"
       />
       <span class="sr-only">{{ color.label }}</span>
       <app-skill-badge *ngIf="color.value" [color]="color.value" shape="circle"></app-skill-badge>
@@ -60,16 +60,16 @@
   </div>
 
   <div
-    *ngIf="selectedSkills.length > 0"
     class="sticky bottom-0 left-0 z-10 w-full overflow-hidden bg-slate-100 dark:bg-zinc-900"
+    *ngIf="selectedSkills.length > 0"
   >
     <ul class="flex gap-3 overflow-x-auto p-3">
       <li
-        *ngFor="let skill of selectedSkills"
         class="flex flex-shrink-0 items-center rounded-sm bg-white py-1.5 px-2 text-xs dark:bg-zinc-700"
+        *ngFor="let skill of selectedSkills"
       >
         {{ skill.name }} Lv{{ skill.level }}
-        <button type="button" (click)="deselect(skill.name)" class="ml-1 h-3 w-3">
+        <button class="ml-1 h-3 w-3" (click)="deselect(skill.name)" type="button">
           <uic-icon name="x"></uic-icon>
           <span class="sr-only">選択を解除する</span>
         </button>

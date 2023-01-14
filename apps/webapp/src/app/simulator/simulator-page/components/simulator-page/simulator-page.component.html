@@ -3,10 +3,10 @@
 
   <div class="mt-6">
     <div class="flex items-end">
-      <label for="skill-filter" class="text-sm font-semibold text-gray-500 dark:text-gray-300">
+      <label class="text-sm font-semibold text-gray-500 dark:text-gray-300" for="skill-filter">
         スキル選択
       </label>
-      <button type="button" uic-button size="sm" class="ml-auto" (click)="resetForm()">
+      <button class="ml-auto" (click)="resetForm()" type="button" uic-button size="sm">
         リセット
       </button>
     </div>
@@ -22,8 +22,8 @@
       <span class="block text-sm font-semibold text-gray-500 dark:text-gray-300">ハンター設定</span>
 
       <select
-        formControlName="hunterType"
         class="rounded-md border border-gray-300 px-1.5 py-1 dark:border-zinc-700 dark:bg-zinc-800"
+        formControlName="hunterType"
       >
         <option ngValue="type01">タイプ01</option>
         <option ngValue="type02">タイプ02</option>
@@ -34,8 +34,8 @@
       <span class="block text-sm font-semibold text-gray-500 dark:text-gray-300">武器スロット</span>
 
       <select
-        formControlName="weaponSlots"
         class="rounded-md border border-gray-300 px-1.5 py-1 text-right dark:border-zinc-700 dark:bg-zinc-800"
+        formControlName="weaponSlots"
       >
         <option *ngFor="let slots of weaponSlots" [ngValue]="slots">
           <ng-container *ngIf="slots.length > 0; else none">
@@ -56,9 +56,9 @@
         >
           <input
             class="accent-pink-600"
-            type="checkbox"
             [attr.checked]="form.controls.excludedSkills.at(index).value"
             [formControlName]="index"
+            type="checkbox"
           />
           <span class="ml-1">{{ skill.name }}</span>
         </label>

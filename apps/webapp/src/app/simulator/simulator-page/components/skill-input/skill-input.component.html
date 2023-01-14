@@ -8,8 +8,8 @@
       <select class="absolute inset-0 text-black opacity-0" (change)="select($event)">
         <option
           *ngFor="let choice of choices"
-          value="{{ choice }}"
           [selected]="choice === currentLevel"
+          value="{{ choice }}"
         >
           <ng-container *ngIf="choice > 0; else otherwise">Lv{{ choice }}</ng-container>
           <ng-template #otherwise>--</ng-template>
@@ -18,14 +18,14 @@
     </span>
   </span>
   <span class="mt-1 ml-1 flex gap-x-1.5">
-    <label *ngFor="let choice of choices" class="relative first:sr-only">
+    <label class="relative first:sr-only" *ngFor="let choice of choices">
       <input
-        type="radio"
         class="sr-only"
-        (click)="onClick(choice)"
         [attr.name]="'skill-input-' + skill.name"
         [attr.checked]="currentLevel === choice"
         [attr.value]="choice"
+        (click)="onClick(choice)"
+        type="radio"
       />
       <span
         class="block h-4 w-3 -skew-x-12"

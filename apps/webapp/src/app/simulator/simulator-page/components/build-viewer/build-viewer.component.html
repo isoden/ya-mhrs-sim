@@ -1,20 +1,20 @@
 <table class="w-full">
   <thead class="bg-slate-100 dark:bg-zinc-900">
     <tr>
-      <th scope="col" class="w-1/6 py-2 px-3 text-right text-sm font-semibold">防御</th>
-      <th scope="col" class="w-1/6 py-2 px-3 text-right text-sm font-semibold">
+      <th class="w-1/6 py-2 px-3 text-right text-sm font-semibold" scope="col">防御</th>
+      <th class="w-1/6 py-2 px-3 text-right text-sm font-semibold" scope="col">
         <abbr class="no-underline" title="火耐性">火</abbr>
       </th>
-      <th scope="col" class="w-1/6 py-2 px-3 text-right text-sm font-semibold">
+      <th class="w-1/6 py-2 px-3 text-right text-sm font-semibold" scope="col">
         <abbr class="no-underline" title="水耐性">水</abbr>
       </th>
-      <th scope="col" class="w-1/6 py-2 px-3 text-right text-sm font-semibold">
+      <th class="w-1/6 py-2 px-3 text-right text-sm font-semibold" scope="col">
         <abbr class="no-underline" title="雷耐性">雷</abbr>
       </th>
-      <th scope="col" class="w-1/6 py-2 px-3 text-right text-sm font-semibold">
+      <th class="w-1/6 py-2 px-3 text-right text-sm font-semibold" scope="col">
         <abbr class="no-underline" title="氷耐性">氷</abbr>
       </th>
-      <th scope="col" class="w-1/6 py-2 px-3 text-right text-sm font-semibold">
+      <th class="w-1/6 py-2 px-3 text-right text-sm font-semibold" scope="col">
         <abbr class="no-underline" title="龍耐性">龍</abbr>
       </th>
     </tr>
@@ -41,8 +41,8 @@
   <tbody class="divide-y divide-gray-100 dark:divide-zinc-700">
     <tr *ngFor="let row of rows">
       <th
-        scope="row"
         class="w-5/12 bg-slate-100 p-3 text-left align-top font-normal dark:bg-zinc-900"
+        scope="row"
       >
         {{ build[row]?.name ?? '-' }}
         <ng-container *ngIf="build[row]?.augmentation">
@@ -80,8 +80,8 @@
   </tbody>
 </table>
 
-<h4 id="activated-skills" class="sr-only">発動スキル</h4>
-<ul aria-labelledby="activated-skills" class="flex flex-wrap gap-2 p-3">
+<h4 class="sr-only" id="activated-skills">発動スキル</h4>
+<ul class="flex flex-wrap gap-2 p-3" aria-labelledby="activated-skills">
   <li
     class="rounded-sm border bg-white py-1.5 px-2 text-xs dark:border-0 dark:bg-zinc-700"
     *ngFor="let skill of aggregateSkill(build)"
