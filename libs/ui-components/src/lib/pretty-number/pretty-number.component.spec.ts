@@ -12,7 +12,7 @@ describe('PrettyNumberComponent', () => {
     const number = screen.getByText('+5')
 
     expect(number).toBeInTheDocument()
-    expect(number).toHaveClass('text-green-400')
+    expect(number).toHaveClass('text-green-500 dark:text-green-400')
   })
 
   it('負の数の場合マイナス記号をつけて表示する', async () => {
@@ -25,7 +25,7 @@ describe('PrettyNumberComponent', () => {
     const number = screen.getByText('-5')
 
     expect(number).toBeInTheDocument()
-    expect(number).toHaveClass('text-red-400')
+    expect(number).toHaveClass('text-red-500 dark:text-red-400')
   })
 
   it('0 の場合 `-` を表示する', async () => {
@@ -38,7 +38,6 @@ describe('PrettyNumberComponent', () => {
     const blank = screen.getByText('-')
 
     expect(blank).toBeInTheDocument()
-    expect(blank).toHaveClass('font-semibold')
   })
 
   it('0 の場合に fallback を表示する', async () => {
@@ -52,6 +51,5 @@ describe('PrettyNumberComponent', () => {
     const blank = screen.getByText('??')
 
     expect(blank).toBeInTheDocument()
-    expect(blank).toHaveClass('font-semibold')
   })
 })
