@@ -217,7 +217,13 @@ export class SimulatorService {
       equipments.set(WEAPON_KEY, this.createWeapon(weaponSlots))
     }
 
-    const solution = await this.#solve({ constraints, variables })
+    const solution = await this.#solve({
+      direction: 'maximize',
+      objective: 'defense',
+      constraints,
+      variables,
+      integers: true,
+    })
 
     // eslint-disable-next-line no-restricted-syntax
     console.timeEnd('solver')
@@ -332,7 +338,6 @@ export class SimulatorService {
     variables.set(WEAPON_KEY, {
       weapon: 1,
       ...createArmorSlots(slots),
-      ...asVariable([]), // TODO: 型的にスキル指定が1つ以上必要になっている。なくしたい。
     })
   }
 
