@@ -1,5 +1,5 @@
-import { Armor, Weapon, Decoration, Talisman, decorations, Skill } from '@ya-mhrs-sim/data'
-import { groupBy, times, constant, fromPairs } from 'lodash-es'
+import { Armor, Weapon, Decoration, Talisman, decorations } from '@ya-mhrs-sim/data'
+import { groupBy, times, constant } from 'lodash-es'
 import { invariant } from '~webapp/functions/asserts'
 import { WEAPON_KEY } from './constants'
 import { Distributor } from './distributor.class'
@@ -10,7 +10,7 @@ export function armorToVariable(armor: Armor): Variable {
   const { type, skills, slots, defense } = armor
 
   return {
-    ...asVariable(skills),
+    ...Object.fromEntries(skills),
     ...createArmorSlots(slots),
     defense,
     [type]: 1,
@@ -139,7 +139,7 @@ export function addDecorationsVariable(
       decorationsMap.set(decoration.name, decoration)
 
       variables.set(decoration.name, {
-        ...asVariable(skills),
+        ...Object.fromEntries(skills),
         ...createDecorationSlots(slotSize),
         [type]: 1,
       })
@@ -161,13 +161,9 @@ export function addTalismansVariable(
     variables.set(talisman.name, {
       talisman: 1,
       ...createArmorSlots(talisman.slots),
-      ...asVariable(talisman.skills),
+      ...Object.fromEntries(talisman.skills),
     })
   })
 
   return talismansMap
-}
-
-export function asVariable(skills: [string, number][]): Record<Skill['name'], number> {
-  return fromPairs(skills) as Record<Skill['name'], number>
 }
