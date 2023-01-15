@@ -4,6 +4,7 @@ import {
   ChangeDetectorRef,
   Component,
   forwardRef,
+  inject,
   Input,
   ViewEncapsulation,
 } from '@angular/core'
@@ -32,6 +33,8 @@ type NgCallback = any
   imports: [CommonModule, FormsModule, SkillBadgeComponent],
 })
 export class SkillInputComponent implements ControlValueAccessor {
+  readonly #cdRef = inject(ChangeDetectorRef)
+
   @Input()
   get skill(): Skill {
     invariant(this.#skill, `skill must be required`)
@@ -52,8 +55,6 @@ export class SkillInputComponent implements ControlValueAccessor {
 
   onChange?: (value: unknown) => void
   onTouch?: () => void
-
-  constructor(private readonly cdRef: ChangeDetectorRef) {}
 
   /**
    *
@@ -80,7 +81,7 @@ export class SkillInputComponent implements ControlValueAccessor {
 
   writeValue(obj: NgCallback): void {
     this.currentLevel = obj
-    this.cdRef.markForCheck()
+    this.#cdRef.markForCheck()
   }
 
   select(event: Event) {

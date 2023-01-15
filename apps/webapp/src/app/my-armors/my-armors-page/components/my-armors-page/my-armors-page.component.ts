@@ -25,16 +25,14 @@ const useForm = () => {
   imports: [CommonModule, ReactiveFormsModule, UiComponentsModule],
 })
 export class MyArmorsPageComponent {
+  readonly #store = inject(StoreService)
+  readonly #snackBar = inject(MatSnackBar)
+  readonly #clipboard = inject(Clipboard)
+  readonly #augmentationsPorting = inject(AugmentationsPortingService)
+
   form = useForm()
 
-  augmentations$ = this.store.select((state) => state.augmentations)
-
-  constructor(
-    private readonly store: StoreService,
-    private readonly snackBar: MatSnackBar,
-    private readonly clipboard: Clipboard,
-    private readonly augmentationsPorting: AugmentationsPortingService,
-  ) {}
+  augmentations$ = this.#store.select((state) => state.augmentations)
 
   onSubmit(): void {
     const csv = this.form.controls.csv.value.trim()
@@ -43,24 +41,24 @@ export class MyArmorsPageComponent {
       return alert('データを入力してください')
     }
 
-    const result = this.augmentationsPorting.importFromCsv(csv)
+    const result = this.#augmentationsPorting.importFromCsv(csv)
 
     if (result.errors.length > 0) {
       alert(result.errors)
     }
 
     if (result.value.length > 0) {
-      this.store.update((state) => {
+      this.#store.update((state) => {
         state.augmentations = result.value
       })
     }
   }
 
   async exportAsCsv(): Promise<void> {
-    const csv = this.augmentationsPorting.exportAsCsv(await firstValueFrom(this.augmentations$))
+    const csv = this.#augmentationsPorting.exportAsCsv(await firstValueFrom(this.augmentations$))
 
-    this.clipboard.copy(csv)
-    this.snackBar.open('クリップボードにコピーしました', undefined, {
+    this.#clipboard.copy(csv)
+    this.#snackBar.open('クリップボードにコピーしました', undefined, {
       duration: 5_000,
       horizontalPosition: 'right',
     })

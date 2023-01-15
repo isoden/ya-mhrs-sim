@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core'
+import { inject, Injectable } from '@angular/core'
 import { augmentArmor, Talisman, Weapon, Armor, Decoration, Skill } from '@ya-mhrs-sim/data'
 import { Constraint, greaterEq, lessEq } from 'yalps'
 import { firstValueFrom, map, shareReplay } from 'rxjs'
@@ -27,11 +27,14 @@ export { SimulateParams, SimulationResult, Build } from './types'
   providedIn: 'root',
 })
 export class SimulatorService {
+  readonly #store = inject(StoreService)
+  readonly #logger = inject(LoggerService)
+
   #worker?: Worker
 
-  #talismans$ = this.store.select((state) => state.talismans).pipe(shareReplay(1))
+  #talismans$ = this.#store.select((state) => state.talismans).pipe(shareReplay(1))
 
-  #augmentedArmors$ = this.store
+  #augmentedArmors$ = this.#store
     .select((state) => state.augmentations)
     .pipe(
       map((augmentations) =>
@@ -45,8 +48,6 @@ export class SimulatorService {
       ),
       shareReplay(1),
     )
-
-  constructor(private readonly store: StoreService, private readonly logger: LoggerService) {}
 
   async simulate({
     includedSkills: baseIncludedSkills,
@@ -88,8 +89,8 @@ export class SimulatorService {
       variables.set(armor.name + `[${i}]`, armorToVariable(armor)),
     )
 
-    this.logger.log('[solver] variables', Array.from(variables))
-    this.logger.log('[solver] constraints', Array.from(constraints))
+    this.#logger.log('[solver] variables', Array.from(variables))
+    this.#logger.log('[solver] constraints', Array.from(constraints))
 
     const equipments = new Map<string, Weapon | Armor | Decoration | Talisman>([
       ...BASE_ARMORS,
@@ -118,7 +119,7 @@ export class SimulatorService {
       }),
     )
 
-    this.logger.log('[solver] solution', solution)
+    this.#logger.log('[solver] solution', solution)
 
     if (solution.status !== 'optimal') {
       return {
@@ -129,7 +130,7 @@ export class SimulatorService {
 
     const builds = [createBuild(equipments, solution.variables)]
 
-    this.logger.log('[solver] builds', builds[0])
+    this.#logger.log('[solver] builds', builds[0])
 
     return {
       type: 'succeeded',
@@ -146,11 +147,11 @@ export class SimulatorService {
   async #measure<T>(func: () => T | PromiseLike<T>): Promise<T> {
     const label = `[measurement] solver`
 
-    this.logger.time(label)
+    this.#logger.time(label)
 
     const value = await func()
 
-    this.logger.timeEnd(label)
+    this.#logger.timeEnd(label)
 
     return value
   }

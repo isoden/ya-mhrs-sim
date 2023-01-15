@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core'
+import { inject, Injectable } from '@angular/core'
 import { environment } from '../../environments/environment'
 import { LocalStorageService } from './local-storage.service'
 
@@ -8,11 +8,11 @@ type LogParams = Parameters<Console['log']>
   providedIn: 'root',
 })
 export class LoggerService {
-  get logEnabled(): boolean {
-    return !environment.production || this.localStorage.get('debug') === 'on'
-  }
+  readonly #localStorage = inject(LocalStorageService<Webapp.LocalStorageSchema>)
 
-  constructor(private readonly localStorage: LocalStorageService<Webapp.LocalStorageSchema>) {}
+  get logEnabled(): boolean {
+    return !environment.production || this.#localStorage.get('debug') === 'on'
+  }
 
   log(...messages: LogParams): void {
     this.logEnabled && console.log(...messages)

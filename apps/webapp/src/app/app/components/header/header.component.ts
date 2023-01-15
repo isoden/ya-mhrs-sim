@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common'
-import { ChangeDetectionStrategy, Component, Inject, ViewEncapsulation } from '@angular/core'
+import { ChangeDetectionStrategy, Component, inject, ViewEncapsulation } from '@angular/core'
 import { UiComponentsModule } from '@ya-mhrs-sim/ui-components'
 import { StoreService } from '~webapp/services/store.service'
 import { APP_VERSION } from '../../appVersion'
@@ -13,20 +13,17 @@ import { APP_VERSION } from '../../appVersion'
   imports: [CommonModule, UiComponentsModule],
 })
 export class AppHeaderComponent {
-  constructor(
-    @Inject(APP_VERSION)
-    public readonly appVersion: string,
-    private readonly store: StoreService,
-  ) {}
+  readonly appVersion = inject(APP_VERSION)
+  readonly #store = inject(StoreService)
 
   toggleCollapse(): void {
-    this.store.update((state) => {
+    this.#store.update((state) => {
       state.navCollapsed = !state.navCollapsed
     })
   }
 
   toggleMode(): void {
-    this.store.update((draft) => {
+    this.#store.update((draft) => {
       draft.mode = draft.mode === 'dark' ? 'light' : 'dark'
     })
   }
