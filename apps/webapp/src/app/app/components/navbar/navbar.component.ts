@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   Component,
+  inject,
   OnDestroy,
   OnInit,
   ViewEncapsulation,
@@ -21,16 +22,17 @@ import { StoreService } from '~webapp/services/store.service'
   imports: [CommonModule, RouterModule, LetModule, UiComponentsModule],
 })
 export class AppNavbarComponent implements OnInit, OnDestroy {
+  readonly #store = inject(StoreService)
+  readonly #router = inject(Router)
+
   collapsed$?: Observable<boolean>
 
   #onDestroy = new Subject<void>()
 
-  constructor(private readonly store: StoreService, private readonly router: Router) {}
-
   ngOnInit(): void {
-    this.collapsed$ = this.store.select((state) => state.navCollapsed)
+    this.collapsed$ = this.#store.select((state) => state.navCollapsed)
 
-    const navigationEnd$ = this.router.events.pipe(
+    const navigationEnd$ = this.#router.events.pipe(
       filter((event) => event instanceof NavigationEnd),
       skip(1),
     )
@@ -43,7 +45,7 @@ export class AppNavbarComponent implements OnInit, OnDestroy {
         filter(([, collapsed]) => !collapsed),
       )
       .subscribe(() => {
-        this.store.update((state) => {
+        this.#store.update((state) => {
           state.navCollapsed = true
         })
       })

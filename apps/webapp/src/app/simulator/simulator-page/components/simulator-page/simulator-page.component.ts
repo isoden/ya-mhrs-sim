@@ -54,6 +54,9 @@ export function useForm(defaultHunterType: HunterTypes) {
   ],
 })
 export class SimulatorPageComponent implements OnInit, OnDestroy {
+  readonly #localStorage = inject(LocalStorageService<Webapp.LocalStorageSchema>)
+  readonly #simulator = inject(SimulatorService)
+
   HunterTypes = HunterTypes
   weaponSlots = WeaponSlots
   includedSkills = skills
@@ -65,12 +68,7 @@ export class SimulatorPageComponent implements OnInit, OnDestroy {
 
   simulationResult$!: Observable<SimulationResult | null>
 
-  form = useForm(this.localStorage.get('hunterType', HunterTypes.Type01))
-
-  constructor(
-    private readonly localStorage: LocalStorageService<Webapp.LocalStorageSchema>,
-    private readonly simulator: SimulatorService,
-  ) {}
+  form = useForm(this.#localStorage.get('hunterType', HunterTypes.Type01))
 
   ngOnInit(): void {
     this.simulationResult$ = this.form.valueChanges.pipe(
@@ -87,7 +85,7 @@ export class SimulatorPageComponent implements OnInit, OnDestroy {
           return of(null)
         }
 
-        return this.simulator.simulate({
+        return this.#simulator.simulate({
           includedSkills: includedSkills as Required<typeof includedSkills>,
           excludedSkills: excludedSkills.flatMap((checked, i) =>
             checked ? DEFAULT_EXCLUEDED_SKILLS[i] : [],
@@ -101,7 +99,7 @@ export class SimulatorPageComponent implements OnInit, OnDestroy {
     // ハンタータイプはキャラクター作成時の情報に紐づくためほぼ変更されることはないので一度選択した値は永続化する
     this.form.controls.hunterType.valueChanges
       .pipe(takeUntil(this.#onDestroy))
-      .subscribe((kind) => this.localStorage.set('hunterType', kind))
+      .subscribe((kind) => this.#localStorage.set('hunterType', kind))
   }
 
   ngOnDestroy(): void {

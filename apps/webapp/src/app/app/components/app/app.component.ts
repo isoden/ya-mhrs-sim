@@ -2,7 +2,7 @@ import { DOCUMENT } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   Component,
-  Inject,
+  inject,
   OnInit,
   ViewEncapsulation,
 } from '@angular/core'
@@ -23,32 +23,30 @@ import { AppNavbarComponent } from '../navbar/navbar.component'
   imports: [RouterModule, AppHeaderComponent, AppNavbarComponent],
 })
 export class AppComponent implements OnInit {
-  constructor(
-    private readonly logUpdateService: LogUpdateService,
-    private readonly store: StoreService,
-    private readonly router: Router,
-    @Inject(DOCUMENT) private readonly doc: Document,
-  ) {}
+  readonly #logUpdateService = inject(LogUpdateService)
+  readonly #store = inject(StoreService)
+  readonly #router = inject(Router)
+  readonly #doc = inject(DOCUMENT)
 
   ngOnInit(): void {
     // https://angular.io/guide/accessibility#routing
-    this.router.events
+    this.#router.events
       .pipe(
         filter((event) => event instanceof NavigationEnd),
         skip(1), // 初期表示のときはフォーカスを動かさない
       )
       .subscribe(() => {
-        const mainContents = this.doc.getElementById('main-contents')
+        const mainContents = this.#doc.getElementById('main-contents')
 
         invariant(mainContents)
 
         mainContents.focus({ preventScroll: true })
       })
 
-    this.store
+    this.#store
       .select((state) => state.mode)
-      .subscribe((mode) => this.doc.documentElement.classList.toggle('dark', mode === 'dark'))
+      .subscribe((mode) => this.#doc.documentElement.classList.toggle('dark', mode === 'dark'))
 
-    this.logUpdateService.watch()
+    this.#logUpdateService.watch()
   }
 }

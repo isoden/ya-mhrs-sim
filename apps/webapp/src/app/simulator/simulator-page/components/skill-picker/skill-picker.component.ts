@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   Component,
+  inject,
   Input,
   OnDestroy,
   OnInit,
@@ -38,6 +39,8 @@ import { SkillInputComponent } from '../skill-input/skill-input.component'
   ],
 })
 export class SkillPickerComponent implements OnInit, OnDestroy {
+  readonly #fb = inject(FormBuilder)
+
   @Input()
   formGroup!: FormGroup<{
     [x in Skill['name']]: FormControl<number>
@@ -62,9 +65,9 @@ export class SkillPickerComponent implements OnInit, OnDestroy {
 
   skills = skills
 
-  form = this.fb.group({
-    query: this.fb.nonNullable.control(''),
-    color: this.fb.control<SkillColor | null>(null),
+  form = this.#fb.group({
+    query: this.#fb.nonNullable.control(''),
+    color: this.#fb.control<SkillColor | null>(null),
   })
 
   /**
@@ -90,8 +93,6 @@ export class SkillPickerComponent implements OnInit, OnDestroy {
       [],
     )
   }
-
-  constructor(private readonly fb: FormBuilder) {}
 
   ngOnInit(): void {
     this.form.valueChanges.pipe(takeUntil(this.#onDestroy)).subscribe(() => {

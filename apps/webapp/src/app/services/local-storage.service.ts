@@ -1,5 +1,5 @@
 import { DOCUMENT } from '@angular/common'
-import { Inject, Injectable } from '@angular/core'
+import { inject, Injectable } from '@angular/core'
 
 /**
  * LocalStorage の Wrapper クラス
@@ -8,11 +8,8 @@ import { Inject, Injectable } from '@angular/core'
   providedIn: 'root',
 })
 export class LocalStorageService<Schema extends Record<string, unknown>> {
-  readonly #storage?: Storage
-
-  constructor(@Inject(DOCUMENT) doc: Document) {
-    this.#storage = doc.defaultView?.localStorage
-  }
+  readonly #doc = inject(DOCUMENT)
+  readonly #storage? = this.#doc.defaultView?.localStorage
 
   get<Key extends Extract<keyof Schema, string>, Value extends Schema[Key]>(
     key: Key,
