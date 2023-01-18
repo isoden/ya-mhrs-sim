@@ -42,6 +42,9 @@ export class SimulatorWidgetComponent implements AfterViewInit, OnDestroy {
   @Input()
   result: SimulationResult | null = null
 
+  @Input()
+  loading = false
+
   @ViewChild('expandable')
   expandableElement?: ElementRef<HTMLDivElement>
 

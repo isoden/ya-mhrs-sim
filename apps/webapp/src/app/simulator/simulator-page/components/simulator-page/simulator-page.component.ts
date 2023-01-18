@@ -10,7 +10,7 @@ import { CommonModule } from '@angular/common'
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms'
 import { UiComponentsModule } from '@ya-mhrs-sim/ui-components'
 import { HunterTypes, Skill, skills } from '@ya-mhrs-sim/data'
-import { Observable, of, Subject, switchMap, takeUntil } from 'rxjs'
+import { Observable, of, Subject, switchMap, takeUntil, tap } from 'rxjs'
 import { every } from 'lodash-es'
 import { LocalStorageService } from '~webapp/services/local-storage.service'
 import { SimulationResult, SimulatorService } from '~webapp/services/simulator/simulator.service'
@@ -68,11 +68,19 @@ export class SimulatorPageComponent implements OnInit, OnDestroy {
 
   simulationResult$!: Observable<SimulationResult | null>
 
+  loading = false
+  #timerId = 0
+
   form = useForm(this.#localStorage.get('hunterType', HunterTypes.Type01))
 
   ngOnInit(): void {
     this.simulationResult$ = this.form.valueChanges.pipe(
       takeUntil(this.#onDestroy),
+      tap(() => {
+        this.#timerId = window.setTimeout(() => {
+          this.loading = true
+        }, 100)
+      }),
       switchMap(({ includedSkills, excludedSkills, hunterType, weaponSlots }) => {
         // FormControl が disabled の場合はフィールドが入ってこないため Partial<typeof value> 型になっている
         invariant(includedSkills)
@@ -93,6 +101,10 @@ export class SimulatorPageComponent implements OnInit, OnDestroy {
           hunterType,
           weaponSlots,
         })
+      }),
+      tap(() => {
+        window.clearTimeout(this.#timerId)
+        this.loading = false
       }),
     )
 

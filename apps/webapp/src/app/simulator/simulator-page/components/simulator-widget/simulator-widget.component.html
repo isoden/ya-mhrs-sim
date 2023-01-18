@@ -14,6 +14,11 @@
   >
     <div class="relative flex items-center p-3">
       <h3 class="text-sm font-semibold">検索結果</h3>
+      <span
+        class="ml-2 h-4 w-4 animate-spin rounded-full border-[3px] border-pink-600/50 border-b-pink-600"
+        *ngIf="loading"
+        aria-label="検索中"
+      ></span>
       <button class="ml-auto h-5 w-5 md:hidden" (click)="toggle()" type="button">
         <uic-icon [name]="expanded ? 'chevron-down' : 'chevron-up'"></uic-icon>
         <span class="sr-only">{{ expanded ? '検索結果を閉じる' : '検索結果を開く' }}</span>
