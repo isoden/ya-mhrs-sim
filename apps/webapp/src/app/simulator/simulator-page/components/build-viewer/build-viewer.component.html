@@ -50,7 +50,7 @@
           <div class="text-sm font-normal">
             <ng-container *ngFor="let skill of build[row]?.augmentation?.skills">
               {{ skill[0] }}
-              <uic-pretty-number class="font-mono" [value]="skill[1]"></uic-pretty-number>
+              <uic-pretty-number class="font-mono" [value]="skill[1]" />
             </ng-container>
           </div>
         </ng-container>

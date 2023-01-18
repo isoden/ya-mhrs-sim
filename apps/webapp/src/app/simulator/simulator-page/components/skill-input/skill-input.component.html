@@ -2,7 +2,7 @@
   class="flex flex-col focus-within:rounded-sm focus-within:outline focus-within:outline-2 focus-within:outline-offset-4 focus-within:outline-pink-300"
 >
   <span class="flex items-center truncate">
-    <app-skill-badge [color]="skill.color" shape="diamond"></app-skill-badge>
+    <app-skill-badge [color]="skill.color" shape="diamond" />
     <span class="relative ml-1 block" [attr.title]="skill.name">
       {{ skill.name }}
       <select class="absolute inset-0 text-black opacity-0" (change)="select($event)">
@@ -32,7 +32,7 @@
         [class.bg-blue-400]="currentLevel >= choice"
         [class.bg-slate-300]="currentLevel < choice"
       ></span>
-      <div class="sr-only">レベル{{ choice }}</div>
+      <span class="sr-only">レベル{{ choice }}</span>
     </label>
   </span>
 </div>

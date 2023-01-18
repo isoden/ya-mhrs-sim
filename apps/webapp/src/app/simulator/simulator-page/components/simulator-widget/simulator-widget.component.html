@@ -20,7 +20,7 @@
         aria-label="検索中"
       ></span>
       <button class="ml-auto h-5 w-5 md:hidden" (click)="toggle()" type="button">
-        <uic-icon [name]="expanded ? 'chevron-down' : 'chevron-up'"></uic-icon>
+        <uic-icon [name]="expanded ? 'chevron-down' : 'chevron-up'" />
         <span class="sr-only">{{ expanded ? '検索結果を閉じる' : '検索結果を開く' }}</span>
       </button>
     </div>
@@ -34,10 +34,7 @@
     <ng-container *ngIf="result; else emptyState" [ngSwitch]="result.type">
       <div class="px-2 py-4" *ngSwitchCase="'failed'">組み合わせが見つかりませんでした</div>
       <ng-container *ngSwitchCase="'succeeded'">
-        <app-build-viewer
-          *ngFor="let build of $any(result).builds"
-          [build]="build"
-        ></app-build-viewer>
+        <app-build-viewer *ngFor="let build of $any(result).builds" [build]="build" />
       </ng-container>
     </ng-container>
     <ng-template #emptyState>

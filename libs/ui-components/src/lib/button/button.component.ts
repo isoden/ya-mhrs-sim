@@ -10,7 +10,7 @@ import { match } from 'ts-pattern'
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'button[uic-button], a[uic-button]',
-  template: '<ng-content></ng-content>',
+  template: '<ng-content />',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

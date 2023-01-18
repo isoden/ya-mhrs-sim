@@ -1,5 +1,5 @@
 /* eslint-disable */
-const esmPackages = ['lodash-es'].join('|')
+const esmPackages = ['lodash-es', ['mem', ['mimic-fn']]].flat(2).join('|')
 
 export default {
   displayName: 'webapp',

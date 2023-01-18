@@ -11,10 +11,7 @@
       </button>
     </div>
 
-    <app-skill-picker
-      class="mt-2 block"
-      [formGroup]="form.controls.includedSkills"
-    ></app-skill-picker>
+    <app-skill-picker class="mt-2 block" [formGroup]="form.controls.includedSkills" />
   </div>
 
   <div class="mt-4 flex flex-wrap gap-4">
@@ -67,7 +64,4 @@
   </div>
 </form>
 
-<app-simulator-widget
-  [result]="simulationResult$ | async"
-  [loading]="loading"
-></app-simulator-widget>
+<app-simulator-widget [result]="simulationResult$ | async" [loading]="loading" />

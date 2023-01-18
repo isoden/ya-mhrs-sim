@@ -19,7 +19,7 @@
       type="button"
     >
       <span class="sr-only">入力内容をクリアする</span>
-      <uic-icon class="text-slate-600" name="x"></uic-icon>
+      <uic-icon class="text-slate-600" name="x" />
     </button>
   </span>
 
@@ -35,7 +35,7 @@
         name="color"
       />
       <span class="sr-only">{{ color.label }}</span>
-      <app-skill-badge *ngIf="color.value" [color]="color.value" shape="circle"></app-skill-badge>
+      <app-skill-badge *ngIf="color.value" [color]="color.value" shape="circle" />
     </label>
   </div>
 </div>
@@ -52,7 +52,7 @@
         [formControlName]="skill.name"
         [skill]="skill"
         [attr.hidden]="skillsVisibility[skill.name]"
-      ></app-skill-input>
+      />
     </ng-container>
     <ng-template #emptyState>
       <div class="col-span-full">一致するスキルがありません</div>
@@ -70,7 +70,7 @@
       >
         {{ skill.name }} Lv{{ skill.level }}
         <button class="ml-1 h-3 w-3" (click)="deselect(skill.name)" type="button">
-          <uic-icon name="x"></uic-icon>
+          <uic-icon name="x" />
           <span class="sr-only">選択を解除する</span>
         </button>
       </li>

@@ -48,36 +48,35 @@
             <tr *ngFor="let augmentation of augmentations">
               <td class="py-2 px-4">{{ augmentation.name }}</td>
               <td class="py-2 px-4 text-right font-mono">
-                <uic-pretty-number [value]="augmentation.defense"></uic-pretty-number>
+                <uic-pretty-number [value]="augmentation.defense" />
               </td>
               <td class="py-2 px-4 text-right font-mono">
-                <uic-pretty-number [value]="augmentation.fireResistance"></uic-pretty-number>
+                <uic-pretty-number [value]="augmentation.fireResistance" />
               </td>
               <td class="py-2 px-4 text-right font-mono">
-                <uic-pretty-number [value]="augmentation.waterResistance"></uic-pretty-number>
+                <uic-pretty-number [value]="augmentation.waterResistance" />
               </td>
               <td class="py-2 px-4 text-right font-mono">
-                <uic-pretty-number [value]="augmentation.thunderResistance"></uic-pretty-number>
+                <uic-pretty-number [value]="augmentation.thunderResistance" />
               </td>
               <td class="py-2 px-4 text-right font-mono">
-                <uic-pretty-number [value]="augmentation.iceResistance"></uic-pretty-number>
+                <uic-pretty-number [value]="augmentation.iceResistance" />
               </td>
               <td class="py-2 px-4 text-right font-mono">
-                <uic-pretty-number [value]="augmentation.dragonResistance"></uic-pretty-number>
+                <uic-pretty-number [value]="augmentation.dragonResistance" />
               </td>
               <td class="py-2 px-4 text-right font-mono">
                 <ng-container *ngFor="let slot of augmentation.slots"
                   >【<uic-pretty-number
                     class="whitespace-pre"
                     [value]="slot"
-                    fallback="  "
-                  ></uic-pretty-number
-                  >】</ng-container
+                    fallback=" "
+                  />】</ng-container
                 >
               </td>
               <td class="py-2 px-4">
                 <ng-container *ngFor="let skill of augmentation.skills; let last = last">
-                  {{ skill[0] }}<uic-pretty-number [value]="skill[1]"></uic-pretty-number>
+                  {{ skill[0] }}<uic-pretty-number [value]="skill[1]" />
                   <ng-container *ngIf="!last">, </ng-container>
                 </ng-container>
               </td>
