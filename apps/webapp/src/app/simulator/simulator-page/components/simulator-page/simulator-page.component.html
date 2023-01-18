@@ -67,4 +67,7 @@
   </div>
 </form>
 
-<app-simulator-widget [result]="simulationResult$ | async"></app-simulator-widget>
+<app-simulator-widget
+  [result]="simulationResult$ | async"
+  [loading]="loading"
+></app-simulator-widget>
