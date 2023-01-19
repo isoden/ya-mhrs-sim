@@ -2,7 +2,6 @@ import { render, screen, within } from '~webapp/test-utils'
 import { MatSnackBarModule } from '@angular/material/snack-bar'
 
 import { MyTalismansPageComponent } from './my-talismans-page.component'
-import { Clipboard, ClipboardModule } from '@angular/cdk/clipboard'
 
 describe('MyTalismansPageComponent', () => {
   beforeEach(() => {
@@ -90,16 +89,10 @@ describe('MyTalismansPageComponent', () => {
         },
       ]),
     )
-    const copy = jest.fn()
+    const copy = jest.spyOn(navigator.clipboard, 'writeText')
 
     const { user } = await render(MyTalismansPageComponent, {
-      imports: [MatSnackBarModule, ClipboardModule],
-      providers: [
-        {
-          provide: Clipboard,
-          useValue: { copy },
-        },
-      ],
+      imports: [MatSnackBarModule],
     })
 
     await user.click(screen.getByRole('button', { name: /エクスポート/ }))

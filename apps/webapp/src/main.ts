@@ -1,6 +1,5 @@
 import { enableProdMode, importProvidersFrom } from '@angular/core'
 import { MatSnackBarModule } from '@angular/material/snack-bar'
-import { ClipboardModule } from '@angular/cdk/clipboard'
 import { bootstrapApplication, BrowserModule } from '@angular/platform-browser'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { provideRouter } from '@angular/router'
@@ -28,7 +27,6 @@ function bootstrap() {
           registrationStrategy: 'registerWhenStable:30000',
         }),
         MatSnackBarModule,
-        ClipboardModule,
       ),
       APP_VERSION_PROVIDER,
     ],

@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component, inject, ViewEncapsulation } from '@
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms'
 import { CommonModule } from '@angular/common'
 import { MatSnackBar } from '@angular/material/snack-bar'
-import { Clipboard } from '@angular/cdk/clipboard'
 import { UiComponentsModule } from '@ya-mhrs-sim/ui-components'
 import { firstValueFrom } from 'rxjs'
 import { AugmentationsPortingService } from '~webapp/services/augmentations-porting.service'
@@ -27,7 +26,6 @@ const useForm = () => {
 export class MyArmorsPageComponent {
   readonly #store = inject(StoreService)
   readonly #snackBar = inject(MatSnackBar)
-  readonly #clipboard = inject(Clipboard)
   readonly #augmentationsPorting = inject(AugmentationsPortingService)
 
   form = useForm()
@@ -57,7 +55,7 @@ export class MyArmorsPageComponent {
   async exportAsCsv(): Promise<void> {
     const csv = this.#augmentationsPorting.exportAsCsv(await firstValueFrom(this.augmentations$))
 
-    this.#clipboard.copy(csv)
+    await navigator.clipboard.writeText(csv)
     this.#snackBar.open('クリップボードにコピーしました', undefined, {
       duration: 5_000,
       horizontalPosition: 'right',
