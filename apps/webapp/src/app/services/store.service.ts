@@ -15,7 +15,7 @@ type Schema = {
   providedIn: 'root',
 })
 export class StoreService extends BehaviorSubject<Schema> implements OnDestroy {
-  #subscriptions = new Subscription()
+  readonly #subscriptions = new Subscription()
 
   constructor(localStorage: LocalStorageService<Webapp.LocalStorageSchema>) {
     super({

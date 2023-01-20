@@ -11,5 +11,5 @@ import { ChangeDetectionStrategy, Component, inject, ViewEncapsulation } from '@
   imports: [CommonModule, HttpClientModule],
 })
 export class SoftwareLicensesPageComponent {
-  license$ = inject(HttpClient).get('/3rdpartylicenses.txt', { responseType: 'text' })
+  readonly license$ = inject(HttpClient).get('/3rdpartylicenses.txt', { responseType: 'text' })
 }

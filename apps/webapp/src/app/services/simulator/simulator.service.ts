@@ -33,9 +33,8 @@ export class SimulatorService {
 
   #worker?: Worker
 
-  #talismans$ = this.#store.select((state) => state.talismans).pipe(shareReplay(1))
-
-  #augmentedArmors$ = this.#store
+  readonly #talismans$ = this.#store.select((state) => state.talismans).pipe(shareReplay(1))
+  readonly #augmentedArmors$ = this.#store
     .select((state) => state.augmentations)
     .pipe(
       map((augmentations) =>
@@ -50,7 +49,7 @@ export class SimulatorService {
       shareReplay(1),
     )
 
-  #memoizedSimulate = mem(
+  readonly #memoizedSimulate = mem(
     async ({
       includedSkills: baseIncludedSkills,
       excludedSkills,

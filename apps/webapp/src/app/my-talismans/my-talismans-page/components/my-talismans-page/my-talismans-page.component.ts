@@ -28,9 +28,8 @@ export class MyTalismansPageComponent {
   readonly #snackBar = inject(MatSnackBar)
   readonly #talismansPorting = inject(TalismansPortingService)
 
-  form = useForm()
-
-  talismans$ = this.#store.select((state) => state.talismans)
+  readonly form = useForm()
+  readonly talismans$ = this.#store.select((state) => state.talismans)
 
   onSubmit(): void {
     const csv = this.form.controls.csv.value.trim()

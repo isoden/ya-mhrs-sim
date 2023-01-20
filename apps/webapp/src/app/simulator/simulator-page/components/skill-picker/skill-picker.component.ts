@@ -46,7 +46,7 @@ export class SkillPickerComponent implements OnInit, OnDestroy {
     [x in Skill['name']]: FormControl<number>
   }>
 
-  colors = [
+  readonly colors = [
     { label: '絞り込みを解除', value: null }, // リセット用の項目
     { label: '赤色系スキル', value: SkillColor.Red },
     { label: '桃色系スキル', value: SkillColor.Pink },
@@ -63,9 +63,9 @@ export class SkillPickerComponent implements OnInit, OnDestroy {
     { label: '灰色系スキル', value: SkillColor.Gray },
   ]
 
-  skills = skills
+  readonly skills = skills
 
-  form = this.#fb.group({
+  readonly form = this.#fb.group({
     query: this.#fb.nonNullable.control(''),
     color: this.#fb.control<SkillColor | null>(null),
   })
@@ -75,7 +75,7 @@ export class SkillPickerComponent implements OnInit, OnDestroy {
    */
   skillsVisibility: { [x in Skill['name']]?: boolean } = {}
 
-  #onDestroy = new Subject<void>()
+  readonly #onDestroy = new Subject<void>()
 
   get isEmpty() {
     return Object.keys(this.skillsVisibility).length === skills.length

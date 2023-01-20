@@ -10,7 +10,7 @@ import {
 import { NavigationEnd, Router, RouterModule } from '@angular/router'
 import { UiComponentsModule } from '@ya-mhrs-sim/ui-components'
 import { LetModule } from '@ngrx/component'
-import { filter, Observable, skip, Subject, takeUntil, withLatestFrom } from 'rxjs'
+import { filter, skip, Subject, takeUntil, withLatestFrom } from 'rxjs'
 import { StoreService } from '~webapp/services/store.service'
 
 @Component({
@@ -24,14 +24,11 @@ import { StoreService } from '~webapp/services/store.service'
 export class AppNavbarComponent implements OnInit, OnDestroy {
   readonly #store = inject(StoreService)
   readonly #router = inject(Router)
+  readonly #onDestroy = new Subject<void>()
 
-  collapsed$?: Observable<boolean>
-
-  #onDestroy = new Subject<void>()
+  readonly collapsed$ = this.#store.select((state) => state.navCollapsed)
 
   ngOnInit(): void {
-    this.collapsed$ = this.#store.select((state) => state.navCollapsed)
-
     const navigationEnd$ = this.#router.events.pipe(
       filter((event) => event instanceof NavigationEnd),
       skip(1),

@@ -46,7 +46,7 @@ export class SimulatorWidgetComponent implements AfterViewInit, OnDestroy {
   loading = false
 
   @ViewChild('expandable')
-  expandableElement?: ElementRef<HTMLDivElement>
+  readonly expandableElement?: ElementRef<HTMLDivElement>
 
   expanded = true
 
@@ -54,9 +54,9 @@ export class SimulatorWidgetComponent implements AfterViewInit, OnDestroy {
 
   height = defaultHeight
 
-  #matches$ = useMatchMediaObservable()(`(max-width: ${screens.md})`)
+  readonly #matches$ = useMatchMediaObservable()(`(max-width: ${screens.md})`)
 
-  #onDestroy = new Subject<void>()
+  readonly #onDestroy = new Subject<void>()
 
   get draggable() {
     return this.expanded

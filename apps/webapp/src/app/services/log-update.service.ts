@@ -18,7 +18,7 @@ export class LogUpdateService {
   readonly #snackBar = inject(MatSnackBar)
   readonly #logger = inject(LoggerService)
 
-  #onDestroy = new Subject<void>()
+  readonly #onDestroy = new Subject<void>()
 
   watch() {
     this.#swUpdate.versionUpdates.pipe(takeUntil(this.#onDestroy)).subscribe((event) => {

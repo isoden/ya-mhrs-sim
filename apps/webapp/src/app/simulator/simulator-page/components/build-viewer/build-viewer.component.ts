@@ -28,7 +28,7 @@ export class BuildViewerComponent {
 
   #build: Build | undefined
 
-  rows = ['weapon', 'helm', 'chest', 'arm', 'waist', 'leg', 'talisman'] as const
+  readonly rows = ['weapon', 'helm', 'chest', 'arm', 'waist', 'leg', 'talisman'] as const
 
   /**
    * ビルドに含まれるスキルを集計する

@@ -28,9 +28,8 @@ export class MyArmorsPageComponent {
   readonly #snackBar = inject(MatSnackBar)
   readonly #augmentationsPorting = inject(AugmentationsPortingService)
 
-  form = useForm()
-
-  augmentations$ = this.#store.select((state) => state.augmentations)
+  readonly form = useForm()
+  readonly augmentations$ = this.#store.select((state) => state.augmentations)
 
   onSubmit(): void {
     const csv = this.form.controls.csv.value.trim()
