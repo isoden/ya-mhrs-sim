@@ -37,7 +37,7 @@ export class AppNavbarComponent implements OnInit, OnDestroy {
     // ページ遷移があったときに開いている場合は閉じる
     navigationEnd$
       .pipe(
-        takeUntil(this.#onDestroy.asObservable()),
+        takeUntil(this.#onDestroy),
         withLatestFrom(this.collapsed$),
         filter(([, collapsed]) => !collapsed),
       )
