@@ -50,7 +50,7 @@
           <div class="text-sm font-normal">
             <ng-container *ngFor="let skill of build[row]?.augmentation?.skills">
               {{ skill[0] }}
-              <uic-pretty-number class="font-mono" [value]="skill[1]" />
+              <em class="font-mono" [uicPrettyNumber]="skill[1]">{{ skill[1] | sign }}</em>
             </ng-container>
           </div>
         </ng-container>
@@ -59,9 +59,7 @@
         <div *ngFor="let slot of build[row]?.slots; let index = index">
           <ng-container *ngIf="(build[row]?.augmentation?.slots?.[index] ?? 0) > 0; else otherwise">
             <span class="mr-3"
-              >【<span [ngClass]="slot > 0 ? 'text-green-500 dark:text-green-400' : ''">{{
-                slot
-              }}</span
+              >【<em [uicPrettyNumber]="slot">{{ slot }}</em
               >】:</span
             >
             <span *ngIf="build[row]?.decorations?.[index] as decoration">

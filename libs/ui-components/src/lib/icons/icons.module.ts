@@ -14,7 +14,9 @@ import {
   IconX,
   IconArrowsVertical,
   IconChevronUp,
+  IconChevronRight,
   IconChevronDown,
+  IconChevronLeft,
 } from 'angular-tabler-icons/icons'
 import { IconComponent } from './components/icon/icon.component'
 
@@ -30,7 +32,9 @@ import { IconComponent } from './components/icon/icon.component'
       IconX,
       IconArrowsVertical,
       IconChevronUp,
+      IconChevronRight,
       IconChevronDown,
+      IconChevronLeft,
     }),
   ],
   exports: [IconComponent],

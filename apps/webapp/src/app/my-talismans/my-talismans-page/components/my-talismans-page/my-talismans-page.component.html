@@ -15,8 +15,8 @@
   <div
     class="mt-4 w-max max-w-full overflow-hidden rounded border border-gray-100 dark:border-zinc-700"
   >
-    <div class="max-h-[90vh] max-w-full overflow-auto">
-      <table class="whitespace-pre">
+    <div class="max-h-[80vh] max-w-full overflow-auto">
+      <table class="whitespace-nowrap">
         <thead class="sticky top-0 bg-slate-100 dark:bg-zinc-900">
           <tr>
             <th class="py-2 px-4 text-left text-sm font-semibold">スキル</th>
@@ -31,7 +31,7 @@
             <tr *ngFor="let talisman of talismans">
               <td class="py-2 px-4">{{ talisman.name }}</td>
               <td class="py-2 px-4 font-mono">
-                <ng-container *ngFor="let slot of talisman.slots">【{{ slot }}】</ng-container>
+                <span class="-mx-1" *ngFor="let slot of talisman.slots">【{{ slot }}】</span>
               </td>
             </tr>
           </ng-container>
