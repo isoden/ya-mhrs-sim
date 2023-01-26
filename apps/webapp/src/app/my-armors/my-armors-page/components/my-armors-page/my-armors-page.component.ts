@@ -31,6 +31,18 @@ export class MyArmorsPageComponent {
   readonly form = useForm()
   readonly augmentations$ = this.#store.select((state) => state.augmentations)
 
+  readonly pageSizes = [100, 200, 400]
+  pageSize = this.pageSizes[0]
+  page = 1
+
+  get sliceStart() {
+    return (this.page - 1) * this.pageSize
+  }
+
+  get sliceEnd() {
+    return this.sliceStart + this.pageSize
+  }
+
   onSubmit(): void {
     const csv = this.form.controls.csv.value.trim()
 

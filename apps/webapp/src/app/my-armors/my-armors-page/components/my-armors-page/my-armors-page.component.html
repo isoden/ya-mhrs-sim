@@ -12,94 +12,78 @@
     <button (click)="exportAsCsv()" uic-button type="button">エクスポート</button>
   </div>
 
-  <div
-    class="mt-4 w-max max-w-full overflow-hidden rounded border border-gray-100 dark:border-zinc-700"
-  >
-    <div class="max-h-[80vh] max-w-full overflow-auto">
-      <table class="whitespace-pre">
-        <thead class="sticky top-0 bg-slate-100 dark:bg-zinc-900">
-          <tr>
-            <th class="py-2 px-4 text-left text-sm font-semibold">防具</th>
-            <th class="py-2 px-4 text-right text-sm font-semibold">防御</th>
-            <th class="py-2 px-4 text-right text-sm font-semibold">
-              <abbr class="no-underline" title="火耐性">火</abbr>
-            </th>
-            <th class="py-2 px-4 text-right text-sm font-semibold">
-              <abbr class="no-underline" title="水耐性">水</abbr>
-            </th>
-            <th class="py-2 px-4 text-right text-sm font-semibold">
-              <abbr class="no-underline" title="雷耐性">雷</abbr>
-            </th>
-            <th class="py-2 px-4 text-right text-sm font-semibold">
-              <abbr class="no-underline" title="氷耐性">氷</abbr>
-            </th>
-            <th class="py-2 px-4 text-right text-sm font-semibold">
-              <abbr class="no-underline" title="龍耐性">龍</abbr>
-            </th>
-            <th class="py-2 px-4 text-left text-sm font-semibold">スロット</th>
-            <th class="py-2 px-4 text-left text-sm font-semibold">スキル</th>
-          </tr>
-        </thead>
-        <tbody
-          class="divide-y divide-gray-100 bg-white dark:divide-zinc-700 dark:bg-zinc-800"
-          *ngIf="augmentations$ | async as augmentations"
+  <ng-container *ngIf="augmentations$ | async as augmentations">
+    <div class="mt-4 grid grid-cols-2 gap-px bg-white dark:bg-zinc-800">
+      <ng-container *ngIf="augmentations.length > 0; else otherwise">
+        <dl
+          class="shadow-px grid grid-cols-[minmax(100px,200px),min-content,1fr] shadow-gray-100 dark:shadow-zinc-700"
+          *ngFor="let augmentation of augmentations | slice : sliceStart : sliceEnd"
         >
-          <ng-container *ngIf="augmentations.length > 0; else otherwise">
-            <tr *ngFor="let augmentation of augmentations">
-              <td class="py-2 px-4">{{ augmentation.name }}</td>
-              <td class="py-2 px-4 text-right font-mono">
-                <em [uicPrettyNumber]="augmentation.defense">{{
-                  augmentation.defense | sign : '-'
-                }}</em>
-              </td>
-              <td class="py-2 px-4 text-right font-mono">
-                <em [uicPrettyNumber]="augmentation.fireResistance">{{
-                  augmentation.fireResistance | sign : '-'
-                }}</em>
-              </td>
-              <td class="py-2 px-4 text-right font-mono">
-                <em [uicPrettyNumber]="augmentation.waterResistance">{{
-                  augmentation.waterResistance | sign : '-'
-                }}</em>
-              </td>
-              <td class="py-2 px-4 text-right font-mono">
-                <em [uicPrettyNumber]="augmentation.thunderResistance">{{
-                  augmentation.thunderResistance | sign : '-'
-                }}</em>
-              </td>
-              <td class="py-2 px-4 text-right font-mono">
-                <em [uicPrettyNumber]="augmentation.iceResistance">{{
-                  augmentation.iceResistance | sign : '-'
-                }}</em>
-              </td>
-              <td class="py-2 px-4 text-right font-mono">
-                <em [uicPrettyNumber]="augmentation.dragonResistance">{{
-                  augmentation.dragonResistance | sign : '-'
-                }}</em>
-              </td>
-              <td class="py-2 px-4 text-right font-mono">
-                <span class="-mx-1" *ngFor="let slot of augmentation.slots"
-                  >【<em class="whitespace-pre" [uicPrettyNumber]="slot">{{
-                    slot | sign : ' '.repeat(2)
-                  }}</em
-                  >】</span
-                >
-              </td>
-              <td class="py-2 px-4">
-                <ng-container *ngFor="let skill of augmentation.skills; let last = last">
-                  {{ skill[0] }}<em [uicPrettyNumber]="skill[1]">{{ skill[1] | sign }}</em>
-                  <ng-container *ngIf="!last">, </ng-container>
-                </ng-container>
-              </td>
-            </tr>
-          </ng-container>
-          <ng-template #otherwise>
-            <tr>
-              <td class="py-2 px-4 text-sm font-semibold" colspan="9">データが未登録です</td>
-            </tr>
-          </ng-template>
-        </tbody>
-      </table>
+          <dt class="sr-only">防具名</dt>
+          <dd class="py-2 px-4">{{ augmentation.name }}</dd>
+          <!-- <dt class="sr-only">防御力</dt>
+          <dd class="py-2 px-4 text-right font-mono">
+            <em [uicPrettyNumber]="augmentation.defense">{{
+              augmentation.defense | sign : '-'
+            }}</em>
+          </dd>
+          <dt class="sr-only">火耐性</dt>
+          <dd class="py-2 px-4 text-right font-mono">
+            <em [uicPrettyNumber]="augmentation.fireResistance">{{
+              augmentation.fireResistance | sign : '-'
+            }}</em>
+          </dd>
+          <dt class="sr-only">水耐性</dt>
+          <dd class="py-2 px-4 text-right font-mono">
+            <em [uicPrettyNumber]="augmentation.waterResistance">{{
+              augmentation.waterResistance | sign : '-'
+            }}</em>
+          </dd>
+          <dt class="sr-only">雷耐性</dt>
+          <dd class="py-2 px-4 text-right font-mono">
+            <em [uicPrettyNumber]="augmentation.thunderResistance">{{
+              augmentation.thunderResistance | sign : '-'
+            }}</em>
+          </dd>
+          <dt class="sr-only">氷耐性</dt>
+          <dd class="py-2 px-4 text-right font-mono">
+            <em [uicPrettyNumber]="augmentation.iceResistance">{{
+              augmentation.iceResistance | sign : '-'
+            }}</em>
+          </dd>
+          <dt class="sr-only">龍耐性</dt>
+          <dd class="py-2 px-4 text-right font-mono">
+            <em [uicPrettyNumber]="augmentation.dragonResistance">{{
+              augmentation.dragonResistance | sign : '-'
+            }}</em>
+          </dd> -->
+          <dt class="sr-only">追加スロット</dt>
+          <dd class="whitespace-nowrap py-2 px-4 font-mono">
+            <span class="-mx-1" *ngFor="let slot of augmentation.slots"
+              >【<em class="whitespace-pre" [uicPrettyNumber]="slot">{{
+                slot | sign : ' '.repeat(2)
+              }}</em
+              >】</span
+            >
+          </dd>
+          <dt class="sr-only">追加スキル</dt>
+          <dd class="py-2 px-4">
+            <ng-container *ngFor="let skill of augmentation.skills; let last = last">
+              {{ skill[0] }}<em [uicPrettyNumber]="skill[1]">{{ skill[1] | sign }}</em>
+              <ng-container *ngIf="!last">, </ng-container>
+            </ng-container>
+          </dd>
+        </dl>
+      </ng-container>
+      <ng-template #otherwise>
+        <div class="py-2 px-4 text-sm font-semibold" colspan="9">データが未登録です</div>
+      </ng-template>
     </div>
-  </div>
+    <uic-paginator
+      [(page)]="page"
+      [(pageSize)]="pageSize"
+      [length]="augmentations.length"
+      [pageSizes]="pageSizes"
+    />
+  </ng-container>
 </form>

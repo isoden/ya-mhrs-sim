@@ -18,6 +18,9 @@ module.exports = {
       maxHeight: {
         none: 'none',
       },
+      boxShadow: {
+        px: "0 0 0 1px"
+      }
     },
   },
   plugins: [],
