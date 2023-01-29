@@ -3,7 +3,7 @@ import { PrettyNumberDirective } from './pretty-number.directive'
 
 describe('PrettyNumberDirective', () => {
   it('正の数の場合プラス記号をつけて表示する', async () => {
-    await render(`<uic-pretty-number [value]="5">5</uic-pretty-number>`, {
+    await render(`<span [uicPrettyNumber]="5">5</span>`, {
       declarations: [PrettyNumberDirective],
     })
 
@@ -14,7 +14,7 @@ describe('PrettyNumberDirective', () => {
   })
 
   it('負の数の場合マイナス記号をつけて表示する', async () => {
-    await render(`<uic-pretty-number [value]="-5">-5</uic-pretty-number>`, {
+    await render(`<span [uicPrettyNumber]="-5">-5</span>`, {
       declarations: [PrettyNumberDirective],
     })
 
