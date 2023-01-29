@@ -1,6 +1,6 @@
 import { Armor, Weapon, Decoration, Talisman, decorations } from '@ya-mhrs-sim/data'
 import { groupBy, times, constant } from 'lodash-es'
-import { invariant } from '~webapp/functions/asserts'
+import { mustGet } from '~webapp/functions/asserts'
 import { WEAPON_KEY } from './constants'
 import { Distributor } from './distributor.class'
 import { SimulateParams } from './simulator.service'
@@ -45,13 +45,17 @@ export function createBuild(
     talisman = [],
     decorations = [],
   } = groupBy(
-    variables.flatMap(([variableKey, amount]) => {
-      const equipment = equipments.get(variableKey)
-
-      invariant(equipment, `Unexpected variableKey excepted. (variableKey = ${variableKey})`)
-
-      return times(amount, constant(equipment))
-    }),
+    variables.flatMap(([variableKey, amount]) =>
+      times(
+        amount,
+        constant(
+          mustGet(
+            equipments.get(variableKey),
+            `Unexpected variableKey excepted. (variableKey = ${variableKey})`,
+          ),
+        ),
+      ),
+    ),
     (equipment) =>
       equipment.type === 'decoration'
         ? 'decorations'

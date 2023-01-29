@@ -13,3 +13,9 @@ export function invariant(condition: unknown, message = 'Assertion error'): asse
 class InvariantViolation extends Error {
   override readonly name = 'Invariant Violation'
 }
+
+export function mustGet<T>(value: T, message?: string): NonNullable<T> {
+  invariant(value !== null && typeof value !== 'undefined', message)
+
+  return value
+}

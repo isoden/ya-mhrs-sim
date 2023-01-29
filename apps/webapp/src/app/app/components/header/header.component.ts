@@ -15,6 +15,7 @@ import { APP_VERSION } from '../../appVersion'
 export class AppHeaderComponent {
   readonly appVersion = inject(APP_VERSION)
   readonly #store = inject(StoreService)
+  readonly expanded$ = this.#store.select((state) => !state.navCollapsed)
 
   toggleCollapse(): void {
     this.#store.update((state) => {

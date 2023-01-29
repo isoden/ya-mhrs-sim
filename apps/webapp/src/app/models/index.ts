@@ -1,5 +1,5 @@
 import { Skill, skills } from '@ya-mhrs-sim/data'
-import { invariant } from '~webapp/functions/asserts'
+import { mustGet } from '~webapp/functions/asserts'
 
 export class SkillModel {
   /**
@@ -17,11 +17,7 @@ export class SkillModel {
    * @param name - スキル名
    */
   public static mustGet(name: string): Skill {
-    const skill = this.get(name)
-
-    invariant(skill, `Expected name to be one of the skillNames, got ${name}`)
-
-    return skill
+    return mustGet(this.get(name), `Expected name to be one of the skillNames, got ${name}`)
   }
 
   static toString(skills: [string, number][]): string {

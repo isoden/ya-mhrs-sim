@@ -4,7 +4,7 @@ import { Constraint, greaterEq, lessEq } from 'yalps'
 import { firstValueFrom, map, shareReplay } from 'rxjs'
 import { wrap } from 'comlink'
 import mem from 'mem'
-import { invariant } from '~webapp/functions/asserts'
+import { mustGet } from '~webapp/functions/asserts'
 import { StoreService } from '~webapp/services/store.service'
 import { workerFactory } from './worker.factory'
 import { SimulateParams, SimulationResult, Variable } from './types'
@@ -38,13 +38,12 @@ export class SimulatorService {
     .select((state) => state.augmentations)
     .pipe(
       map((augmentations) =>
-        augmentations.map((augmentation) => {
-          const baseArmor = BASE_ARMORS.get(augmentation.name)
-
-          invariant(baseArmor, `${augmentation.name}`)
-
-          return augmentArmor(baseArmor, augmentation)
-        }),
+        augmentations.map((augmentation) =>
+          augmentArmor(
+            mustGet(BASE_ARMORS.get(augmentation.name), `${augmentation.name}`),
+            augmentation,
+          ),
+        ),
       ),
       shareReplay(1),
     )

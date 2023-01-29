@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common'
 import { ChangeDetectionStrategy, Component, Input, ViewEncapsulation } from '@angular/core'
 import { SkillColor } from '@ya-mhrs-sim/data'
-import { invariant } from '~webapp/functions/asserts'
+import { mustGet } from '~webapp/functions/asserts'
 
 type Shape = 'diamond' | 'circle'
 
@@ -18,9 +18,7 @@ export class SkillBadgeComponent {
 
   @Input()
   get color(): SkillColor {
-    invariant(this.#color, 'color must be required')
-
-    return this.#color
+    return mustGet(this.#color, 'color must be required')
   }
   set color(color: SkillColor) {
     this.#color = color
@@ -29,9 +27,7 @@ export class SkillBadgeComponent {
 
   @Input()
   get shape(): Shape {
-    invariant(this.#shape, 'shape must be required')
-
-    return this.#shape
+    return mustGet(this.#shape, 'shape must be required')
   }
   set shape(shape: Shape) {
     this.#shape = shape

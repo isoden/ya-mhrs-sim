@@ -1,6 +1,7 @@
 <ng-container *ngrxLet="collapsed$ as collapsed">
   <nav
     class="top-header fixed bottom-0 left-0 z-20 flex flex-col overflow-y-auto bg-white pt-6 pb-3 shadow dark:bg-zinc-800 md:overflow-auto"
+    id="app-nav"
     [ngClass]="collapsed ? 'w-0 md:w-14 md:px-2' : 'w-64 px-4'"
   >
     <div class="space-y-4">

@@ -4,7 +4,7 @@ import { UiComponentsModule } from '@ya-mhrs-sim/ui-components'
 import { Skill, SkillNames } from '@ya-mhrs-sim/data'
 import { uniq } from 'lodash-es'
 import { SkillModel } from '~webapp/models'
-import { invariant } from '~webapp/functions/asserts'
+import { mustGet } from '~webapp/functions/asserts'
 import { Build } from '~webapp/services/simulator/simulator.service'
 
 @Component({
@@ -21,9 +21,7 @@ export class BuildViewerComponent {
     this.#build = build
   }
   get build(): Build {
-    invariant(this.#build, 'build must be required')
-
-    return this.#build
+    return mustGet(this.#build, 'build must be required')
   }
 
   #build: Build | undefined

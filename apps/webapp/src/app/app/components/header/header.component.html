@@ -3,7 +3,9 @@
 >
   <button
     class="mx-4 h-6 w-6 shrink-0"
+    [attr.aria-expanded]="expanded$ | async"
     (click)="toggleCollapse()"
+    aria-controls="app-nav"
     type="button"
     aria-label="メニューを開閉する"
   >
