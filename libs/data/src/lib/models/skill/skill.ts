@@ -156,6 +156,8 @@ export const SkillNames = z.enum([
   '狂化',
   '風纏',
   '粉塵纏',
+  '冰気錬成',
+  '龍気変換',
   '奮闘',
 ])
 export type SkillNames = z.infer<typeof SkillNames>
