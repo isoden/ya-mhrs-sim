@@ -836,6 +836,18 @@ export const skills: readonly Skill[] = [
     color: SkillColor.Red,
   },
   {
+    name: '冰気錬成',
+    keywords: ['ひょうきれんせい'],
+    max: 3,
+    color: SkillColor.White,
+  },
+  {
+    name: '龍気変換',
+    keywords: ['りゅうきへんかん'],
+    max: 3,
+    color: SkillColor.NeonOrange,
+  },
+  {
     name: '奮闘',
     keywords: ['ふんとう'],
     max: 3,

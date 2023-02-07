@@ -2,6 +2,78 @@ import { Decoration } from './decoration'
 
 export const decorations: Decoration[] = [
   {
+    name: '連撃珠Ⅱ【４】',
+    type: 'decoration',
+    slotSize: 4,
+    skills: [['連撃', 2]],
+  },
+  {
+    name: '底力珠Ⅱ【４】',
+    type: 'decoration',
+    slotSize: 4,
+    skills: [['火事場力', 2]],
+  },
+  {
+    name: '翻異珠【３】',
+    type: 'decoration',
+    slotSize: 3,
+    skills: [['状態異常確定蓄積', 1]],
+  },
+  {
+    name: '反攻珠Ⅱ【４】',
+    type: 'decoration',
+    slotSize: 4,
+    skills: [['巧撃', 2]],
+  },
+  {
+    name: '攻勢珠Ⅱ【４】',
+    type: 'decoration',
+    slotSize: 4,
+    skills: [['攻勢', 2]],
+  },
+  {
+    name: '背撃珠Ⅱ【４】',
+    type: 'decoration',
+    slotSize: 4,
+    skills: [['闇討ち', 2]],
+  },
+  {
+    name: '盤石珠Ⅲ【４】',
+    type: 'decoration',
+    slotSize: 4,
+    skills: [['顕如盤石', 3]],
+  },
+  {
+    name: '剛心珠【１】',
+    type: 'decoration',
+    slotSize: 1,
+    skills: [['剛心', 1]],
+  },
+  {
+    name: '属撃珠Ⅱ【４】',
+    type: 'decoration',
+    slotSize: 4,
+    skills: [['弱点特効【属性】', 2]],
+  },
+  {
+    name: '龍気珠【４】',
+    type: 'decoration',
+    slotSize: 4,
+    skills: [['龍気活性', 1]],
+  },
+  {
+    name: '逆上珠Ⅱ【４】',
+    type: 'decoration',
+    slotSize: 4,
+    skills: [['逆恨み', 2]],
+  },
+  {
+    name: '煽衛珠【２】',
+    type: 'decoration',
+    slotSize: 2,
+    skills: [['煽衛', 1]],
+  },
+  {
     name: '血氣珠【３】',
     type: 'decoration',
     slotSize: 3,
