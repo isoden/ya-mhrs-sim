@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common'
 import { MatSnackBar } from '@angular/material/snack-bar'
 import { UiComponentsModule } from '@ya-mhrs-sim/ui-components'
 import { firstValueFrom } from 'rxjs'
-import { AugmentationsPortingService } from '~webapp/services/augmentations-porting.service'
+import { AugmentationStatusesPortingService } from '~webapp/services/augmentation-statuses-porting.service'
 import { StoreService } from '~webapp/services/store.service'
 
 const useForm = () => {
@@ -26,10 +26,10 @@ const useForm = () => {
 export class MyArmorsPageComponent {
   readonly #store = inject(StoreService)
   readonly #snackBar = inject(MatSnackBar)
-  readonly #augmentationsPorting = inject(AugmentationsPortingService)
+  readonly #augmentationStatusesPorting = inject(AugmentationStatusesPortingService)
 
   readonly form = useForm()
-  readonly augmentations$ = this.#store.select((state) => state.augmentations)
+  readonly augmentationStatuses$ = this.#store.select((state) => state.augmentationStatuses)
 
   onSubmit(): void {
     const csv = this.form.controls.csv.value.trim()
@@ -38,7 +38,7 @@ export class MyArmorsPageComponent {
       return alert('データを入力してください')
     }
 
-    const result = this.#augmentationsPorting.importFromCsv(csv)
+    const result = this.#augmentationStatusesPorting.importFromCsv(csv)
 
     if (result.errors.length > 0) {
       alert(result.errors)
@@ -46,13 +46,15 @@ export class MyArmorsPageComponent {
 
     if (result.value.length > 0) {
       this.#store.update((state) => {
-        state.augmentations = result.value
+        state.augmentationStatuses = result.value
       })
     }
   }
 
   async exportAsCsv(): Promise<void> {
-    const csv = this.#augmentationsPorting.exportAsCsv(await firstValueFrom(this.augmentations$))
+    const csv = this.#augmentationStatusesPorting.exportAsCsv(
+      await firstValueFrom(this.augmentationStatuses$),
+    )
 
     await navigator.clipboard.writeText(csv)
     this.#snackBar.open('クリップボードにコピーしました', undefined, {

@@ -1,5 +1,5 @@
 export * from './models/armor'
 export * from './models/decoration'
-export * from './models/augmentation'
+export * from './models/augmentation-status'
 export * from './models/equipment'
 export * from './models/skill'

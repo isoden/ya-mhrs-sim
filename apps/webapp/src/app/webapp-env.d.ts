@@ -1,5 +1,5 @@
 declare namespace Webapp {
-  import { Talisman, Augmentation } from '@ya-mhrs-sim/data'
+  import { Talisman, AugmentationStatus } from '@ya-mhrs-sim/data'
   import { HunterType } from './models'
 
   export type LocalStorageSchema = {
@@ -15,7 +15,7 @@ declare namespace Webapp {
     // 登録した護石のリスト
     talismans: Talisman[]
 
-    // 登録した傀異錬成防具の強化情報のリスト
-    augmentations: Augmentation[]
+    // 登録した傀異錬成ステータスのリスト
+    augmentationStatuses: AugmentationStatus[]
   }
 }

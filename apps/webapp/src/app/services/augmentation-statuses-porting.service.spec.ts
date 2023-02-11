@@ -1,22 +1,22 @@
 import { TestBed } from '@angular/core/testing'
-import { Augmentation } from '@ya-mhrs-sim/data'
-import { AugmentationsPortingService } from './augmentations-porting.service'
+import { AugmentationStatus } from '@ya-mhrs-sim/data'
+import { AugmentationStatusesPortingService } from './augmentation-statuses-porting.service'
 
 describe('AugmentationsPortingService', () => {
-  let service: AugmentationsPortingService
+  let service: AugmentationStatusesPortingService
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [AugmentationsPortingService],
+      providers: [AugmentationStatusesPortingService],
     })
-    service = TestBed.inject(AugmentationsPortingService)
+    service = TestBed.inject(AugmentationStatusesPortingService)
   })
 
   describe('importFromCsv', () => {
     const name = 'リバルクシャナアンク'
 
     describe('正常系', () => {
-      it.each<[csv: string, expected: Partial<Augmentation>]>([
+      it.each<[csv: string, expected: Partial<AugmentationStatus>]>([
         [`${name},,,,,,`, { name }],
         [
           `${name},5,2,1,0,-1,-2`,

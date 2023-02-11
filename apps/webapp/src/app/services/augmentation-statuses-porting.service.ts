@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core'
-import { Augmentation, Skill } from '@ya-mhrs-sim/data'
+import { AugmentationStatus, Skill } from '@ya-mhrs-sim/data'
 import { chunk } from 'lodash-es'
 import { z } from 'zod'
 
@@ -32,14 +32,14 @@ const defaults = () => [
 @Injectable({
   providedIn: 'root',
 })
-export class AugmentationsPortingService {
+export class AugmentationStatusesPortingService {
   /**
    * 強化情報を CSV 文字列からインポートする
    *
    * @param csv -
    */
-  importFromCsv(csv: string): { value: Augmentation[]; errors: string[] } {
-    return csv.split('\n').reduce<{ value: Augmentation[]; errors: string[] }>(
+  importFromCsv(csv: string): { value: AugmentationStatus[]; errors: string[] } {
+    return csv.split('\n').reduce<{ value: AugmentationStatus[]; errors: string[] }>(
       (result, col, index) => {
         if (col === '') return result
 
@@ -88,10 +88,10 @@ export class AugmentationsPortingService {
   /**
    * 強化情報を CSV 文字列として出力する
    *
-   * @param augmentations -
+   * @param augmentationStatuses -
    */
-  exportAsCsv(augmentations: Augmentation[]): string {
-    return augmentations
+  exportAsCsv(augmentationStatuses: AugmentationStatus[]): string {
+    return augmentationStatuses
       .map(
         ({
           name,

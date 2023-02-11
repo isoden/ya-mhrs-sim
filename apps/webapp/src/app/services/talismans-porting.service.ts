@@ -60,7 +60,7 @@ export class TalismansPortingService {
   /**
    * 護石情報を CSV 文字列として出力する
    *
-   * @param augmentations -
+   * @param talismans -
    */
   exportAsCsv(talismans: Talisman[]): string {
     return talismans

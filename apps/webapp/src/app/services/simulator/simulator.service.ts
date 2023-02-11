@@ -35,13 +35,13 @@ export class SimulatorService {
 
   readonly #talismans$ = this.#store.select((state) => state.talismans).pipe(shareReplay(1))
   readonly #augmentedArmors$ = this.#store
-    .select((state) => state.augmentations)
+    .select((state) => state.augmentationStatuses)
     .pipe(
-      map((augmentations) =>
-        augmentations.map((augmentation) =>
+      map((augmentationStatuses) =>
+        augmentationStatuses.map((augmentationStatus) =>
           augmentArmor(
-            mustGet(BASE_ARMORS.get(augmentation.name), `${augmentation.name}`),
-            augmentation,
+            mustGet(BASE_ARMORS.get(augmentationStatus.name), `${augmentationStatus.name}`),
+            augmentationStatus,
           ),
         ),
       ),

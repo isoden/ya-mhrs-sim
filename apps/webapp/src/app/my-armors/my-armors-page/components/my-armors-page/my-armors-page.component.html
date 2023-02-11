@@ -42,43 +42,43 @@
         </thead>
         <tbody
           class="divide-y divide-gray-100 bg-white dark:divide-zinc-700 dark:bg-zinc-800"
-          *ngIf="augmentations$ | async as augmentations"
+          *ngIf="augmentationStatuses$ | async as augmentationStatuses"
         >
-          <ng-container *ngIf="augmentations.length > 0; else otherwise">
-            <tr *ngFor="let augmentation of augmentations">
-              <td class="py-2 px-4">{{ augmentation.name }}</td>
+          <ng-container *ngIf="augmentationStatuses.length > 0; else otherwise">
+            <tr *ngFor="let augmentationStatus of augmentationStatuses">
+              <td class="py-2 px-4">{{ augmentationStatus.name }}</td>
               <td class="py-2 px-4 text-right font-mono">
-                <em [uicPrettyNumber]="augmentation.defense">{{
-                  augmentation.defense | sign : '-'
+                <em [uicPrettyNumber]="augmentationStatus.defense">{{
+                  augmentationStatus.defense | sign : '-'
                 }}</em>
               </td>
               <td class="py-2 px-4 text-right font-mono">
-                <em [uicPrettyNumber]="augmentation.fireResistance">{{
-                  augmentation.fireResistance | sign : '-'
+                <em [uicPrettyNumber]="augmentationStatus.fireResistance">{{
+                  augmentationStatus.fireResistance | sign : '-'
                 }}</em>
               </td>
               <td class="py-2 px-4 text-right font-mono">
-                <em [uicPrettyNumber]="augmentation.waterResistance">{{
-                  augmentation.waterResistance | sign : '-'
+                <em [uicPrettyNumber]="augmentationStatus.waterResistance">{{
+                  augmentationStatus.waterResistance | sign : '-'
                 }}</em>
               </td>
               <td class="py-2 px-4 text-right font-mono">
-                <em [uicPrettyNumber]="augmentation.thunderResistance">{{
-                  augmentation.thunderResistance | sign : '-'
+                <em [uicPrettyNumber]="augmentationStatus.thunderResistance">{{
+                  augmentationStatus.thunderResistance | sign : '-'
                 }}</em>
               </td>
               <td class="py-2 px-4 text-right font-mono">
-                <em [uicPrettyNumber]="augmentation.iceResistance">{{
-                  augmentation.iceResistance | sign : '-'
+                <em [uicPrettyNumber]="augmentationStatus.iceResistance">{{
+                  augmentationStatus.iceResistance | sign : '-'
                 }}</em>
               </td>
               <td class="py-2 px-4 text-right font-mono">
-                <em [uicPrettyNumber]="augmentation.dragonResistance">{{
-                  augmentation.dragonResistance | sign : '-'
+                <em [uicPrettyNumber]="augmentationStatus.dragonResistance">{{
+                  augmentationStatus.dragonResistance | sign : '-'
                 }}</em>
               </td>
               <td class="py-2 px-4 text-right font-mono">
-                <span class="-mx-1" *ngFor="let slot of augmentation.slots"
+                <span class="-mx-1" *ngFor="let slot of augmentationStatus.slots"
                   >【<em class="whitespace-pre" [uicPrettyNumber]="slot">{{
                     slot | sign : ' '.repeat(2)
                   }}</em
@@ -86,7 +86,7 @@
                 >
               </td>
               <td class="py-2 px-4">
-                <ng-container *ngFor="let skill of augmentation.skills; let last = last">
+                <ng-container *ngFor="let skill of augmentationStatus.skills; let last = last">
                   {{ skill[0] }}<em [uicPrettyNumber]="skill[1]">{{ skill[1] | sign }}</em>
                   <ng-container *ngIf="!last">, </ng-container>
                 </ng-container>

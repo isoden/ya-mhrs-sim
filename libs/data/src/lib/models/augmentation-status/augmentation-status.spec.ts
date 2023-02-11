@@ -1,11 +1,11 @@
 import { Armor } from '../armor'
 import { HunterTypes } from '../equipment'
 import { Skill } from '../skill'
-import { augmentArmor, Augmentation } from './augmentation'
+import { augmentArmor, AugmentationStatus } from './augmentation-status'
 
-describe('Augmentation', () => {
+describe('AugmentationStatus', () => {
   describe('augmentArmor', () => {
-    // baseArmor の slots は 0 がない。 augmentation のスロットは 0 がある。
+    // baseArmor の slots は 0 がない。 augmentationStatus のスロットは 0 がある。
     it.each([
       [[4], [0, 2, 0], [4, 2]],
       [[0, 0, 0], [0, 0, 0], []],
@@ -16,7 +16,7 @@ describe('Augmentation', () => {
       ],
     ])('スロットのマージ %j + %j = %j', (slots, augmentedSlots, expected) => {
       expect(
-        augmentArmor(baseArmor({ slots }), createAugmentation({ slots: augmentedSlots })),
+        augmentArmor(baseArmor({ slots }), createAugmentationStatus({ slots: augmentedSlots })),
       ).toMatchObject({
         slots: expected,
       })
@@ -40,7 +40,7 @@ describe('Augmentation', () => {
       ],
     ])('スキルのマージ %j + %j = %j', (skills, augmentedSkills, expected) => {
       expect(
-        augmentArmor(baseArmor({ skills }), createAugmentation({ skills: augmentedSkills })),
+        augmentArmor(baseArmor({ skills }), createAugmentationStatus({ skills: augmentedSkills })),
       ).toMatchObject({
         skills: expected,
       })
@@ -69,7 +69,7 @@ function baseArmor(field: Partial<Armor> = {}): Armor {
   }
 }
 
-function createAugmentation(field: Partial<Augmentation> = {}): Augmentation {
+function createAugmentationStatus(field: Partial<AugmentationStatus> = {}): AugmentationStatus {
   return {
     name: 'カムラノ装【頭巾】継',
     defense: 0,

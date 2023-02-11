@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { Augmentation } from '../augmentation'
+import { AugmentationStatus } from '../augmentation-status'
 import { Skill } from '../skill'
 
 /** 装備品種別 */
@@ -32,7 +32,7 @@ export const Equipment = z.object({
   /** 発動スキル */
   skills: z.array(z.tuple([Skill.shape.name, z.number().int().min(1)])).default(() => []),
 
-  /** 傀異錬成情報 */
-  augmentation: Augmentation.optional(),
+  /** 傀異錬成ステータス */
+  augmentationStatus: AugmentationStatus.optional(),
 })
 export type Equipment = z.infer<typeof Equipment>
