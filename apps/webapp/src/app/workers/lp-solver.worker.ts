@@ -1,5 +1,3 @@
-/// <reference lib="webworker" />
-
 import { expose } from 'comlink'
 import { solve, Model } from 'yalps'
 
