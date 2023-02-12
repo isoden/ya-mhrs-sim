@@ -45,6 +45,8 @@ export class SkillInputComponent implements ControlValueAccessor {
   }
   #skill: Skill | undefined
 
+  focusIndex = -1
+
   /** 現在のレベル */
   currentLevel = 0
 
@@ -58,9 +60,10 @@ export class SkillInputComponent implements ControlValueAccessor {
    *
    * @param level
    */
-  onClick(level: number): void {
+  select(level: number): void {
     // 選択中のレベルがクリックされたときはレベルを 0 にして選択を解除する
     this.currentLevel = this.currentLevel === level ? 0 : level
+    this.focusIndex = -1
     this.onChange?.(this.currentLevel)
   }
 
@@ -82,7 +85,14 @@ export class SkillInputComponent implements ControlValueAccessor {
     this.#cdRef.markForCheck()
   }
 
-  select(event: Event) {
-    this.onClick(Number((event.target as HTMLSelectElement).value))
+  bgClassName(index: number): string {
+    const { focusIndex, currentLevel } = this
+    const choice = this.choices[index]
+
+    if ((focusIndex === -1 && currentLevel >= choice) || focusIndex >= index) {
+      return 'bg-blue-400'
+    } else {
+      return 'bg-slate-300'
+    }
   }
 }
