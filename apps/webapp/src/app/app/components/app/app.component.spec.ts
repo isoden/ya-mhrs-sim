@@ -1,7 +1,6 @@
 import { render, screen } from '~webapp/test-utils'
 import { MatSnackBarModule } from '@angular/material/snack-bar'
 import { ServiceWorkerModule } from '@angular/service-worker'
-import { APP_VERSION_PROVIDER } from '../../appVersion'
 import { AppComponent } from './app.component'
 
 describe('AppComponent', () => {
@@ -15,7 +14,6 @@ describe('AppComponent', () => {
         ServiceWorkerModule.register('/ngsw-script.js', { enabled: false }),
         MatSnackBarModule,
       ],
-      providers: [APP_VERSION_PROVIDER],
     })
 
     // assert: 事前条件
@@ -33,7 +31,6 @@ describe('AppComponent', () => {
         ServiceWorkerModule.register('/ngsw-script.js', { enabled: false }),
         MatSnackBarModule,
       ],
-      providers: [APP_VERSION_PROVIDER],
     })
 
     const button = screen.getByRole('button', { name: /メニューを開閉する/ })

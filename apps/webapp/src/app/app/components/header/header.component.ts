@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common'
 import { ChangeDetectionStrategy, Component, inject, ViewEncapsulation } from '@angular/core'
 import { UiComponentsModule } from '@ya-mhrs-sim/ui-components'
 import { StoreService } from '~webapp/services/store.service'
-import { APP_VERSION } from '../../appVersion'
 
 @Component({
   standalone: true,
@@ -13,7 +12,6 @@ import { APP_VERSION } from '../../appVersion'
   imports: [CommonModule, UiComponentsModule],
 })
 export class AppHeaderComponent {
-  readonly appVersion = inject(APP_VERSION)
   readonly #store = inject(StoreService)
   readonly expanded$ = this.#store.select((state) => !state.navCollapsed)
 

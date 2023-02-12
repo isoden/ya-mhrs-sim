@@ -4,7 +4,6 @@ import { bootstrapApplication, BrowserModule } from '@angular/platform-browser'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { provideRouter } from '@angular/router'
 import { ServiceWorkerModule } from '@angular/service-worker'
-import { APP_VERSION_PROVIDER } from './app/app/appVersion'
 import { AppComponent } from './app/app/components/app/app.component'
 import { routes } from './app/app/routes'
 import { environment } from './environments/environment'
@@ -28,7 +27,6 @@ function bootstrap() {
         }),
         MatSnackBarModule,
       ),
-      APP_VERSION_PROVIDER,
     ],
   }).catch((err) => console.error(err))
 }
