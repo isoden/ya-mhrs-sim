@@ -23,13 +23,13 @@ export const skills: readonly Skill[] = [
     name: '逆恨み',
     keywords: ['さかうらみ'],
     max: 5,
-    color: SkillColor.NeonOrange,
+    color: SkillColor.VividOrange,
   },
   {
     name: '死中に活',
     keywords: ['しちゅうにかつ'],
     max: 3,
-    color: SkillColor.NeonOrange,
+    color: SkillColor.VividOrange,
   },
   {
     name: '見切り',
@@ -101,7 +101,7 @@ export const skills: readonly Skill[] = [
     name: '龍属性攻撃強化',
     keywords: ['りゅうぞくせいこうげききょうか'],
     max: 5,
-    color: SkillColor.NeonOrange,
+    color: SkillColor.VividOrange,
   },
   {
     name: '毒属性強化',
@@ -125,7 +125,7 @@ export const skills: readonly Skill[] = [
     name: '爆破属性強化',
     keywords: ['ばくはぞくせいきょうか'],
     max: 3,
-    color: SkillColor.NeonOrange,
+    color: SkillColor.VividOrange,
   },
   {
     name: '匠',
@@ -425,7 +425,7 @@ export const skills: readonly Skill[] = [
     name: '龍耐性',
     keywords: ['りゅうたいせい'],
     max: 3,
-    color: SkillColor.NeonOrange,
+    color: SkillColor.VividOrange,
   },
   {
     name: '属性やられ耐性',
@@ -467,7 +467,7 @@ export const skills: readonly Skill[] = [
     name: '爆破やられ耐性',
     keywords: ['ばくはやられたいせい'],
     max: 3,
-    color: SkillColor.NeonOrange,
+    color: SkillColor.VividOrange,
   },
   {
     name: '植生学',
@@ -515,7 +515,7 @@ export const skills: readonly Skill[] = [
     name: 'ボマー',
     keywords: ['ぼまー'],
     max: 3,
-    color: SkillColor.NeonOrange,
+    color: SkillColor.VividOrange,
   },
   {
     name: 'キノコ大好き',
@@ -551,7 +551,7 @@ export const skills: readonly Skill[] = [
     name: '不屈',
     keywords: ['ふくつ'],
     max: 1,
-    color: SkillColor.NeonOrange,
+    color: SkillColor.VividOrange,
   },
   {
     name: 'ひるみ軽減',
@@ -617,7 +617,7 @@ export const skills: readonly Skill[] = [
     name: '龍気活性',
     keywords: ['りゅうきかっせい'],
     max: 5,
-    color: SkillColor.NeonOrange,
+    color: SkillColor.VividOrange,
   },
   {
     name: '翔蟲使い',
@@ -665,7 +665,7 @@ export const skills: readonly Skill[] = [
     name: '風雷合一',
     keywords: ['ふうらいごういつ'],
     max: 5,
-    color: SkillColor.NeonOrange,
+    color: SkillColor.VividOrange,
   },
   {
     name: '血氣',
@@ -845,7 +845,7 @@ export const skills: readonly Skill[] = [
     name: '龍気変換',
     keywords: ['りゅうきへんかん'],
     max: 3,
-    color: SkillColor.NeonOrange,
+    color: SkillColor.VividOrange,
   },
   {
     name: '奮闘',

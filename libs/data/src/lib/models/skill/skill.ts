@@ -13,7 +13,7 @@ export enum SkillColor {
   Yellow, // e.g.) 業物
   Sky, // e.g.) 水属性攻撃強化
   Orange, // e.g.) 体術
-  NeonOrange, // e.g.) 逆恨み
+  VividOrange, // e.g.) 逆恨み
 }
 
 export const SkillNames = z.enum([

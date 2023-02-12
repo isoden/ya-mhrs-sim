@@ -50,7 +50,7 @@ export class SkillPickerComponent implements OnInit, OnDestroy {
     { label: '絞り込みを解除', value: null }, // リセット用の項目
     { label: '赤色系スキル', value: SkillColor.Red },
     { label: '桃色系スキル', value: SkillColor.Pink },
-    { label: '赤橙系スキル', value: SkillColor.NeonOrange },
+    { label: '赤橙系スキル', value: SkillColor.VividOrange },
     { label: '茶色系スキル', value: SkillColor.Brown },
     { label: '橙色系スキル', value: SkillColor.Orange },
     { label: '黄色系スキル', value: SkillColor.Yellow },

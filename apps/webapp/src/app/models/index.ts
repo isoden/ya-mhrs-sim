@@ -1,4 +1,4 @@
-import { Skill, skills } from '@ya-mhrs-sim/data'
+import { Skill, SkillColor, skills } from '@ya-mhrs-sim/data'
 import { mustGet } from '~webapp/functions/asserts'
 
 export class SkillModel {
@@ -18,6 +18,50 @@ export class SkillModel {
    */
   public static mustGet(name: string): Skill {
     return mustGet(this.get(name), `Expected name to be one of the skillNames, got ${name}`)
+  }
+
+  /**
+   * SkillColor を `fill-#RRGGBB` のフォーマットに変換する
+   * @param color - SkillColor
+   */
+  public static fill(color: SkillColor): string
+
+  /**
+   * スキル名を `fill-#RRGGBB` のフォーマットに変換する
+   * @param name - スキル名
+   */
+  public static fill(name: string): string
+  public static fill(nameOrColor: string | SkillColor): string {
+    const color = typeof nameOrColor === 'string' ? this.mustGet(nameOrColor).color : nameOrColor
+
+    switch (color) {
+      case SkillColor.Green:
+        return 'fill-[#26e196]'
+      case SkillColor.Brown:
+        return 'fill-[#9b784f]'
+      case SkillColor.White:
+        return 'fill-[#fff]'
+      case SkillColor.Red:
+        return 'fill-[#ff4b0d]'
+      case SkillColor.Violet:
+        return 'fill-[#a540e1]'
+      case SkillColor.Gray:
+        return 'fill-[#aeaeae]'
+      case SkillColor.Blue:
+        return 'fill-[#476eff]'
+      case SkillColor.PaleBlue:
+        return 'fill-[#a0cdff]'
+      case SkillColor.Pink:
+        return 'fill-[#ef73b9]'
+      case SkillColor.Yellow:
+        return 'fill-[#ffff71]'
+      case SkillColor.Sky:
+        return 'fill-[#5aaaff]'
+      case SkillColor.Orange:
+        return 'fill-[#ffb355]'
+      case SkillColor.VividOrange:
+        return 'fill-[#ff7316]'
+    }
   }
 
   static toString(skills: [string, number][]): string {
