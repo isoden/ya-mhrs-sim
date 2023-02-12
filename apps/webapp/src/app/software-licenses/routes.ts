@@ -3,7 +3,7 @@ import { Routes } from '@angular/router'
 export const routes: Routes = [
   {
     path: '',
-    title: 'ソフトウェアライセンス | モンスターハンターライズ：サンブレイク スキルシミュレーター',
+    title: 'ソフトウェアライセンス | モンスターハンターライズ：サンブレイク ビルドシミュレーター',
     pathMatch: 'full',
     loadComponent: () =>
       import(
