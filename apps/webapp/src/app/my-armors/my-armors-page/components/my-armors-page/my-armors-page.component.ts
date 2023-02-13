@@ -3,9 +3,12 @@ import { FormBuilder, ReactiveFormsModule } from '@angular/forms'
 import { CommonModule } from '@angular/common'
 import { MatSnackBar } from '@angular/material/snack-bar'
 import { UiComponentsModule } from '@ya-mhrs-sim/ui-components'
+import { armors, augmentArmor, AugmentationStatus } from '@ya-mhrs-sim/data'
 import { firstValueFrom } from 'rxjs'
 import { AugmentationStatusesPortingService } from '~webapp/services/augmentation-statuses-porting.service'
 import { StoreService } from '~webapp/services/store.service'
+import { SlotComponent } from '~webapp/app/components/slot/slot.component'
+import { invariant } from '~webapp/functions/asserts'
 
 const useForm = () => {
   const fb = inject(FormBuilder)
@@ -21,7 +24,7 @@ const useForm = () => {
   templateUrl: './my-armors-page.component.html',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, ReactiveFormsModule, UiComponentsModule],
+  imports: [CommonModule, ReactiveFormsModule, UiComponentsModule, SlotComponent],
 })
 export class MyArmorsPageComponent {
   readonly #store = inject(StoreService)
@@ -30,6 +33,14 @@ export class MyArmorsPageComponent {
 
   readonly form = useForm()
   readonly augmentationStatuses$ = this.#store.select((state) => state.augmentationStatuses)
+
+  getSlots(augmentation: AugmentationStatus) {
+    const baseArmor = armors.find((armor) => armor.name === augmentation.name)
+
+    invariant(baseArmor)
+
+    return augmentArmor(baseArmor, augmentation).slots
+  }
 
   onSubmit(): void {
     const csv = this.form.controls.csv.value.trim()

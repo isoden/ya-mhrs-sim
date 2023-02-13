@@ -6,6 +6,7 @@ import { uniq } from 'lodash-es'
 import { SkillModel } from '~webapp/models'
 import { mustGet } from '~webapp/functions/asserts'
 import { Build } from '~webapp/services/simulator/simulator.service'
+import { SlotComponent } from '~webapp/app/components/slot/slot.component'
 
 @Component({
   standalone: true,
@@ -13,7 +14,7 @@ import { Build } from '~webapp/services/simulator/simulator.service'
   templateUrl: './build-viewer.component.html',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, UiComponentsModule],
+  imports: [CommonModule, UiComponentsModule, SlotComponent],
 })
 export class BuildViewerComponent {
   @Input()

@@ -77,13 +77,12 @@
                   augmentationStatus.dragonResistance | sign : '-'
                 }}</em>
               </td>
-              <td class="py-2 px-4 text-right font-mono">
-                <span class="-mx-1" *ngFor="let slot of augmentationStatus.slots"
-                  >【<em class="whitespace-pre" [uicPrettyNumber]="slot">{{
-                    slot | sign : ' '.repeat(2)
-                  }}</em
-                  >】</span
-                >
+              <td class="py-2 px-4">
+                <app-slot
+                  *ngFor="let slot of getSlots(augmentationStatus); let index = index"
+                  [size]="slot"
+                  [extendedSize]="augmentationStatus.slots[index]"
+                />
               </td>
               <td class="py-2 px-4">
                 <ng-container *ngFor="let skill of augmentationStatus.skills; let last = last">
