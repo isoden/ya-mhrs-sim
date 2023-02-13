@@ -1,0 +1,19 @@
+<svg class="inline" [attr.viewBox]="viewBox" [attr.width]="width" role="img">
+  <title>{{ size }}</title>
+  <path
+    [attr.d]="outlinePath"
+    [ngClass]="outlineClassNames"
+    paint-order="stroke"
+    stroke-width="20"
+    stroke-linejoin="round"
+  />
+  <ng-container *ngFor="let shape of getShapes()">
+    <path
+      [attr.d]="shape.path"
+      [ngClass]="shape.classNames"
+      [attr.stroke-width]="shape.strokeWidth"
+      stroke-linejoin="round"
+      paint-order="stroke"
+    />
+  </ng-container>
+</svg>

@@ -38,7 +38,7 @@ describe('MyTalismansPageComponent', () => {
 
     // assert: データが 2 件表示されている
     expect(rows).toHaveLength(2)
-    expect(rows[0]).toHaveTextContent('攻撃Lv1【1】【1】')
+    expect(rows[0]).toHaveTextContent('攻撃Lv111') // TODO: 攻撃Lv1 1 1
     expect(rows[1]).toHaveTextContent('壁面移動Lv1, 壁面移動【翔】Lv1')
   })
 
@@ -71,7 +71,7 @@ describe('MyTalismansPageComponent', () => {
 
     // assert: データが 2 件表示されている
     expect(rows).toHaveLength(1)
-    expect(rows[0]).toHaveTextContent('攻撃Lv1【1】【1】')
+    expect(rows[0]).toHaveTextContent('攻撃Lv111') // TODO: 攻撃Lv1 1 1
   })
 
   it('登録したデータを CSV でエクスポートできる', async () => {

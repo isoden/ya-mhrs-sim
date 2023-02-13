@@ -6,6 +6,7 @@ import { UiComponentsModule } from '@ya-mhrs-sim/ui-components'
 import { firstValueFrom } from 'rxjs'
 import { StoreService } from '~webapp/services/store.service'
 import { TalismansPortingService } from '~webapp/services/talismans-porting.service'
+import { SlotComponent } from '~webapp/app/components/slot/slot.component'
 
 const useForm = () => {
   const fb = inject(FormBuilder)
@@ -21,7 +22,7 @@ const useForm = () => {
   templateUrl: './my-talismans-page.component.html',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, ReactiveFormsModule, UiComponentsModule],
+  imports: [CommonModule, ReactiveFormsModule, UiComponentsModule, SlotComponent],
 })
 export class MyTalismansPageComponent {
   readonly #store = inject(StoreService)
