@@ -5,6 +5,7 @@ import { MatSnackBar } from '@angular/material/snack-bar'
 import { UiComponentsModule } from '@ya-mhrs-sim/ui-components'
 import { armors, augmentArmor, AugmentationStatus } from '@ya-mhrs-sim/data'
 import { firstValueFrom } from 'rxjs'
+import { zip } from 'lodash-es'
 import { AugmentationStatusesPortingService } from '~webapp/services/augmentation-statuses-porting.service'
 import { StoreService } from '~webapp/services/store.service'
 import { SlotComponent } from '~webapp/app/components/slot/slot.component'
@@ -34,14 +35,36 @@ export class MyArmorsPageComponent {
   readonly form = useForm()
   readonly augmentationStatuses$ = this.#store.select((state) => state.augmentationStatuses)
 
-  getSlots(augmentation: AugmentationStatus) {
-    const baseArmor = armors.find((armor) => armor.name === augmentation.name)
+  /**
+   * 傀異錬成後防具のスロットと傀異錬成ステータスのスロットをタプルにして返す
+   *
+   * @param augmentationStatus
+   */
+  zipSlots(augmentationStatus: AugmentationStatus): [number, number][] {
+    const baseArmor = armors.find((armor) => armor.name === augmentationStatus.name)
 
     invariant(baseArmor)
 
-    return augmentArmor(baseArmor, augmentation).slots
+    const quriousArmor = augmentArmor(baseArmor, augmentationStatus)
+
+    return zip(quriousArmor.slots, augmentationStatus.slots).slice(
+      0,
+      quriousArmor.slots.length,
+    ) as [number, number][]
   }
 
+  /**
+   * zipSlots の返り値のスロット情報を読み上げ用テキストに変換する
+   *
+   * @param slots
+   */
+  ariaLabel(slots: [number, number][]): string {
+    return slots.map(([a, b]) => `${a}${b > 0 ? `(+${b})` : ''}`).join(', ') || 'なし'
+  }
+
+  /**
+   * インポート処理
+   */
   onSubmit(): void {
     const csv = this.form.controls.csv.value.trim()
 
@@ -62,6 +85,9 @@ export class MyArmorsPageComponent {
     }
   }
 
+  /**
+   * エクスポート処理
+   */
   async exportAsCsv(): Promise<void> {
     const csv = this.#augmentationStatusesPorting.exportAsCsv(
       await firstValueFrom(this.augmentationStatuses$),

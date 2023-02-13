@@ -38,8 +38,9 @@ describe('MyTalismansPageComponent', () => {
 
     // assert: データが 2 件表示されている
     expect(rows).toHaveLength(2)
-    expect(rows[0]).toHaveTextContent('攻撃Lv111') // TODO: 攻撃Lv1 1 1
-    expect(rows[1]).toHaveTextContent('壁面移動Lv1, 壁面移動【翔】Lv1')
+
+    expect(rows[0]).toHaveAccessibleName('攻撃Lv1 1,1')
+    expect(rows[1]).toHaveAccessibleName('壁面移動Lv1,\n壁面移動【翔】Lv1 なし')
   })
 
   it('テキストが空の場合は警告を表示する', async () => {
@@ -69,9 +70,9 @@ describe('MyTalismansPageComponent', () => {
 
     const rows = within(screen.getAllByRole('rowgroup')[1]).getAllByRole('row')
 
-    // assert: データが 2 件表示されている
+    // assert: データが 1 件表示されている
     expect(rows).toHaveLength(1)
-    expect(rows[0]).toHaveTextContent('攻撃Lv111') // TODO: 攻撃Lv1 1 1
+    expect(rows[0]).toHaveAccessibleName('攻撃Lv1 1,1')
   })
 
   it('登録したデータを CSV でエクスポートできる', async () => {

@@ -77,11 +77,15 @@
                   augmentationStatus.dragonResistance | sign : '-'
                 }}</em>
               </td>
-              <td class="py-2 px-4">
+              <td
+                class="py-2 px-4"
+                *ngIf="{ slots: zipSlots(augmentationStatus) } as context"
+                [attr.aria-label]="ariaLabel(context.slots)"
+              >
                 <app-slot
-                  *ngFor="let slot of getSlots(augmentationStatus); let index = index"
-                  [size]="slot"
-                  [extendedSize]="augmentationStatus.slots[index]"
+                  *ngFor="let slot of context.slots"
+                  [size]="slot[0]"
+                  [extendedSize]="slot[1]"
                 />
               </td>
               <td class="py-2 px-4">
