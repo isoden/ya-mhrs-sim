@@ -30,7 +30,7 @@
           <ng-container *ngIf="talismans.length > 0; else otherwise">
             <tr *ngFor="let talisman of talismans">
               <td class="py-2 px-4">{{ talisman.name }}</td>
-              <td class="py-2 px-4">
+              <td class="py-2 px-4" [attr.aria-label]="talisman.slots.join(',') || 'なし'">
                 <app-slot *ngFor="let slot of talisman.slots" [size]="slot" />
               </td>
             </tr>
