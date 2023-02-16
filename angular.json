@@ -1,0 +1,11 @@
+{
+  "$schema": "./node_modules/nx/schemas/workspace-schema.json",
+  "version": 2,
+  "projects": {
+    "data": "libs/data",
+    "ui-components": "libs/ui-components",
+    "webapp": "apps/webapp",
+    "webapp-e2e": "apps/webapp-e2e"
+  },
+  "defaultProject": "webapp"
+}
