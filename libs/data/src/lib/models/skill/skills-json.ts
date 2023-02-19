@@ -646,7 +646,7 @@ export const skills: readonly Skill[] = [
   {
     name: '鬼火纏',
     keywords: ['おにびまとい'],
-    max: 3,
+    max: 4,
     color: SkillColor.Violet,
   },
   {
