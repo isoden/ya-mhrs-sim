@@ -2,6 +2,84 @@ import { Decoration } from './decoration'
 
 export const decorations: Decoration[] = [
   {
+    name: '節弾珠Ⅱ【4】',
+    type: 'decoration',
+    slotSize: 4,
+    skills: [['弾丸節約', 2]],
+  },
+  {
+    name: '血氣珠Ⅱ【4】',
+    type: 'decoration',
+    slotSize: 4,
+    skills: [['血氣', 2]],
+  },
+  {
+    name: '激励珠【1】',
+    type: 'decoration',
+    slotSize: 1,
+    skills: [['激励', 1]],
+  },
+  {
+    name: '攻撃珠Ⅱ【4】',
+    type: 'decoration',
+    slotSize: 4,
+    skills: [['攻撃', 2]],
+  },
+  {
+    name: '達人珠Ⅱ【4】',
+    type: 'decoration',
+    slotSize: 4,
+    skills: [['見切り', 2]],
+  },
+  {
+    name: '翻異珠Ⅱ【4】',
+    type: 'decoration',
+    slotSize: 4,
+    skills: [['状態異常確定蓄積', 2]],
+  },
+  {
+    name: '剛心珠Ⅱ【3】',
+    type: 'decoration',
+    slotSize: 3,
+    skills: [['剛心', 2]],
+  },
+  {
+    name: '煽衛珠Ⅱ【4】',
+    type: 'decoration',
+    slotSize: 4,
+    skills: [['煽衛', 2]],
+  },
+  {
+    name: '狂蝕珠【4】',
+    type: 'decoration',
+    slotSize: 4,
+    skills: [['狂竜症【蝕】', 1]],
+  },
+  {
+    name: '装填珠Ⅱ【4】',
+    type: 'decoration',
+    slotSize: 4,
+    skills: [['装填拡張', 2]],
+  },
+  {
+    name: '挑戦珠Ⅱ【4】',
+    type: 'decoration',
+    slotSize: 4,
+    skills: [['挑戦者', 2]],
+  },
+  {
+    name: '刃鱗珠Ⅱ【4】',
+    type: 'decoration',
+    slotSize: 4,
+    skills: [['刃鱗磨き', 2]],
+  },
+  {
+    name: '緩衝珠【1】',
+    type: 'decoration',
+    slotSize: 1,
+    skills: [['緩衝', 1]],
+  },
+  {
     name: '連撃珠Ⅱ【４】',
     type: 'decoration',
     slotSize: 4,
