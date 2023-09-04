@@ -842,6 +842,24 @@ export const skills: readonly Skill[] = [
     color: SkillColor.White,
   },
   {
+    name: '天衣無崩',
+    keywords: ['てんいむほう'],
+    max: 3,
+    color: SkillColor.White,
+  },
+  {
+    name: '狂竜症【翔】',
+    keywords: ['きょうりゅうしょう【しょう】'],
+    max: 3,
+    color: SkillColor.Green,
+  },
+  {
+    name: '血氣覚醒',
+    keywords: ['けっきかくせい'],
+    max: 3,
+    color: SkillColor.Red,
+  },
+  {
     name: '龍気変換',
     keywords: ['りゅうきへんかん'],
     max: 3,
@@ -852,5 +870,17 @@ export const skills: readonly Skill[] = [
     keywords: ['ふんとう'],
     max: 3,
     color: SkillColor.Red,
+  },
+  {
+    name: '緩衝',
+    keywords: ['かんしょう'],
+    max: 1,
+    color: SkillColor.Gray,
+  },
+  {
+    name: '激励',
+    keywords: ['げきれい'],
+    max: 1,
+    color: SkillColor.White,
   },
 ]
