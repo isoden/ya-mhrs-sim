@@ -1,5 +1,6 @@
 {
   "name": "webapp",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
   "sourceRoot": "apps/webapp/src",
   "prefix": "app",
@@ -80,13 +81,13 @@
       }
     },
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/linter:eslint",
       "options": {
         "lintFilePatterns": ["apps/webapp/**/*.ts", "apps/webapp/**/*.html"]
       }
     },
     "test": {
-      "executor": "@nrwl/jest:jest",
+      "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/apps/webapp"],
       "options": {
         "jestConfig": "apps/webapp/jest.config.ts",
