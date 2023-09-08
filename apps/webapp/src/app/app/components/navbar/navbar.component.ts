@@ -9,7 +9,7 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 import { NavigationEnd, Router, RouterModule } from '@angular/router'
 import { UiComponentsModule } from '@ya-mhrs-sim/ui-components'
-import { LetModule } from '@ngrx/component'
+import { LetDirective } from '@ngrx/component'
 import { filter, skip, withLatestFrom } from 'rxjs'
 import { StoreService } from '~webapp/services/store.service'
 
@@ -19,7 +19,7 @@ import { StoreService } from '~webapp/services/store.service'
   templateUrl: './navbar.component.html',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, RouterModule, LetModule, UiComponentsModule],
+  imports: [CommonModule, RouterModule, LetDirective, UiComponentsModule],
 })
 export class AppNavbarComponent implements OnInit {
   readonly #store = inject(StoreService)
