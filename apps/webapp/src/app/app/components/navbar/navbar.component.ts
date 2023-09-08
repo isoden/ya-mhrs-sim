@@ -3,14 +3,14 @@ import {
   ChangeDetectionStrategy,
   Component,
   inject,
-  OnDestroy,
   OnInit,
   ViewEncapsulation,
 } from '@angular/core'
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 import { NavigationEnd, Router, RouterModule } from '@angular/router'
 import { UiComponentsModule } from '@ya-mhrs-sim/ui-components'
 import { LetModule } from '@ngrx/component'
-import { filter, skip, Subject, takeUntil, withLatestFrom } from 'rxjs'
+import { filter, skip, withLatestFrom } from 'rxjs'
 import { StoreService } from '~webapp/services/store.service'
 
 @Component({
@@ -21,10 +21,10 @@ import { StoreService } from '~webapp/services/store.service'
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule, RouterModule, LetModule, UiComponentsModule],
 })
-export class AppNavbarComponent implements OnInit, OnDestroy {
+export class AppNavbarComponent implements OnInit {
   readonly #store = inject(StoreService)
   readonly #router = inject(Router)
-  readonly #onDestroy = new Subject<void>()
+  readonly #takeUntilDestroyed = takeUntilDestroyed()
 
   readonly collapsed$ = this.#store.select((state) => state.navCollapsed)
 
@@ -37,7 +37,7 @@ export class AppNavbarComponent implements OnInit, OnDestroy {
     // ページ遷移があったときに開いている場合は閉じる
     navigationEnd$
       .pipe(
-        takeUntil(this.#onDestroy),
+        this.#takeUntilDestroyed,
         withLatestFrom(this.collapsed$),
         filter(([, collapsed]) => !collapsed),
       )
@@ -46,10 +46,5 @@ export class AppNavbarComponent implements OnInit, OnDestroy {
           state.navCollapsed = true
         })
       })
-  }
-
-  ngOnDestroy(): void {
-    this.#onDestroy.next()
-    this.#onDestroy.complete()
   }
 }

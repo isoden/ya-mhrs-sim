@@ -2,15 +2,15 @@ import {
   ChangeDetectionStrategy,
   Component,
   inject,
-  OnDestroy,
   OnInit,
   ViewEncapsulation,
 } from '@angular/core'
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 import { CommonModule } from '@angular/common'
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms'
 import { UiComponentsModule } from '@ya-mhrs-sim/ui-components'
 import { HunterTypes, Skill, skills } from '@ya-mhrs-sim/data'
-import { of, Subject, switchMap, takeUntil, tap } from 'rxjs'
+import { of, switchMap, tap } from 'rxjs'
 import { every } from 'lodash-es'
 import { LocalStorageService } from '~webapp/services/local-storage.service'
 import { SimulatorService } from '~webapp/services/simulator/simulator.service'
@@ -53,7 +53,7 @@ export function useForm(defaultHunterType: HunterTypes) {
     SimulatorWidgetComponent,
   ],
 })
-export class SimulatorPageComponent implements OnInit, OnDestroy {
+export class SimulatorPageComponent implements OnInit {
   readonly #localStorage = inject(LocalStorageService<Webapp.LocalStorageSchema>)
   readonly #simulator = inject(SimulatorService)
 
@@ -64,11 +64,10 @@ export class SimulatorPageComponent implements OnInit, OnDestroy {
     DEFAULT_EXCLUEDED_SKILLS.includes(skill.name),
   )
 
-  readonly #onDestroy = new Subject<void>()
+  readonly #takeUntilDestroyed = takeUntilDestroyed()
   readonly form = useForm(this.#localStorage.get('hunterType', HunterTypes.Type01))
 
   readonly simulationResult$ = this.form.valueChanges.pipe(
-    takeUntil(this.#onDestroy),
     tap(() => {
       this.#timerId = window.setTimeout(() => {
         this.loading = true
@@ -107,13 +106,8 @@ export class SimulatorPageComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     // ハンタータイプはキャラクター作成時の情報に紐づくためほぼ変更されることはないので一度選択した値は永続化する
     this.form.controls.hunterType.valueChanges
-      .pipe(takeUntil(this.#onDestroy))
+      .pipe(this.#takeUntilDestroyed)
       .subscribe((kind) => this.#localStorage.set('hunterType', kind))
-  }
-
-  ngOnDestroy(): void {
-    this.#onDestroy.next()
-    this.#onDestroy.complete()
   }
 
   resetForm() {

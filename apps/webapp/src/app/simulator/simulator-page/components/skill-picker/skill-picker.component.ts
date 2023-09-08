@@ -4,10 +4,10 @@ import {
   Component,
   inject,
   Input,
-  OnDestroy,
   OnInit,
   ViewEncapsulation,
 } from '@angular/core'
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 import {
   COMPOSITION_BUFFER_MODE,
   FormBuilder,
@@ -17,7 +17,6 @@ import {
 } from '@angular/forms'
 import { UiComponentsModule } from '@ya-mhrs-sim/ui-components'
 import { Skill, SkillColor, skills } from '@ya-mhrs-sim/data'
-import { Subject, takeUntil } from 'rxjs'
 import { SkillModel } from '~webapp/models'
 import { SkillBadgeComponent } from '../skill-badge/skill-badge.component'
 import { SkillInputComponent } from '../skill-input/skill-input.component'
@@ -38,7 +37,7 @@ import { SkillInputComponent } from '../skill-input/skill-input.component'
     SkillBadgeComponent,
   ],
 })
-export class SkillPickerComponent implements OnInit, OnDestroy {
+export class SkillPickerComponent implements OnInit {
   readonly #fb = inject(FormBuilder)
 
   @Input()
@@ -75,7 +74,7 @@ export class SkillPickerComponent implements OnInit, OnDestroy {
    */
   skillsVisibility: { [x in Skill['name']]?: boolean } = {}
 
-  readonly #onDestroy = new Subject<void>()
+  readonly #takeUntilDestroyed = takeUntilDestroyed()
 
   get isEmpty() {
     return Object.keys(this.skillsVisibility).length === skills.length
@@ -95,7 +94,7 @@ export class SkillPickerComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.form.valueChanges.pipe(takeUntil(this.#onDestroy)).subscribe(() => {
+    this.form.valueChanges.pipe(this.#takeUntilDestroyed).subscribe(() => {
       const query = this.form.controls.query.value.toLowerCase()
       const color = this.form.controls.color.value
 
@@ -118,11 +117,6 @@ export class SkillPickerComponent implements OnInit, OnDestroy {
         return visibility
       }, {})
     })
-  }
-
-  ngOnDestroy(): void {
-    this.#onDestroy.next()
-    this.#onDestroy.complete()
   }
 
   resetQuery(): void {

@@ -6,12 +6,11 @@ import {
   Component,
   ElementRef,
   Input,
-  OnDestroy,
   ViewChild,
   ViewEncapsulation,
 } from '@angular/core'
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 import { UiComponentsModule } from '@ya-mhrs-sim/ui-components'
-import { Subject, takeUntil } from 'rxjs'
 import { useMatchMediaObservable } from '~webapp/functions/useMatchMedia'
 import { invariant } from '~webapp/functions/asserts'
 import { SimulationResult } from '~webapp/services/simulator/simulator.service'
@@ -38,7 +37,7 @@ const defaultHeight = 56
   ],
   imports: [CommonModule, UiComponentsModule, BuildViewerComponent],
 })
-export class SimulatorWidgetComponent implements AfterViewInit, OnDestroy {
+export class SimulatorWidgetComponent implements AfterViewInit {
   @Input()
   result: SimulationResult | null = null
 
@@ -56,24 +55,19 @@ export class SimulatorWidgetComponent implements AfterViewInit, OnDestroy {
 
   readonly #matches$ = useMatchMediaObservable()(`(max-width: ${screens.md})`)
 
-  readonly #onDestroy = new Subject<void>()
+  readonly #takeUntilDestroyed = takeUntilDestroyed()
 
   get draggable() {
     return this.expanded
   }
 
   ngAfterViewInit(): void {
-    this.#matches$.pipe(takeUntil(this.#onDestroy)).subscribe((matches) => {
+    this.#matches$.pipe(this.#takeUntilDestroyed).subscribe((matches) => {
       if (!matches && this.expandableElement?.nativeElement) {
         this.expandableElement.nativeElement.style.width = ''
         this.expandableElement.nativeElement.style.visibility = ''
       }
     })
-  }
-
-  ngOnDestroy(): void {
-    this.#onDestroy.next()
-    this.#onDestroy.complete()
   }
 
   toggle() {
