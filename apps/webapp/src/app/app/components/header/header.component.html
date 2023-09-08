@@ -23,10 +23,35 @@
       </h1>
     </div>
 
-    <div class="ml-auto flex items-center gap-4">
-      <button class="h-4 w-4" (click)="toggleMode()" aria-label="テーマを切り替える">
-        <uic-icon name="brightness" />
+    <div class="ml-auto flex items-center gap-4" *ngrxLet="user$ as user">
+      <button
+        class="rounded-full overflow-hidden border-white border w-8 aspect-square"
+        type="button"
+        [cdkMenuTriggerFor]="menu"
+      >
+        <img
+          class="w-full h-auto"
+          [attr.src]="user?.photoURL ?? '/assets/me.png'"
+          alt="{{ user?.displayName }}"
+        />
       </button>
+
+      <ng-template #menu>
+        <div cdkMenu class="flex flex-col">
+          <button
+            class="h-4 w-4"
+            (click)="toggleMode()"
+            aria-label="テーマを切り替える"
+            cdkMenuItem
+          >
+            <uic-icon name="brightness" />
+          </button>
+          <button *ngIf="user; else anonymouse" (click)="signOut()" cdkMenuItem>ログアウト</button>
+          <ng-template #anonymouse>
+            <button (click)="signIn()" cdkMenuItem>ログイン</button>
+          </ng-template>
+        </div>
+      </ng-template>
     </div>
   </div>
 </header>
