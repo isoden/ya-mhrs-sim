@@ -1,15 +1,16 @@
-import { ApplicationConfig } from '@angular/core'
+import { ApplicationConfig, importProvidersFrom } from '@angular/core'
 import { provideRouter } from '@angular/router'
-import { importProvidersFrom } from '@angular/core'
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { BrowserModule } from '@angular/platform-browser'
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { MatSnackBarModule } from '@angular/material/snack-bar'
-import { routes } from './app/routes'
 import { ServiceWorkerModule } from '@angular/service-worker'
+import { routes } from './app/routes'
 import { environment } from '../environments/environment'
+import { firebaseProviders } from './providers/firebase'
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    firebaseProviders,
     provideRouter(routes),
     importProvidersFrom(
       BrowserAnimationsModule, // TODO: provideAnimation() で良いはずだけど standalone + lazy loading の場合はエラーになった
