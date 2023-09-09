@@ -1,19 +1,22 @@
-<button [disabled]="disabledPreviousButton" (click)="decrement()" type="button" aria-label="前">
-  <uic-icon class="block h-5 w-5" name="chevron-left" />
-</button>
-<button [disabled]="disabledNextButton" (click)="increment()" type="button" aria-label="次">
-  <uic-icon class="block h-5 w-5" name="chevron-right" />
-</button>
+<div class="flex items-center">
+  <button [disabled]="disabledPreviousButton" (click)="decrement()" type="button" aria-label="前">
+    <uic-icon class="block h-5 w-5" name="chevron-left" />
+  </button>
+  <button [disabled]="disabledNextButton" (click)="increment()" type="button" aria-label="次">
+    <uic-icon class="block h-5 w-5" name="chevron-right" />
+  </button>
 
-<span class="ml-3" aria-live="polite" data-testid="page-current"
-  >{{ length }}件中 {{ from }} - {{ to }}</span
->
+  <span class="ml-auto" aria-live="polite" data-testid="page-current"
+    >{{ total }}件中 {{ from }} - {{ to }}</span
+  >
 
-<select
-  class="ml-4 rounded-md border border-gray-300 px-1.5 py-1 dark:border-zinc-700 dark:bg-zinc-800"
-  [ngModel]="pageSize"
-  (ngModelChange)="onChange($event)"
-  aria-label="表示件数"
->
-  <option *ngFor="let size of pageSizes" [ngValue]="size">{{ size }}</option>
-</select>
+  <select
+    *ngIf="pageSizes.length > 1"
+    class="ml-4 rounded-md border border-gray-300 px-1.5 py-1 dark:border-zinc-700 dark:bg-zinc-800"
+    [ngModel]="pageSize"
+    (ngModelChange)="onChange($event)"
+    aria-label="表示件数"
+  >
+    <option *ngFor="let size of pageSizes" [ngValue]="size">{{ size }}</option>
+  </select>
+</div>

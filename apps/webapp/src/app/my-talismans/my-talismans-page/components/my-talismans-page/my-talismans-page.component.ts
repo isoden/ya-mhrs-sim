@@ -32,6 +32,16 @@ export class MyTalismansPageComponent {
   readonly form = useForm()
   readonly talismans$ = this.#store.select((state) => state.talismans)
 
+  page = 1
+  readonly pageSize = 100
+
+  get sliceStart() {
+    return (this.page - 1) * this.pageSize
+  }
+  get sliceEnd() {
+    return this.sliceStart + this.pageSize
+  }
+
   onSubmit(): void {
     const csv = this.form.controls.csv.value.trim()
 

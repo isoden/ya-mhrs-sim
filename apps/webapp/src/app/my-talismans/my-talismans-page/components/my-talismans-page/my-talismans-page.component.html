@@ -13,6 +13,7 @@
   </div>
 
   <div
+    *ngIf="talismans$ | async as talismans"
     class="mt-4 w-max max-w-full overflow-hidden rounded border border-gray-100 dark:border-zinc-700"
   >
     <div class="max-h-[80vh] max-w-full overflow-auto">
@@ -23,12 +24,9 @@
             <th class="py-2 px-4 text-left text-sm font-semibold">空きスロット</th>
           </tr>
         </thead>
-        <tbody
-          class="divide-y divide-gray-100 bg-white dark:divide-zinc-700 dark:bg-zinc-800"
-          *ngIf="talismans$ | async as talismans"
-        >
+        <tbody class="divide-y divide-gray-100 bg-white dark:divide-zinc-700 dark:bg-zinc-800">
           <ng-container *ngIf="talismans.length > 0; else otherwise">
-            <tr *ngFor="let talisman of talismans">
+            <tr *ngFor="let talisman of talismans | slice: sliceStart : sliceEnd">
               <td class="py-2 px-4">{{ talisman.name }}</td>
               <td class="py-2 px-4" [attr.aria-label]="talisman.slots.join(',') || 'なし'">
                 <app-slot *ngFor="let slot of talisman.slots" [size]="slot" />
@@ -43,5 +41,11 @@
         </tbody>
       </table>
     </div>
+    <uic-paginator
+      class="py-2 px-4 block"
+      [total]="talismans.length"
+      [(page)]="page"
+      [pageSize]="pageSize"
+    />
   </div>
 </form>

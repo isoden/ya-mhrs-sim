@@ -13,6 +13,7 @@
   </div>
 
   <div
+    *ngIf="augmentationStatuses$ | async as augmentationStatuses"
     class="mt-4 w-max max-w-full overflow-hidden rounded border border-gray-100 dark:border-zinc-700"
   >
     <div class="max-h-[80vh] max-w-full overflow-auto">
@@ -40,12 +41,11 @@
             <th class="py-2 px-4 text-left text-sm font-semibold">スキル</th>
           </tr>
         </thead>
-        <tbody
-          class="divide-y divide-gray-100 bg-white dark:divide-zinc-700 dark:bg-zinc-800"
-          *ngIf="augmentationStatuses$ | async as augmentationStatuses"
-        >
+        <tbody class="divide-y divide-gray-100 bg-white dark:divide-zinc-700 dark:bg-zinc-800">
           <ng-container *ngIf="augmentationStatuses.length > 0; else otherwise">
-            <tr *ngFor="let augmentationStatus of augmentationStatuses">
+            <tr
+              *ngFor="let augmentationStatus of augmentationStatuses | slice: sliceStart : sliceEnd"
+            >
               <td class="py-2 px-4">{{ augmentationStatus.name }}</td>
               <td class="py-2 px-4 text-right font-mono">
                 <em [uicPrettyNumber]="augmentationStatus.defense">{{
@@ -104,5 +104,11 @@
         </tbody>
       </table>
     </div>
+    <uic-paginator
+      class="py-2 px-4 block"
+      [total]="augmentationStatuses.length"
+      [(page)]="page"
+      [pageSize]="pageSize"
+    />
   </div>
 </form>

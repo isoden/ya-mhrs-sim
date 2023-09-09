@@ -33,14 +33,14 @@ export class PaginatorComponent {
   pageSizeChange = new EventEmitter<number>()
 
   @Input()
-  length = 0
+  total = 0
 
   get disabledPreviousButton(): boolean {
     return this.page === 1
   }
 
   get disabledNextButton(): boolean {
-    return this.to === this.length
+    return this.to === this.total
   }
 
   get from(): number {
@@ -48,7 +48,7 @@ export class PaginatorComponent {
   }
 
   get to(): number {
-    return Math.min(this.from + this.pageSize - 1, this.length)
+    return Math.min(this.from + this.pageSize - 1, this.total)
   }
 
   increment(): void {

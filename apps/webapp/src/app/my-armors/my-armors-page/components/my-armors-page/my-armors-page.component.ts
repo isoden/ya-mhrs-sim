@@ -35,6 +35,16 @@ export class MyArmorsPageComponent {
   readonly form = useForm()
   readonly augmentationStatuses$ = this.#store.select((state) => state.augmentationStatuses)
 
+  page = 1
+  readonly pageSize = 100
+
+  get sliceStart() {
+    return (this.page - 1) * this.pageSize
+  }
+  get sliceEnd() {
+    return this.sliceStart + this.pageSize
+  }
+
   /**
    * 傀異錬成後防具のスロットと傀異錬成ステータスのスロットをタプルにして返す
    *
