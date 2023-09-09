@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core'
-import { augmentArmor, Talisman, Weapon, Armor, Decoration, Skill, armors } from '@ya-mhrs-sim/data'
+import { augmentArmor, Talisman, Weapon, Armor, Decoration, Skill } from '@ya-mhrs-sim/data'
 import { Constraint, greaterEq, lessEq } from 'yalps'
 import { firstValueFrom, map, shareReplay } from 'rxjs'
 import { wrap } from 'comlink'
@@ -16,8 +16,6 @@ import {
   addWeaponVariable,
   createWeapon,
   createBuild,
-  excludesSmallerSlots,
-  groupByType,
 } from './functions'
 import { LoggerService } from '../logger.service'
 
@@ -74,46 +72,22 @@ export class SimulatorService {
         ),
       )
 
-      const variables = new Map<string, Variable>()
-
-      groupByType(
-        armors.filter((armor) => !armor.skills.some(([name]) => excludedSkills.includes(name))),
-      ).forEach((armors) => {
-        // スロット効率が最大のもの
-        const safelist = excludesSmallerSlots(armors).map((it) => it.name)
-
-        armors.forEach((armor) => {
-          if (
-            armor.hunterTypes.includes(hunterType) &&
-            (safelist.includes(armor.name) ||
-              armor.skills.some(([name]) => baseIncludedSkills[name] > 0))
-          ) {
-            variables.set(armor.name, armorToVariable(armor))
-          }
-        })
-      })
-
-      const talismansMap = addTalismansVariable(variables, talismans, baseIncludedSkills)
-      const decorationsMap = addDecorationsVariable(variables, includedSkills, excludedSkills)
-      const augmentedArmorsList = groupByType(
-        augmentedArmors.filter(
-          (armor) => !armor.skills.some(([name]) => excludedSkills.includes(name)),
+      const variables = new Map<string, Variable>(
+        Array.from(BASE_ARMORS).reduce<[string, Variable][]>(
+          (variables, [key, armor]) =>
+            armor.hunterTypes.includes(hunterType)
+              ? variables.concat([[key, armorToVariable(armor)]])
+              : variables,
+          [],
         ),
       )
 
-      augmentedArmorsList.forEach((armors, i) => {
-        // スロット効率が最大のもの
-        const safelist = excludesSmallerSlots(armors).map((it) => it.name)
+      const talismansMap = addTalismansVariable(variables, talismans)
+      const decorationsMap = addDecorationsVariable(variables, includedSkills, excludedSkills)
 
-        armors.forEach((armor, j) => {
-          if (
-            safelist.includes(armor.name) ||
-            armor.skills.some(([name]) => baseIncludedSkills[name] > 0)
-          ) {
-            variables.set(armor.name + `[${i}.${j}]`, armorToVariable(armor))
-          }
-        })
-      })
+      augmentedArmors.forEach((armor, i) =>
+        variables.set(armor.name + `[${i}]`, armorToVariable(armor)),
+      )
 
       this.#logger.log('[solver] variables', Array.from(variables))
       this.#logger.log('[solver] constraints', Array.from(constraints))
@@ -122,9 +96,7 @@ export class SimulatorService {
         ...BASE_ARMORS,
         ...decorationsMap,
         ...talismansMap,
-        ...augmentedArmorsList.flatMap((armors, i) =>
-          armors.map<[string, Armor]>((it, j) => [it.name + `[${i}.${j}]`, it]),
-        ),
+        ...augmentedArmors.map<[string, Armor]>((a, i) => [a.name + `[${i}]`, a]),
       ])
 
       if (weaponSlots.length > 0) {

@@ -1,17 +1,10 @@
 import { Armor, Weapon, Decoration, Talisman, decorations } from '@ya-mhrs-sim/data'
-import { groupBy, times, constant, zip } from 'lodash-es'
+import { groupBy, times, constant } from 'lodash-es'
 import { mustGet } from '~webapp/functions/asserts'
 import { WEAPON_KEY } from './constants'
 import { Distributor } from './distributor.class'
 import { SimulateParams } from './simulator.service'
 import { Variable, Build } from './types'
-
-declare global {
-  interface Array<T> {
-    toSpliced(start: number, deleteCount?: number): T[]
-    toSpliced(start: number, deleteCount: number, ...items: T[]): T[]
-  }
-}
 
 export function armorToVariable(armor: Armor): Variable {
   const { type, skills, slots, defense } = armor
@@ -163,60 +156,18 @@ export function addDecorationsVariable(
 export function addTalismansVariable(
   variables: Map<string, Variable>,
   talismans: Talisman[],
-  includedSkills: SimulateParams['includedSkills'],
 ): ReadonlyMap<string, Talisman> {
-  const talismansMap = new Map<string, Talisman>()
-  // スロット効率が最大のもの
-  const safelist = findLargestSlots(talismans).map(
-    (slots) => mustGet(talismans.find((talisman) => shallowEqualArray(talisman.slots, slots))).name,
+  const talismansMap: ReadonlyMap<string, Talisman> = new Map(
+    talismans.map((talisman) => [talisman.name, talisman]),
   )
 
-  talismans.forEach((talisman) => {
-    if (
-      safelist.includes(talisman.name) ||
-      talisman.skills.some(([name]) => includedSkills[name] > 0)
-    ) {
-      variables.set(talisman.name, {
-        talisman: 1,
-        ...createArmorSlots(talisman.slots),
-        ...Object.fromEntries(talisman.skills),
-      })
-
-      talismansMap.set(talisman.name, talisman)
-    }
+  talismansMap.forEach((talisman) => {
+    variables.set(talisman.name, {
+      talisman: 1,
+      ...createArmorSlots(talisman.slots),
+      ...Object.fromEntries(talisman.skills),
+    })
   })
 
   return talismansMap
-}
-
-export function excludesSmallerSlots<Item extends { slots: number[] }>(array: Item[]): Item[] {
-  const slotsList = findLargestSlots(array)
-
-  return array.filter((item) => slotsList.some((slots) => shallowEqualArray(item.slots, slots)))
-}
-
-export function groupByType(armors: Armor[]): Armor[][] {
-  const { helm, chest, arm, waist, leg } = groupBy(armors, (armor) => armor.type)
-
-  return [helm, chest, arm, waist, leg]
-}
-
-function findLargestSlots<Item extends { slots: number[] }>(array: Item[]): number[][] {
-  return array
-    .map((item) => item.slots)
-    .filter((a, index, array) => array.findIndex((b) => shallowEqualArray(a, b)) === index)
-    .reduce<number[][]>(
-      (result, a, index, slotsList) =>
-        slotsList
-          .toSpliced(index, 1)
-          .some((slotSizes) => zip(a, slotSizes).every(([a = 0, b = 0]) => a <= b))
-          ? result
-          : result.concat([a]),
-      [],
-    )
-}
-
-function shallowEqualArray<T>(a: T[], b: T[]): boolean {
-  if (a.length !== b.length) return false
-  return a.every((a, i) => a === b[i])
 }
